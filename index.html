@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Oscar Garcia — Senior Technical Product Manager</title>
+  <meta name="description" content="Oscar Garcia — Senior Technical Product Manager shipping AI products end to end, from customer problem to production. Enterprise data strategy meets hands-on agentic engineering." />
+  <meta name="author" content="Oscar Garcia" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Oscar Garcia — Senior Technical Product Manager" />
+  <meta property="og:description" content="I ship AI products end to end — from customer problem to production. Enterprise data strategy meets hands-on agentic engineering." />
+  <meta property="og:type" content="website" />
+
+  <style>
+    :root {
+      --bg: #fbfaf7;
+      --surface: #ffffff;
+      --ink: #17181a;
+      --muted: #5c5f66;
+      --faint: #8b8f96;
+      --line: #e7e4dd;
+      --accent: #2f6b4f;
+      --accent-soft: #eaf1 ed;
+      --accent-soft: #e9f1ec;
+      --shadow: 0 1px 2px rgba(20,22,26,.04), 0 8px 30px rgba(20,22,26,.05);
+      --maxw: 1080px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0e0f11;
+        --surface: #161719;
+        --ink: #f2f1ee;
+        --muted: #a6a9af;
+        --faint: #7d818a;
+        --line: #26282c;
+        --accent: #6bbf9a;
+        --accent-soft: #16241d;
+        --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 34px rgba(0,0,0,.35);
+      }
+    }
+    :root[data-theme="light"] {
+      --bg: #fbfaf7; --surface:#fff; --ink:#17181a; --muted:#5c5f66; --faint:#8b8f96;
+      --line:#e7e4dd; --accent:#2f6b4f; --accent-soft:#e9f1ec;
+      --shadow: 0 1px 2px rgba(20,22,26,.04), 0 8px 30px rgba(20,22,26,.05);
+    }
+    :root[data-theme="dark"] {
+      --bg:#0e0f11; --surface:#161719; --ink:#f2f1ee; --muted:#a6a9af; --faint:#7d818a;
+      --line:#26282c; --accent:#6bbf9a; --accent-soft:#16241d;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 34px rgba(0,0,0,.35);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+    /* ---------- Nav ---------- */
+    header.nav {
+      position: sticky; top: 0; z-index: 50;
+      background: color-mix(in srgb, var(--bg) 86%, transparent);
+      backdrop-filter: saturate(1.4) blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .brand { font-weight: 650; letter-spacing: -0.01em; font-size: 16px; }
+    .brand .dot { color: var(--accent); }
+    nav.links { display: flex; gap: 28px; align-items: center; }
+    nav.links a { color: var(--muted); font-size: 14.5px; transition: color .15s ease; }
+    nav.links a:hover { color: var(--ink); }
+    nav.links a.cta {
+      color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line));
+      padding: 7px 14px; border-radius: 999px;
+    }
+    nav.links a.cta:hover { background: var(--accent-soft); }
+    @media (max-width: 680px) {
+      nav.links a:not(.cta) { display: none; }
+    }
+
+    /* ---------- Hero ---------- */
+    .hero { padding: 96px 0 64px; }
+    .eyebrow {
+      font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--accent); font-weight: 600; margin-bottom: 22px;
+    }
+    .hero h1 {
+      font-size: clamp(34px, 6vw, 58px);
+      line-height: 1.06; letter-spacing: -0.025em; font-weight: 680;
+      margin: 0 0 22px; max-width: 16ch;
+    }
+    .hero h1 .wave { display: inline-block; }
+    .hero .lede {
+      font-size: clamp(18px, 2.4vw, 21px); color: var(--muted);
+      max-width: 60ch; margin: 0 0 34px; line-height: 1.55;
+    }
+    .hero .lede strong { color: var(--ink); font-weight: 600; }
+    .actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 20px; border-radius: 999px; font-size: 15px; font-weight: 550;
+      transition: transform .12s ease, background .15s ease, border-color .15s ease;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { transform: translateY(-1px); }
+    .btn-ghost { border: 1px solid var(--line); color: var(--ink); background: var(--surface); }
+    .btn-ghost:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+
+    /* ---------- Sections ---------- */
+    section { padding: 62px 0; border-top: 1px solid var(--line); }
+    .sec-label {
+      font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--faint); font-weight: 600; margin-bottom: 28px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .sec-label::after { content:""; flex:1; height:1px; background: var(--line); }
+    h2.sec-title {
+      font-size: clamp(24px, 3.4vw, 33px); letter-spacing: -0.02em; font-weight: 660;
+      margin: 0 0 8px; line-height: 1.15;
+    }
+
+    /* About */
+    .about-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; }
+    @media (max-width: 760px){ .about-grid{ grid-template-columns: 1fr; gap: 32px; } }
+    .about p { color: var(--muted); margin: 0 0 18px; font-size: 18px; }
+    .about p strong { color: var(--ink); font-weight: 600; }
+    .facts { display: grid; gap: 18px; align-content: start; }
+    .fact { border-left: 2px solid var(--accent); padding-left: 16px; }
+    .fact .n { font-size: 26px; font-weight: 680; letter-spacing: -0.02em; }
+    .fact .l { font-size: 14px; color: var(--faint); }
+
+    /* Work cards */
+    .work-grid { display: grid; gap: 22px; }
+    .card {
+      background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
+      padding: 30px 30px 28px; box-shadow: var(--shadow);
+      transition: transform .16s ease, border-color .16s ease;
+    }
+    .card:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); }
+    .card.flagship { border-color: color-mix(in srgb, var(--accent) 30%, var(--line)); }
+    .card-top { display:flex; justify-content: space-between; align-items:flex-start; gap: 16px; flex-wrap: wrap; }
+    .tags { display:flex; gap:8px; flex-wrap: wrap; }
+    .tag {
+      font-size: 12px; letter-spacing:.02em; color: var(--accent);
+      background: var(--accent-soft); padding: 4px 10px; border-radius: 999px; font-weight: 550;
+    }
+    .card h3 { font-size: 22px; letter-spacing:-0.015em; margin: 4px 0 6px; font-weight: 640; }
+    .card .role { font-size: 14px; color: var(--faint); margin: 0 0 14px; }
+    .card p { color: var(--muted); margin: 0 0 16px; font-size: 16.5px; }
+    .card ul { margin: 0 0 16px; padding-left: 18px; color: var(--muted); font-size: 16px; }
+    .card ul li { margin-bottom: 7px; }
+    .card ul li::marker { color: var(--accent); }
+    .stack { display:flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+    .chip {
+      font-size: 12.5px; color: var(--muted); border: 1px solid var(--line);
+      padding: 4px 10px; border-radius: 7px; background: var(--bg);
+    }
+
+    /* Experience timeline */
+    .xp { display: grid; gap: 4px; }
+    .xp-item {
+      display: grid; grid-template-columns: 200px 1fr; gap: 28px;
+      padding: 26px 0; border-top: 1px solid var(--line);
+    }
+    .xp-item:first-child { border-top: none; }
+    @media (max-width: 720px){ .xp-item{ grid-template-columns: 1fr; gap: 8px; } }
+    .xp-meta .co { font-weight: 640; font-size: 17px; }
+    .xp-meta .when { font-size: 13.5px; color: var(--faint); margin-top: 2px; }
+    .xp-meta .loc { font-size: 13px; color: var(--faint); }
+    .xp-body .r { font-weight: 600; margin-bottom: 2px; }
+    .xp-body .r .sub { color: var(--faint); font-weight: 400; font-size: 14px; }
+    .xp-body ul { margin: 8px 0 0; padding-left: 18px; color: var(--muted); font-size: 16px; }
+    .xp-body ul li { margin-bottom: 6px; }
+    .xp-body ul li::marker { color: var(--accent); }
+    .xp-body .role-block { margin-top: 16px; }
+    .xp-body .role-block:first-child { margin-top: 0; }
+
+    /* Toolkit */
+    .kit { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; }
+    @media (max-width: 720px){ .kit{ grid-template-columns: 1fr; } }
+    .kit-group { background: var(--surface); border:1px solid var(--line); border-radius: 14px; padding: 20px 22px; box-shadow: var(--shadow); }
+    .kit-group h4 { margin:0 0 12px; font-size: 14px; letter-spacing:.02em; color: var(--accent); font-weight: 600; }
+    .kit-group .items { display:flex; flex-wrap: wrap; gap: 8px; }
+    .kit-group .items span { font-size: 13.5px; color: var(--muted); border:1px solid var(--line); padding:4px 10px; border-radius: 7px; background: var(--bg); }
+
+    /* Education */
+    .edu { display:flex; gap: 40px; flex-wrap: wrap; }
+    .edu .e .deg { font-weight: 620; }
+    .edu .e .sch { color: var(--muted); font-size: 15px; }
+
+    /* Contact */
+    .contact-card {
+      background: var(--surface); border:1px solid var(--line); border-radius: 20px;
+      padding: 44px; box-shadow: var(--shadow); text-align: center;
+    }
+    .contact-card h2 { font-size: clamp(26px,4vw,36px); letter-spacing:-0.02em; margin:0 0 12px; font-weight: 660; }
+    .contact-card p { color: var(--muted); max-width: 48ch; margin: 0 auto 26px; font-size: 18px; }
+    .contact-links { display:flex; gap: 14px; justify-content:center; flex-wrap: wrap; }
+
+    footer.site {
+      padding: 36px 0 48px; color: var(--faint); font-size: 14px;
+      display:flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+      border-top: 1px solid var(--line);
+    }
+    footer.site a:hover { color: var(--ink); }
+
+    /* Theme toggle */
+    .toggle {
+      background: transparent; border:1px solid var(--line); color: var(--muted);
+      width: 34px; height: 34px; border-radius: 999px; cursor: pointer;
+      display:inline-flex; align-items:center; justify-content:center; font-size: 15px;
+      transition: border-color .15s ease, color .15s ease;
+    }
+    .toggle:hover { color: var(--ink); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top">Oscar Garcia<span class="dot">.</span></a>
+      <nav class="links">
+        <a href="#work">Work</a>
+        <a href="#experience">Experience</a>
+        <a href="#toolkit">Toolkit</a>
+        <a class="cta" href="#contact">Get in touch</a>
+        <button class="toggle" id="themeToggle" aria-label="Toggle color theme" title="Toggle theme">◐</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <div class="hero">
+      <div class="wrap">
+        <div class="eyebrow">Senior Technical Product Manager · New York, NY</div>
+        <h1>Hi, I'm Oscar <span class="wave">—</span> I ship AI products, end to end.</h1>
+        <p class="lede">
+          I take AI products from <strong>customer problem to production</strong> — pairing enterprise
+          data strategy with a solution architect's judgment and hands-on, agentic engineering.
+          Ten years across 0→1 product creation and B2B SaaS at scale, grounded in the data and
+          system architecture that make AI actually reliable.
+        </p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#work">See selected work</a>
+          <a class="btn btn-ghost" href="#contact">Get in touch →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="wrap about-grid">
+        <div class="about">
+          <div class="sec-label">About</div>
+          <p>
+            I'm a <strong>technical product manager</strong> who works where data, AI, and enterprise
+            systems meet. Most recently I've been the right hand to a Chief Digital &amp; Information
+            Officer — turning strategy into shipped programs, building the agentic AI roadmap from
+            scratch, and personally prototyping proofs-of-concept to prove or kill use cases before
+            engineering commits.
+          </p>
+          <p>
+            I don't just spec the work — I <strong>build</strong>. I design and operate model-agnostic
+            multi-agent workflows, and I ship real production software with them. I'm calm and
+            non-hype about AI: I name the tradeoffs, dependencies, and risks honestly, because that's
+            what makes a product trustworthy.
+          </p>
+        </div>
+        <div class="facts">
+          <div class="fact"><div class="n">10+ yrs</div><div class="l">Product &amp; systems across enterprise B2B SaaS</div></div>
+          <div class="fact"><div class="n">26 / 8mo</div><div class="l">Integrations delivered in an 8-ERP → Workday consolidation</div></div>
+          <div class="fact"><div class="n">5M+</div><div class="l">Users unblocked with JWT-based single sign-on</div></div>
+          <div class="fact"><div class="n">0→1</div><div class="l">TreeTales taken to live production, solo</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORK -->
+    <section id="work">
+      <div class="wrap">
+        <div class="sec-label">Selected Work</div>
+        <h2 class="sec-title">Products, systems, and the agents that build them.</h2>
+        <div class="work-grid" style="margin-top:34px;">
+
+          <!-- TreeTales flagship -->
+          <article class="card flagship">
+            <div class="card-top">
+              <div>
+                <h3>TreeTales</h3>
+                <p class="role">Product &amp; Agentic Engineering — solo PM &amp; builder · 2026–Present · Live in production</p>
+              </div>
+              <div class="tags">
+                <span class="tag">0→1</span>
+                <span class="tag">Consumer</span>
+                <span class="tag">Agentic build</span>
+              </div>
+            </div>
+            <p>
+              A gift-first, collaborative <strong>Memory Book</strong> that turns many contributors'
+              stories about one person into a printed and digital keepsake. I took it 0→1 as sole
+              product manager and builder — now live, with early traction of 35 contributors,
+              58 stories, and 4 books.
+            </p>
+            <ul>
+              <li>Shipped production features at small-team velocity by designing and operating a <strong>multi-agent software-delivery system</strong> — architect, builder, and reviewer agents governed by 13 ADRs, a glossary, and separation-of-duties, so decisions never live only in chat.</li>
+              <li>Kept delivery moving around the clock with an <strong>autonomous overnight orchestrator</strong> — bounded by hard dispatch budgets, draft-PR-only output, and a human as the sole merge/approval gate.</li>
+              <li>Protected the core promise with a responsible-AI guardrail: <em>"AI proofreads, never ghostwrites"</em> — preserving each contributor's authentic voice.</li>
+              <li>Kept the product cheap to change through deliberate architecture — anonymous-first identity with Postgres row-level security, a print-on-demand pipeline, and a five-dependency runtime.</li>
+            </ul>
+            <div class="stack">
+              <span class="chip">Next.js 16</span><span class="chip">React 19</span><span class="chip">TypeScript</span>
+              <span class="chip">Supabase / Postgres</span><span class="chip">Vercel</span>
+              <span class="chip">Claude Opus 4.8 + Fable 5</span><span class="chip">GPT-5.5</span>
+            </div>
+          </article>
+
+          <!-- Enterprise: ERP consolidation -->
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <h3>8-ERP → Workday Consolidation</h3>
+                <p class="role">Boldyn Networks · Integrations &amp; data lead</p>
+              </div>
+              <div class="tags"><span class="tag">Enterprise</span><span class="tag">Data platform</span></div>
+            </div>
+            <p>
+              Unified finance operations across a multi-entity, multi-country portfolio by leading the
+              integrations for an eight-ERP consolidation into Workday — <strong>26 new integrations in
+              8 months</strong> — and standing up the clean system-of-record that downstream analytics
+              and AI now depend on.
+            </p>
+            <ul>
+              <li>Turned fragmented non-network operations data into portfolio-level reporting and an AI-ready data backbone.</li>
+              <li>Defined canonical models and system-of-record decisions across CRM, Lease, Tax, Payments, and Project systems — eliminating semantic and validation conflicts.</li>
+            </ul>
+            <div class="stack">
+              <span class="chip">Workday</span><span class="chip">Boomi</span><span class="chip">Microsoft Fabric</span>
+              <span class="chip">Data lineage</span><span class="chip">Canonical modeling</span>
+            </div>
+          </article>
+
+          <!-- Platform: SSO -->
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <h3>SSO &amp; Platform Modernization</h3>
+                <p class="role">PandoLogic (a Veritone company) · TheJobNetwork platform</p>
+              </div>
+              <div class="tags"><span class="tag">B2B SaaS</span><span class="tag">Identity</span></div>
+            </div>
+            <p>
+              Owned the platform roadmap for an AI-enabled recruitment product across competing
+              customer, integration, and data constraints — keeping enterprise accounts shipping and
+              renewing.
+            </p>
+            <ul>
+              <li>Removed login friction for <strong>5M+ users</strong> and unlocked enterprise partnerships gated on SSO by delivering JWT-based single sign-on.</li>
+              <li>Secured major enterprise renewals by closing the security gaps blocking them, and cut release rollbacks and hotfixes <strong>35%</strong> with stronger QA and rollout discipline.</li>
+            </ul>
+            <div class="stack">
+              <span class="chip">JWT / SSO</span><span class="chip">OAuth · SAML</span><span class="chip">Salesforce</span>
+              <span class="chip">NetSuite</span><span class="chip">Legacy migration</span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <div class="wrap">
+        <div class="sec-label">Experience</div>
+        <div class="xp">
+
+          <div class="xp-item">
+            <div class="xp-meta">
+              <div class="co">Boldyn Networks</div>
+              <div class="when">Oct 2023 – Present</div>
+              <div class="loc">New York, NY</div>
+            </div>
+            <div class="xp-body">
+              <div class="r">Technical Product Manager — AI, Data &amp; Integrations</div>
+              <ul>
+                <li>Trusted right hand to the CDIO across data, AI, and all enterprise technology — converting enterprise strategy into delivered programs.</li>
+                <li>Created the agentic AI roadmap from scratch — converting stakeholder discovery into an ROI-ranked pipeline and killing low-readiness use cases before they consumed engineering.</li>
+                <li>De-risked AI investment by personally prototyping working proofs-of-concept as product / solution architect.</li>
+                <li>Stood up a single governed data foundation across a multi-entity, multi-country portfolio.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="xp-item">
+            <div class="xp-meta">
+              <div class="co">PandoLogic <span style="font-weight:400;color:var(--faint)">(a Veritone company)</span></div>
+              <div class="when">Jan 2019 – Sept 2023</div>
+              <div class="loc">New York, NY</div>
+            </div>
+            <div class="xp-body">
+              <div class="role-block">
+                <div class="r">Product Manager — Platform, TheJobNetwork <span class="sub">· Jan 2022 – Sept 2023</span></div>
+                <ul>
+                  <li>Owned the platform roadmap for an AI-enabled recruitment product; delivered JWT-based SSO for 5M+ users.</li>
+                  <li>Cut release rollbacks and hotfixes 35% through stronger QA discipline and structured rollout planning.</li>
+                </ul>
+              </div>
+              <div class="role-block">
+                <div class="r">GTM Operations &amp; Product Lead <span class="sub">· Jan 2021 – Jan 2022</span></div>
+                <ul>
+                  <li>Cut lead-to-cash cycle time ~21% as an end-to-end systems and process architect across Salesforce, NetSuite, and MarTech.</li>
+                  <li>Reached 89% tool adoption among 200+ users within 90 days through cross-functional enablement.</li>
+                </ul>
+              </div>
+              <div class="role-block">
+                <div class="r">Manager, Project Management &amp; Technical Operations <span class="sub">· Jan 2019 – Jan 2021</span></div>
+                <ul>
+                  <li>Automated Formstack → Salesforce workflows underpinning $150M+ in revenue operations.</li>
+                  <li>Accelerated enterprise go-lives by owning integration delivery and resolving cross-system data issues.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="xp-item">
+            <div class="xp-meta">
+              <div class="co">NYPACE</div>
+              <div class="when">Jun 2023 – Present</div>
+              <div class="loc">Business Advisor</div>
+            </div>
+            <div class="xp-body">
+              <div class="r">Strategic Advisory &amp; Thought Leadership</div>
+              <ul>
+                <li>Help early-stage founders sharpen positioning, GTM, and product-scaling decisions through the New York Professional Advisors for Community Entrepreneurs.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="xp-item">
+            <div class="xp-meta">
+              <div class="co">Earlier Roles</div>
+              <div class="when">Aug 2016 – Jan 2019</div>
+              <div class="loc">Technical Lead &amp; Team Manager</div>
+            </div>
+            <div class="xp-body">
+              <div class="r">Technical Lead &amp; Team Manager</div>
+              <ul>
+                <li>Shaped product improvements by surfacing recurring failure patterns across 300+ B2B client integrations and onboardings.</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLKIT -->
+    <section id="toolkit">
+      <div class="wrap">
+        <div class="sec-label">Technical &amp; Domain Toolkit</div>
+        <h2 class="sec-title">What I build with.</h2>
+        <div class="kit" style="margin-top:30px;">
+          <div class="kit-group">
+            <h4>AI &amp; Agentic</h4>
+            <div class="items">
+              <span>Multi-agent orchestration</span><span>Agentic dev workflows</span><span>LLM app development</span>
+              <span>Prompt engineering</span><span>RAG</span><span>AI guardrails</span><span>MCP</span>
+              <span>Claude Code</span><span>GPT</span><span>Grok</span>
+            </div>
+          </div>
+          <div class="kit-group">
+            <h4>Engineering &amp; Architecture</h4>
+            <div class="items">
+              <span>Solution &amp; system design</span><span>TypeScript</span><span>React / Next.js</span>
+              <span>Node</span><span>SQL</span><span>Python (basic)</span>
+              <span>Supabase / Postgres</span><span>Vercel</span><span>Git / GitHub</span>
+            </div>
+          </div>
+          <div class="kit-group">
+            <h4>Product &amp; Delivery</h4>
+            <div class="items">
+              <span>Discovery</span><span>Roadmapping</span><span>Prioritization</span>
+              <span>Jira</span><span>Confluence</span><span>Figma</span><span>Miro</span>
+              <span>Agile</span><span>Lean Startup</span><span>TDD</span><span>ADRs</span><span>BPMN</span>
+            </div>
+          </div>
+          <div class="kit-group">
+            <h4>Data &amp; Analytics</h4>
+            <div class="items">
+              <span>Microsoft Fabric</span><span>Power BI</span><span>Looker</span>
+              <span>Snowflake</span><span>BigQuery</span><span>Data catalogues</span><span>Data lineage</span>
+            </div>
+          </div>
+          <div class="kit-group">
+            <h4>Integrations &amp; APIs</h4>
+            <div class="items">
+              <span>Boomi</span><span>n8n</span><span>Power Automate</span><span>REST / SOAP</span>
+              <span>GraphQL</span><span>Webhooks</span><span>SFTP</span><span>XML / JSON</span>
+            </div>
+          </div>
+          <div class="kit-group">
+            <h4>Identity &amp; Security</h4>
+            <div class="items">
+              <span>OAuth</span><span>SAML</span><span>JWT</span><span>Azure AD</span><span>RLS</span>
+              <span>GDPR</span><span>CCPA</span><span>ISO 27001</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:36px;" class="edu">
+          <div class="e">
+            <div class="sec-label" style="margin-bottom:14px;">Education</div>
+            <div class="deg">MBA, Entrepreneurship &amp; Leadership</div>
+            <div class="sch">Oneday.org, London, UK · 2025</div>
+          </div>
+          <div class="e" style="align-self:flex-end;">
+            <div class="deg">BA, Psychology</div>
+            <div class="sch">Hunter College, New York, NY · 2015</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="wrap">
+        <div class="contact-card">
+          <h2>Let's build something reliable.</h2>
+          <p>Open to conversations about AI product, enterprise data &amp; integrations, and 0→1 building. The best way to reach me:</p>
+          <div class="contact-links">
+            <a class="btn btn-primary" href="https://www.linkedin.com/in/oscargarcia-nyc/" target="_blank" rel="noopener">Connect on LinkedIn</a>
+            <a class="btn btn-ghost" href="https://github.com/OscarGarciaNYC" target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site">
+    <div class="wrap" style="display:flex; justify-content:space-between; width:100%; flex-wrap:wrap; gap:12px;">
+      <span>© <span id="yr"></span> Oscar Garcia · New York, NY</span>
+      <span>Built with a little help from my agents.</span>
+    </div>
+  </footer>
+
+  <script>
+    // Year
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // Theme toggle (persists, respects system default first)
+    (function(){
+      var root = document.documentElement;
+      var key = 'og-theme';
+      var saved = localStorage.getItem(key);
+      if (saved) root.setAttribute('data-theme', saved);
+      document.getElementById('themeToggle').addEventListener('click', function(){
+        var isDark = getComputedStyle(root).getPropertyValue('--bg').trim().startsWith('#0')
+          || root.getAttribute('data-theme') === 'dark';
+        var next = (root.getAttribute('data-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light')) === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        localStorage.setItem(key, next);
+      });
+    })();
+  </script>
+</body>
+</html>
