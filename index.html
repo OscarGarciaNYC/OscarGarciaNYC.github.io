@@ -224,9 +224,37 @@
       transition: border-color .15s ease, color .15s ease;
     }
     .toggle:hover { color: var(--ink); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+
+    /* ---------- Effects: scroll progress ---------- */
+    .progress {
+      position: fixed; top: 0; left: 0; height: 2px; width: 0;
+      background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 30%, transparent));
+      z-index: 100; transition: width .08s linear;
+    }
+
+    /* ---------- Effects: hero node network ---------- */
+    .hero { position: relative; overflow: hidden; }
+    #net {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+      -webkit-mask-image: radial-gradient(120% 90% at 30% 20%, #000 55%, transparent 100%);
+              mask-image: radial-gradient(120% 90% at 30% 20%, #000 55%, transparent 100%);
+    }
+    .hero .wrap { position: relative; z-index: 1; }
+
+    /* ---------- Effects: scroll reveal ---------- */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1 !important; transform: none !important; transition: none; }
+      .progress { transition: none; }
+    }
   </style>
 </head>
 <body>
+  <div class="progress" id="progress"></div>
   <header class="nav">
     <div class="wrap nav-inner">
       <a class="brand" href="#top">Oscar Garcia<span class="dot">.</span></a>
@@ -243,6 +271,7 @@
   <main id="top">
     <!-- HERO -->
     <div class="hero">
+      <canvas id="net" aria-hidden="true"></canvas>
       <div class="wrap">
         <div class="eyebrow">Senior Technical Product Manager · New York, NY</div>
         <h1>Hi, I'm Oscar <span class="wave">—</span> I ship AI products, end to end.</h1>
@@ -555,6 +584,8 @@
   </footer>
 
   <script>
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     // Year
     document.getElementById('yr').textContent = new Date().getFullYear();
 
@@ -565,12 +596,171 @@
       var saved = localStorage.getItem(key);
       if (saved) root.setAttribute('data-theme', saved);
       document.getElementById('themeToggle').addEventListener('click', function(){
-        var isDark = getComputedStyle(root).getPropertyValue('--bg').trim().startsWith('#0')
-          || root.getAttribute('data-theme') === 'dark';
-        var next = (root.getAttribute('data-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light')) === 'dark' ? 'light' : 'dark';
+        var current = root.getAttribute('data-theme') ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        var next = current === 'dark' ? 'light' : 'dark';
         root.setAttribute('data-theme', next);
         localStorage.setItem(key, next);
       });
+    })();
+
+    // Scroll progress bar
+    (function(){
+      var bar = document.getElementById('progress');
+      function onScroll(){
+        var h = document.documentElement;
+        var max = h.scrollHeight - h.clientHeight;
+        bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+
+    // Scroll reveal (sections + work cards, staggered) + count-up trigger
+    (function(){
+      var targets = [];
+      document.querySelectorAll('section, .card, .kit-group').forEach(function(el){
+        el.classList.add('reveal'); targets.push(el);
+      });
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        targets.forEach(function(el){ el.classList.add('in'); });
+        document.querySelectorAll('.fact .n').forEach(function(el){ /* leave as-is */ });
+        return;
+      }
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if (!e.isIntersecting) return;
+          var el = e.target;
+          // stagger cards within a group
+          var siblings = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+          el.style.transitionDelay = Math.min(siblings, 4) * 70 + 'ms';
+          el.classList.add('in');
+          if (el.id === 'about') runCounts();
+          io.unobserve(el);
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      targets.forEach(function(el){ io.observe(el); });
+    })();
+
+    // Count-up for stat numbers (preserves prefix/suffix like "5M+", "10+ yrs")
+    var countsRan = false;
+    function runCounts(){
+      if (countsRan || reduceMotion) return; countsRan = true;
+      document.querySelectorAll('.fact .n').forEach(function(el){
+        var raw = el.textContent.trim();
+        var m = raw.match(/\d[\d,\.]*/);
+        if (!m) return;
+        var target = parseFloat(m[0].replace(/,/g, ''));
+        var prefix = raw.slice(0, m.index), suffix = raw.slice(m.index + m[0].length);
+        var isInt = Number.isInteger(target), dur = 1100, start = null;
+        function step(ts){
+          if (!start) start = ts;
+          var p = Math.min((ts - start) / dur, 1);
+          var eased = 1 - Math.pow(1 - p, 3);
+          var v = target * eased;
+          el.textContent = prefix + (isInt ? Math.round(v) : v.toFixed(1)) + suffix;
+          if (p < 1) requestAnimationFrame(step);
+        }
+        el.textContent = prefix + '0' + suffix;
+        requestAnimationFrame(step);
+      });
+    }
+
+    // Hero node network — AI / data / integrations motif
+    (function(){
+      var canvas = document.getElementById('net');
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var DPR = Math.min(window.devicePixelRatio || 1, 2);
+      var nodes = [], w = 0, h = 0, raf = null, visible = true;
+      var mouse = { x: -9999, y: -9999 };
+      var LINK = 132;
+
+      function accentRGB(){
+        var css = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#2f6b4f';
+        css = css.replace('#', '');
+        if (css.length === 3) css = css.split('').map(function(c){ return c + c; }).join('');
+        var n = parseInt(css, 16);
+        return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+      }
+      function resize(){
+        var r = canvas.parentElement.getBoundingClientRect();
+        w = r.width; h = r.height;
+        canvas.width = w * DPR; canvas.height = h * DPR;
+        canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        var count = Math.max(16, Math.min(44, Math.floor(w / 36)));
+        nodes = [];
+        for (var i = 0; i < count; i++) {
+          nodes.push({
+            x: Math.random() * w, y: Math.random() * h,
+            vx: (Math.random() - 0.5) * 0.32, vy: (Math.random() - 0.5) * 0.32,
+            r: Math.random() * 1.5 + 0.9
+          });
+        }
+      }
+      function frame(){
+        var c = accentRGB(), i, j, p, q;
+        ctx.clearRect(0, 0, w, h);
+        for (i = 0; i < nodes.length; i++) {
+          p = nodes[i];
+          if (!reduceMotion) { p.x += p.vx; p.y += p.vy; }
+          if (p.x < 0 || p.x > w) p.vx *= -1;
+          if (p.y < 0 || p.y > h) p.vy *= -1;
+          p.x = Math.max(0, Math.min(w, p.x));
+          p.y = Math.max(0, Math.min(h, p.y));
+        }
+        // links between nearby nodes
+        for (i = 0; i < nodes.length; i++) {
+          p = nodes[i];
+          for (j = i + 1; j < nodes.length; j++) {
+            q = nodes[j];
+            var dx = p.x - q.x, dy = p.y - q.y, d = Math.sqrt(dx * dx + dy * dy);
+            if (d < LINK) {
+              var a = (1 - d / LINK) * 0.22;
+              ctx.strokeStyle = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')';
+              ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+            }
+          }
+          // links to cursor
+          var mdx = p.x - mouse.x, mdy = p.y - mouse.y, md = Math.sqrt(mdx * mdx + mdy * mdy);
+          if (md < LINK * 1.4) {
+            var ma = (1 - md / (LINK * 1.4)) * 0.5;
+            ctx.strokeStyle = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + ma + ')';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+          }
+        }
+        // node dots
+        for (i = 0; i < nodes.length; i++) {
+          p = nodes[i];
+          ctx.fillStyle = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',0.55)';
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+        }
+        raf = requestAnimationFrame(frame);
+      }
+      function start(){ if (!raf) raf = requestAnimationFrame(frame); }
+      function stop(){ if (raf) { cancelAnimationFrame(raf); raf = null; } }
+
+      var hero = canvas.parentElement;
+      hero.addEventListener('mousemove', function(e){
+        var r = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+      });
+      hero.addEventListener('mouseleave', function(){ mouse.x = -9999; mouse.y = -9999; });
+
+      window.addEventListener('resize', resize);
+      // pause when hero scrolled out of view
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function(entries){
+          visible = entries[0].isIntersecting;
+          if (visible) start(); else stop();
+        }, { threshold: 0 }).observe(hero);
+      }
+      resize();
+      if (reduceMotion) { frame(); }  // draw a single static frame
+      else start();
     })();
   </script>
 </body>
