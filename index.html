@@ -251,6 +251,80 @@
       .reveal { opacity: 1 !important; transform: none !important; transition: none; }
       .progress { transition: none; }
     }
+
+    /* ---------- Scripted assistant ---------- */
+    .chat-fab {
+      position: fixed; right: 22px; bottom: 22px; z-index: 90;
+      width: 56px; height: 56px; border-radius: 999px; border: none; cursor: pointer;
+      background: var(--accent); color: #fff; font-size: 24px;
+      box-shadow: 0 6px 22px rgba(20,22,26,.22);
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .chat-fab:hover { transform: translateY(-2px) scale(1.03); }
+    .chat-fab.hidden { opacity: 0; pointer-events: none; transform: scale(.8); }
+
+    .chat-panel {
+      position: fixed; right: 22px; bottom: 22px; z-index: 95;
+      width: min(380px, calc(100vw - 32px));
+      height: min(560px, calc(100vh - 44px));
+      background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
+      box-shadow: 0 18px 60px rgba(20,22,26,.28);
+      display: flex; flex-direction: column; overflow: hidden;
+      opacity: 0; transform: translateY(14px) scale(.98); pointer-events: none;
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .chat-panel.open { opacity: 1; transform: none; pointer-events: auto; }
+
+    .chat-head {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;
+      padding: 16px 18px; border-bottom: 1px solid var(--line);
+      background: var(--accent-soft);
+    }
+    .chat-title { font-weight: 640; font-size: 15px; letter-spacing: -0.01em; }
+    .chat-sub { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+    .chat-close {
+      background: transparent; border: none; color: var(--muted); cursor: pointer;
+      font-size: 22px; line-height: 1; padding: 2px 6px; border-radius: 8px;
+    }
+    .chat-close:hover { color: var(--ink); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+
+    .chat-log { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .msg { max-width: 85%; padding: 10px 13px; border-radius: 14px; font-size: 14.5px; line-height: 1.5; }
+    .msg a { color: var(--accent); text-decoration: underline; }
+    .msg.bot { align-self: flex-start; background: var(--bg); border: 1px solid var(--line); border-bottom-left-radius: 5px; color: var(--ink); }
+    .msg.user { align-self: flex-end; background: var(--accent); color: #fff; border-bottom-right-radius: 5px; }
+    .msg.typing { color: var(--muted); font-style: italic; }
+
+    .chat-chips { display: flex; flex-wrap: wrap; gap: 7px; padding: 0 16px 10px; }
+    .chip-q {
+      font-size: 12.5px; color: var(--accent); cursor: pointer;
+      background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+      padding: 6px 11px; border-radius: 999px; transition: background .12s ease;
+    }
+    .chip-q:hover { background: color-mix(in srgb, var(--accent) 18%, transparent); }
+
+    .chat-input-row { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--line); }
+    .chat-input {
+      flex: 1; border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+      border-radius: 999px; padding: 10px 15px; font-size: 14.5px; outline: none;
+      font-family: inherit;
+    }
+    .chat-input:focus { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
+    .chat-send {
+      border: none; background: var(--accent); color: #fff; cursor: pointer;
+      width: 40px; border-radius: 999px; font-size: 17px;
+    }
+    .chat-send:hover { filter: brightness(1.05); }
+    .chat-foot { text-align: center; font-size: 11px; color: var(--faint); padding: 0 0 10px; }
+
+    @media (max-width: 480px) {
+      .chat-panel { right: 12px; left: 12px; bottom: 12px; width: auto; height: calc(100vh - 24px); }
+      .chat-fab { right: 16px; bottom: 16px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .chat-fab, .chat-panel { transition: none; }
+    }
   </style>
 </head>
 <body>
@@ -576,6 +650,27 @@
     </section>
   </main>
 
+  <!-- Scripted assistant -->
+  <button id="chatFab" class="chat-fab" aria-label="Ask about Oscar" title="Ask about Oscar">
+    <span aria-hidden="true">💬</span>
+  </button>
+  <section id="chatPanel" class="chat-panel" role="dialog" aria-label="Ask about Oscar" aria-hidden="true">
+    <header class="chat-head">
+      <div>
+        <div class="chat-title">Ask about Oscar</div>
+        <div class="chat-sub">Quick answers about my work &amp; experience</div>
+      </div>
+      <button id="chatClose" class="chat-close" aria-label="Close">&times;</button>
+    </header>
+    <div id="chatLog" class="chat-log" aria-live="polite"></div>
+    <div id="chatChips" class="chat-chips"></div>
+    <form id="chatForm" class="chat-input-row" autocomplete="off">
+      <input id="chatInput" class="chat-input" type="text" placeholder="Ask a question…" aria-label="Your question" />
+      <button type="submit" class="chat-send" aria-label="Send">&rarr;</button>
+    </form>
+    <div class="chat-foot">Lightweight guide · not a live AI</div>
+  </section>
+
   <footer class="site">
     <div class="wrap" style="display:flex; justify-content:space-between; width:100%; flex-wrap:wrap; gap:12px;">
       <span>© <span id="yr"></span> Oscar Garcia · New York, NY</span>
@@ -761,6 +856,134 @@
       resize();
       if (reduceMotion) { frame(); }  // draw a single static frame
       else start();
+    })();
+
+    // Scripted assistant — keyword-matched Q&A over Oscar's résumé (no API, no cost)
+    (function(){
+      var fab = document.getElementById('chatFab');
+      var panel = document.getElementById('chatPanel');
+      var closeBtn = document.getElementById('chatClose');
+      var log = document.getElementById('chatLog');
+      var chipsEl = document.getElementById('chatChips');
+      var form = document.getElementById('chatForm');
+      var input = document.getElementById('chatInput');
+      if (!fab || !panel) return;
+
+      var GREETING = "Hi! I'm a lightweight guide to Oscar's work 👋 — ask about TreeTales, how I build with AI agents, my experience at Boldyn, my skills, or how to get in touch. Tap a question below or type your own.";
+      var START_CHIPS = ["What is TreeTales?", "How do you build with AI agents?", "What do you do at Boldyn?", "What are your skills?", "How can I reach you?"];
+      var MORE_CHIPS = ["Tell me about yourself", "What's your experience?", "Your education?", "How can I reach you?"];
+
+      // Intents ordered specific → general (first match wins on ties)
+      var INTENTS = [
+        { keys: ["treetales","tree tales","memory book","keepsake","flagship","gift"],
+          a: "TreeTales is my flagship 0→1 build — a gift-first, collaborative “Memory Book” that turns many people's stories about one person into a printed and digital keepsake. I took it from idea to <strong>live production solo</strong> as both PM and builder (Next.js 16, React 19, TypeScript, Supabase/Postgres, Vercel). Early traction: 35 contributors, 58 stories, 4 books." },
+        { keys: ["multi-agent","multi agent","agentic","orchestrat","overnight","how do you build","how do you use ai","delivery system","builder agent","reviewer agent"],
+          a: "I ship production features at small-team velocity by designing and operating a <strong>multi-agent software-delivery system</strong> — architect, builder, and reviewer agents governed by 13 ADRs, a glossary, and separation-of-duties, so decisions never live only in chat. An autonomous overnight orchestrator dispatches specialist agents on scheduled cycles, bounded by hard budgets, draft-PR-only output, and me as the sole merge/approval gate." },
+        { keys: ["responsible","ghostwrite","proofread","guardrail","ethic","hype","authentic"],
+          a: "I'm calm and non-hype about AI — I name the tradeoffs, dependencies, and risks honestly rather than overselling. On TreeTales I built a responsible-AI guardrail — <em>“AI proofreads, never ghostwrites”</em> — that preserves each contributor's authentic voice." },
+        { keys: ["boldyn","current job","current role","right now","cdio","chief digital","currently"],
+          a: "At <strong>Boldyn Networks</strong> I'm the Technical Product Manager for AI, Data &amp; Integrations — the right hand to the Chief Digital &amp; Information Officer. I built the agentic AI roadmap from scratch, turning stakeholder discovery into an ROI-ranked pipeline, and I personally prototype proofs-of-concept to prove or kill use cases before engineering commits." },
+        { keys: ["erp","workday","integration","system of record","canonical","finance"],
+          a: "I led the integrations for an <strong>8-ERP consolidation into Workday — 26 new integrations in 8 months</strong> — creating the clean system-of-record that downstream analytics and AI depend on. I also stood up a single governed data foundation across a multi-entity, multi-country portfolio, and defined canonical models across CRM, Lease, Tax, Payments, and Project systems." },
+        { keys: ["pandolog","veritone","sso","single sign","recruit","thejobnetwork","job network","salesforce","netsuite","lead-to-cash","gtm"],
+          a: "At <strong>PandoLogic</strong> (a Veritone company) I owned the platform roadmap for an AI-enabled recruitment product. I delivered <strong>JWT-based SSO for 5M+ users</strong> that unlocked enterprise partnerships, and cut release rollbacks and hotfixes 35% through stronger QA and rollout discipline. Earlier there I cut lead-to-cash cycle time ~21% by re-architecting workflows across Salesforce, NetSuite, and MarTech." },
+        { keys: ["data strategy","governance","analytics","fabric","power bi","snowflake","bigquery","lineage","data foundation"],
+          a: "I turn fragmented operations data into an AI-ready backbone: a single governed data foundation, canonical models, and system-of-record decisions that eliminate semantic and validation conflicts. Tooling spans Microsoft Fabric, Power BI, Looker, Snowflake, BigQuery, and data lineage/catalogues." },
+        { keys: ["nypace","advisor","advisory","mentor","founder","startup"],
+          a: "I advise early-stage founders through <strong>NYPACE</strong> (New York Professional Advisors for Community Entrepreneurs), helping them sharpen positioning, GTM, and product-scaling decisions." },
+        { keys: ["skill","stack","technolog","tools","toolkit","language","typescript","react","next","program","engineering"],
+          a: "<strong>AI &amp; agentic:</strong> multi-agent orchestration, LLM app development, prompt engineering, RAG, guardrails, MCP.<br><strong>Engineering:</strong> TypeScript, React/Next.js, Node, SQL, Supabase/Postgres, Vercel.<br><strong>Data:</strong> Microsoft Fabric, Power BI, Snowflake, BigQuery, lineage.<br><strong>Integrations:</strong> Boomi, n8n, Power Automate, REST/GraphQL.<br><strong>Identity &amp; security:</strong> OAuth, SAML, JWT, RLS, GDPR/CCPA/ISO 27001." },
+        { keys: ["education","mba","degree","school","study","studied","universit","college","hunter","oneday"],
+          a: "I hold an <strong>MBA in Entrepreneurship &amp; Leadership</strong> from Oneday.org (London, 2025) and a <strong>BA in Psychology</strong> from Hunter College (New York, 2015)." },
+        { keys: ["experience","background","career","years","history","resume","cv","worked"],
+          a: "Ten years across 0→1 product creation and enterprise B2B SaaS at scale — currently Boldyn Networks (AI, data &amp; integrations), before that PandoLogic/Veritone (platform PM, then GTM &amp; ops lead, then technical operations manager). I also advise founders through NYPACE." },
+        { keys: ["strength","different","stand out","why you","best at","unique","superpower","good at","weakness"],
+          a: "I don't just spec the work — I <strong>build</strong> it. I combine enterprise data/systems judgment with hands-on agentic engineering, and I'm honest about AI's tradeoffs rather than hyping them. Shipping real product solo at small-team velocity while grounding it in reliable data architecture is what sets me apart." },
+        { keys: ["contact","hire","reach","get in touch","email","connect","linkedin","available","work with","talk"],
+          a: "The best way to reach me is <a href=\"https://www.linkedin.com/in/oscargarcia-nyc/\" target=\"_blank\" rel=\"noopener\">LinkedIn</a> — I'm open to conversations about AI product, enterprise data &amp; integrations, and 0→1 building. My work also lives on <a href=\"https://github.com/OscarGarciaNYC\" target=\"_blank\" rel=\"noopener\">GitHub</a>." },
+        { keys: ["about you","about oscar","tell me about","yourself","summary","what do you do","elevator","who are you"],
+          a: "I'm a <strong>Senior Technical Product Manager</strong> who ships AI products end to end — from customer problem to production. I pair enterprise data strategy with a solution architect's judgment and hands-on, agentic engineering. Ten years across 0→1 product creation and B2B SaaS at scale." },
+        { keys: ["hi","hello","hey","hiya","howdy","yo","greetings"], a: GREETING },
+        { keys: ["thank","thanks","thx","cheers","appreciate"], a: "Anytime! Ask me anything else, or reach Oscar directly on <a href=\"https://www.linkedin.com/in/oscargarcia-nyc/\" target=\"_blank\" rel=\"noopener\">LinkedIn</a>." }
+      ];
+
+      var FALLBACK = "I don't have a scripted answer for that one — I'm a lightweight guide, not a live AI. Try one of these, or reach Oscar directly on <a href=\"https://www.linkedin.com/in/oscargarcia-nyc/\" target=\"_blank\" rel=\"noopener\">LinkedIn</a>.";
+
+      function esc(s){ var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+      function normalize(s){ return (' ' + s.toLowerCase().replace(/[^a-z0-9\s.\-]/g,' ') + ' ').replace(/\s+/g,' '); }
+
+      function match(text){
+        var norm = normalize(text);
+        var tokens = norm.trim().split(' ');
+        var best = null, bestScore = 0;
+        for (var i = 0; i < INTENTS.length; i++) {
+          var score = 0;
+          var keys = INTENTS[i].keys;
+          for (var k = 0; k < keys.length; k++) {
+            var key = keys[k];
+            if (key.indexOf(' ') > -1 || key.indexOf('-') > -1) {
+              if (norm.indexOf(key) > -1) score += 2;         // specific phrase
+            } else {
+              for (var t = 0; t < tokens.length; t++) {
+                var tok = tokens[t];
+                if (tok === key || (key.length >= 4 && tok.indexOf(key) === 0)) { score += 1; break; }
+              }
+            }
+          }
+          if (score > bestScore) { bestScore = score; best = INTENTS[i]; }
+        }
+        return bestScore > 0 ? best.a : null;
+      }
+
+      function addMsg(who, html){
+        var el = document.createElement('div');
+        el.className = 'msg ' + who;
+        el.innerHTML = html;
+        log.appendChild(el);
+        log.scrollTop = log.scrollHeight;
+        return el;
+      }
+      function renderChips(list){
+        chipsEl.innerHTML = '';
+        list.forEach(function(q){
+          var c = document.createElement('button');
+          c.type = 'button'; c.className = 'chip-q'; c.textContent = q;
+          c.addEventListener('click', function(){ ask(q); });
+          chipsEl.appendChild(c);
+        });
+      }
+      function ask(text){
+        text = (text || '').trim();
+        if (!text) return;
+        addMsg('user', esc(text));
+        input.value = '';
+        chipsEl.innerHTML = '';
+        var reply = match(text);
+        var typing = addMsg('bot typing', 'typing…');
+        setTimeout(function(){
+          typing.remove();
+          if (reply) { addMsg('bot', reply); renderChips(MORE_CHIPS); }
+          else { addMsg('bot', FALLBACK); renderChips(START_CHIPS); }
+        }, 340);
+      }
+
+      var started = false;
+      function openChat(){
+        panel.classList.add('open');
+        panel.setAttribute('aria-hidden', 'false');
+        fab.classList.add('hidden');
+        if (!started) { started = true; addMsg('bot', GREETING); renderChips(START_CHIPS); }
+        setTimeout(function(){ input.focus(); }, 200);
+      }
+      function closeChat(){
+        panel.classList.remove('open');
+        panel.setAttribute('aria-hidden', 'true');
+        fab.classList.remove('hidden');
+      }
+      fab.addEventListener('click', openChat);
+      closeBtn.addEventListener('click', closeChat);
+      form.addEventListener('submit', function(e){ e.preventDefault(); ask(input.value); });
+      document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && panel.classList.contains('open')) closeChat(); });
     })();
   </script>
 </body>
