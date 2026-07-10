@@ -265,6 +265,56 @@
       .progress { transition: none; }
     }
 
+    /* ---------- Agent system diagram ---------- */
+    #system code { font-size:.88em; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; background:color-mix(in srgb, var(--accent) 12%, transparent); color:var(--ink); padding:1px 5px; border-radius:5px; }
+    .aud-toggle { display:inline-flex; border:1px solid var(--line); border-radius:999px; padding:4px; gap:4px; background:var(--surface); margin:6px 0 22px; }
+    .aud-btn { border:none; background:transparent; color:var(--muted); font:inherit; font-size:14px; font-weight:550; padding:8px 16px; border-radius:999px; cursor:pointer; transition:background .15s, color .15s; }
+    .aud-btn.is-on { background:var(--accent); color:#fff; }
+    .aud-btn:not(.is-on):hover { color:var(--ink); }
+
+    .sys-intro { color:var(--muted); font-size:18px; max-width:66ch; line-height:1.6; margin:0 0 26px; }
+    .sys-intro strong { color:var(--ink); font-weight:600; }
+
+    .orch-band, .gov-band { display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted); border:1px dashed color-mix(in srgb, var(--accent) 30%, var(--line)); background:var(--accent-soft); border-radius:12px; padding:10px 16px; }
+    .orch-band { margin-bottom:16px; } .gov-band { margin-top:16px; }
+    .orch-band b, .gov-band b { color:var(--accent); font-weight:600; }
+
+    .flow { position:relative; display:flex; flex-wrap:wrap; align-items:stretch; justify-content:center; gap:10px; padding:6px 0; }
+    .node { flex:0 0 auto; width:120px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:4px; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px 10px; cursor:pointer; transition:transform .14s, border-color .14s, box-shadow .14s; box-shadow:var(--shadow); }
+    .node:hover { transform:translateY(-2px); }
+    .node .n-ico { font-size:22px; line-height:1; }
+    .node .n-label { font-size:14px; font-weight:620; letter-spacing:-0.01em; color:var(--ink); }
+    .node .n-sub { font-size:11.5px; color:var(--faint); line-height:1.3; }
+    .node.gate { border-color:color-mix(in srgb, var(--accent) 55%, var(--line)); background:var(--accent-soft); }
+    .node.gate .n-label { color:var(--accent); }
+    .node.active { border-color:var(--accent); box-shadow:0 0 0 2px color-mix(in srgb, var(--accent) 30%, transparent), var(--shadow); }
+    .flow-arrow { flex:0 0 auto; align-self:center; color:var(--faint); font-size:18px; }
+
+    .token { position:absolute; width:13px; height:13px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent); pointer-events:none; left:0; top:0; transform:translate(-50%,-50%); transition:left .55s cubic-bezier(.5,0,.2,1), top .55s cubic-bezier(.5,0,.2,1); z-index:3; }
+    .token.pulse { box-shadow:0 0 0 8px color-mix(in srgb, var(--accent) 32%, transparent); }
+
+    .node-detail { margin-top:22px; background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:22px 24px; box-shadow:var(--shadow); min-height:96px; }
+    .node-detail h4 { margin:0 0 6px; font-size:17px; letter-spacing:-0.015em; }
+    .node-detail p { margin:0 0 10px; color:var(--muted); font-size:15.5px; line-height:1.55; }
+    .node-detail .guard { font-size:13.5px; color:var(--faint); border-left:2px solid var(--accent); padding-left:12px; margin-bottom:0; }
+    .node-detail .guard b { color:var(--ink); font-weight:600; }
+
+    .holds-up { margin-top:24px; display:grid; gap:10px; }
+    .holds-up .hu-title { font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); font-weight:600; }
+    .holds-up details { border:1px solid var(--line); border-radius:12px; background:var(--surface); padding:0 16px; }
+    .holds-up summary { cursor:pointer; padding:13px 0; font-weight:560; font-size:15px; list-style:none; }
+    .holds-up summary::-webkit-details-marker { display:none; }
+    .holds-up summary::before { content:'+'; color:var(--accent); font-weight:700; margin-right:10px; }
+    .holds-up details[open] summary::before { content:'\2212'; }
+    .holds-up details p { margin:0 0 14px; color:var(--muted); font-size:14.5px; line-height:1.55; }
+
+    @media (max-width:760px){
+      .flow { flex-direction:column; align-items:center; }
+      .flow-arrow { transform:rotate(90deg); }
+      .node { width:min(280px,82vw); flex-direction:row; text-align:left; gap:12px; }
+    }
+    @media (prefers-reduced-motion: reduce){ .token { display:none; } }
+
     /* ---------- Scripted assistant ---------- */
     .chat-fab {
       position: fixed; right: 22px; bottom: 22px; z-index: 90;
@@ -347,6 +397,7 @@
       <a class="brand" href="#top">Oscar Garcia<span class="dot">.</span></a>
       <nav class="links">
         <a href="#work">Work</a>
+        <a href="#system">System</a>
         <a href="#experience">Experience</a>
         <a href="#toolkit">Toolkit</a>
         <a class="cta" href="#contact">Get in touch</a>
@@ -500,6 +551,33 @@
           </article>
 
         </div>
+      </div>
+    </section>
+
+    <!-- AGENT SYSTEM -->
+    <section id="system">
+      <div class="wrap">
+        <div class="sec-label">The Agent System</div>
+        <h2 class="sec-title">How I ship solo, at small-team velocity.</h2>
+
+        <div class="aud-toggle" role="tablist" aria-label="Choose an explanation depth">
+          <button class="aud-btn is-on" data-mode="simple" role="tab" aria-selected="true">Explain it simply</button>
+          <button class="aud-btn" data-mode="tech" role="tab" aria-selected="false">Show me the engineering</button>
+        </div>
+
+        <p class="sys-intro" id="sysIntro"></p>
+
+        <div class="orch-band" id="bandTop"></div>
+
+        <div class="flow" id="flow">
+          <span class="token" id="sysToken" aria-hidden="true"></span>
+        </div>
+
+        <div class="gov-band" id="bandBottom"></div>
+
+        <div class="node-detail" id="nodeDetail"></div>
+
+        <div class="holds-up" id="holdsUp" hidden></div>
       </div>
     </section>
 
@@ -1006,6 +1084,129 @@
       closeBtn.addEventListener('click', closeChat);
       form.addEventListener('submit', function(e){ e.preventDefault(); ask(input.value); });
       document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && panel.classList.contains('open')) closeChat(); });
+    })();
+
+    // Agent system diagram — audience toggle, clickable nodes, traveling token
+    (function(){
+      var root = document.getElementById('system'); if (!root) return;
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var flow = document.getElementById('flow');
+      var introEl = document.getElementById('sysIntro');
+      var bandTop = document.getElementById('bandTop');
+      var bandBottom = document.getElementById('bandBottom');
+      var detail = document.getElementById('nodeDetail');
+      var holds = document.getElementById('holdsUp');
+      var token = document.getElementById('sysToken');
+      var mode = 'simple', active = -1, idx = 0, timer = null;
+
+      var COPY = {
+        simple: {
+          intro: "Think of it as a small <strong>overnight software team</strong> — a planner, a builder, and a quality inspector — except they're AI agents. They work while I sleep, and <strong>nothing ships until I approve it</strong>. I wake up to finished, reviewed work waiting for a yes or no.",
+          top: "☾ Runs overnight on a schedule — with a strict spending limit and safety rails.",
+          bottom: "🛡️ Every agent follows the same written rulebook."
+        },
+        tech: {
+          intro: "Three role-separated agents run a governed delivery loop. The <strong>Architect</strong> turns intent into an ADR + spec + sliced issues; the <strong>Builder</strong> implements one task as a draft PR that carries its own state delta; the <strong>Reviewer</strong> gates it. An overnight orchestrator dispatches by issue label under a hard token budget, draft-PR-only. I'm the sole triage and merge gate. Model-agnostic (Claude Opus 4.8 · Fable 5 · GPT-5.5).",
+          top: "↻ <b>Overnight orchestrator</b> — dispatches by label (<code>needs-spec</code> → Architect · <code>agent-ready</code> → Builder · un-reviewed PR → Reviewer) · hard token budget · draft-PRs only.",
+          bottom: "🛡️ <b>Governance spine</b> — 9 durable rules every agent obeys: scope, security, separation of duties, verify honestly, human-only merge."
+        }
+      };
+
+      var NODES = [
+        { key:'intent', ico:'🎯', gate:false,
+          simple:{l:'An idea', s:'What I want built'}, tech:{l:'Intent', s:'Issue / direction'},
+          d:{ simple:{h:'It starts with an idea', p:'I describe what I want — a feature, a fix, a direction. That’s the only raw input the system needs.', g:'<b>Human-initiated.</b> Agents never invent work on their own.'},
+               tech:{h:'Intent', p:'A GitHub issue or direction, optionally labeled <code>needs-spec</code> — the single entry point the orchestrator watches.', g:'<b>Human-initiated.</b> The loop only runs on work I’ve queued.'} } },
+        { key:'architect', ico:'📐', gate:false,
+          simple:{l:'Planner', s:'Shapes the work'}, tech:{l:'Architect', s:'ADR + spec + issues'},
+          d:{ simple:{h:'The planner sharpens it', p:'It turns my fuzzy idea into a clear plan — and if anything’s unclear, it asks me focused questions with a recommended answer for each.', g:'<b>Can’t write code.</b> It only plans and records decisions.'},
+               tech:{h:'Architect — shapes &amp; records', p:'Turns intent into a recorded decision: an ADR, a spec with acceptance criteria, glossary additions, and sliced build-ready issues — delivered as one docs PR. When under-decided it returns numbered questions, each with a recommendation, for async triage.', g:'<b>Never edits <code>src/</code>, never merges.</b> Unanswered questions stay questions — it won’t invent product decisions.'} } },
+        { key:'triage', ico:'🧑‍💻', gate:true,
+          simple:{l:'I decide', s:'Answer questions'}, tech:{l:'You · triage gate', s:'Answer the questions'},
+          d:{ simple:{h:'I make the calls', p:'I answer the planner’s questions — usually a quick yes/no/pick-one. The decisions are mine; the paperwork is theirs.', g:'<b>Human gate #1.</b> No decision gets made without me.'},
+               tech:{h:'You — triage gate', p:'I answer the Architect’s numbered questions in a fast triage pass; my answers become the recorded ADR. This is how an agent “interviews” me asynchronously.', g:'<b>Human gate #1.</b> Decisions are mine; agents only record and execute them.'} } },
+        { key:'builder', ico:'🔨', gate:false,
+          simple:{l:'Builder', s:'Does the work'}, tech:{l:'Builder', s:'One task → draft PR'},
+          d:{ simple:{h:'The builder builds it', p:'It implements exactly one task — nothing more — and opens a draft for review. It never ships anything itself.', g:'<b>Builds only what was asked.</b> No scope creep, no shipping.'},
+               tech:{h:'Builder — implements one task', p:'Takes one build-ready issue, implements it typed and in-scope, drives the runtime to verify, and opens a <strong>draft PR that carries its own <code>session-state</code> delta</strong>. State travels with the work.', g:'<b>Forbidden:</b> scope creep, new deps without cause, secrets/migrations, self-approval, merging.'} } },
+        { key:'reviewer', ico:'🔍', gate:false,
+          simple:{l:'Inspector', s:'Checks quality'}, tech:{l:'Reviewer', s:'Verdict + findings'},
+          d:{ simple:{h:'The inspector checks it', p:'A separate agent reviews the work with fresh eyes and gives a clear verdict: good to ship, fix these first, or don’t ship.', g:'<b>Independent.</b> The builder can’t review its own work.'},
+               tech:{h:'Reviewer — the gate', p:'An independent, fresh-context pass: correctness, spec &amp; ADR conformance, a security checklist on sensitive diffs, and the state-delta check. Returns SHIP / FIX-FIRST / BLOCK with ranked, concrete findings.', g:'<b>Reads and reports only</b> — never edits code, never merges. Separation of duties.'} } },
+        { key:'merge', ico:'✅', gate:true,
+          simple:{l:'I approve', s:'Give the yes'}, tech:{l:'You · merge gate', s:'Merge = deploy'},
+          d:{ simple:{h:'I give the final yes', p:'I look at the reviewed, ready work and approve it — or send it back. Only I can push the button that ships.', g:'<b>Human gate #2.</b> Nothing reaches production without my approval.'},
+               tech:{h:'You — merge gate', p:'My morning loop is two things: answer questions and merge what the Reviewer passed — both arrive as paste-ready items. Merging is releasing (Vercel).', g:'<b>Human gate #2.</b> Merge, deploy, secrets, live migrations — me only.'} } },
+        { key:'ships', ico:'🚀', gate:false,
+          simple:{l:'It ships', s:'Live in production'}, tech:{l:'Ships', s:'Vercel deploy'},
+          d:{ simple:{h:'It ships — then repeats', p:'The work goes live, and the record updates itself in the same step. The next night, the loop runs again.', g:'<b>Merging records it.</b> No stale docs, no forgotten updates.'},
+               tech:{h:'Ships — and records itself', p:'Merge deploys to Vercel and lands the <code>session-state</code> delta in the same commit — so the record is always true. The loop repeats on the next nightly cycle.', g:'<b>Merge = record.</b> State travels with the work; a fresh agent can continue cold.'} } }
+      ];
+
+      var HOLDS = [
+        { q:'How do you know the agents produce good code?', a:'Two things gate it: an independent Reviewer that runs correctness, spec-conformance, and security checks and returns a hard SHIP / FIX-FIRST / BLOCK verdict, and me driving the actual runtime before I merge — governance forbids claiming “done” on unverified work. Deepening automated test coverage is the piece I’m investing in next; today the human gate plus the Reviewer carry it.' },
+        { q:'What stops runaway cost overnight?', a:'The orchestrator runs under a <strong>hard dispatch budget</strong> and only in a scheduled overnight window — not an always-on loop — and its output is draft-PRs only. I also route routine dev commands through a token-reducing CLI proxy that cuts LLM spend 60–90% on those calls.' },
+        { q:'What if an agent goes off the rails?', a:'By design it can’t do damage: <strong>agents only ever produce draft PRs, and a human is the sole merge gate</strong>. Nothing autonomous reaches <code>main</code> or production. The worst case overnight is a draft PR I discard in the morning.' },
+        { q:'How is it secured?', a:'Governance forbids touching secrets, <code>.env</code>, or live migrations; all external input is treated as untrusted; the Reviewer runs a mandatory security checklist whenever a diff touches auth, data, payments, or server actions; and no agent can merge or deploy. Destructive GitHub actions are proposal-only.' },
+        { q:'Aren’t you the bottleneck?', a:'Yes — deliberately. The human gate is the point, not a limitation. My daily loop shrinks to two high-signal actions: answer the Architect’s questions and merge what the Reviewer passed, both delivered as paste-ready items. Judgment stays with me; the clerical work doesn’t.' }
+      ];
+
+      function buildFlow(){
+        Array.prototype.slice.call(flow.querySelectorAll('.node,.flow-arrow')).forEach(function(n){ n.remove(); });
+        NODES.forEach(function(n, i){
+          if (i > 0){ var a = document.createElement('span'); a.className = 'flow-arrow'; a.setAttribute('aria-hidden','true'); a.textContent = '→'; flow.appendChild(a); }
+          var m = n[mode], b = document.createElement('button');
+          b.className = 'node' + (n.gate ? ' gate' : '') + (i === active ? ' active' : '');
+          b.type = 'button'; b.dataset.i = i;
+          b.innerHTML = '<span class="n-ico" aria-hidden="true">' + n.ico + '</span><span class="n-label">' + m.l + '</span><span class="n-sub">' + m.s + '</span>';
+          b.addEventListener('click', function(){ select(i); });
+          flow.appendChild(b);
+        });
+        if (token) flow.appendChild(token);
+      }
+      function nodeEls(){ return Array.prototype.slice.call(flow.querySelectorAll('.node')); }
+      function moveToken(i, instant){
+        if (!token) return; var els = nodeEls(); if (!els[i]) return;
+        var fr = flow.getBoundingClientRect(), r = els[i].getBoundingClientRect();
+        var x = r.left - fr.left + r.width / 2, y = r.top - fr.top + r.height / 2;
+        if (instant){ var tr = token.style.transition; token.style.transition = 'none'; token.style.left = x + 'px'; token.style.top = y + 'px'; void token.offsetWidth; token.style.transition = tr; }
+        else { token.style.left = x + 'px'; token.style.top = y + 'px'; }
+        token.classList.toggle('pulse', !!NODES[i].gate);
+      }
+      function showOverview(){
+        detail.innerHTML = mode === 'tech'
+          ? '<h4>The control loop</h4><p>Tap any step to see its contract. The two highlighted <em>You</em> steps are the human gates — an agent does the work, but only I can ship it.</p><p class="guard"><b>Separation of duties:</b> the Architect plans, the Builder builds, the Reviewer gates, I decide. No agent grades its own homework.</p>'
+          : '<h4>The idea in one line</h4><p>AI agents do the building overnight; I approve everything before it ships. Tap any step to see what it does.</p><p class="guard"><b>The two highlighted “You” steps</b> are where I stay in control — nothing happens without me there.</p>';
+      }
+      function renderDetail(i){ var d = NODES[i].d[mode]; detail.innerHTML = '<h4>' + d.h + '</h4><p>' + d.p + '</p><p class="guard">' + d.g + '</p>'; }
+      function select(i){ active = i; idx = i; nodeEls().forEach(function(n){ n.classList.toggle('active', +n.dataset.i === i); }); renderDetail(i); moveToken(i); }
+
+      function render(){
+        var c = COPY[mode];
+        introEl.innerHTML = c.intro; bandTop.innerHTML = c.top; bandBottom.innerHTML = c.bottom;
+        buildFlow();
+        if (mode === 'tech'){ holds.hidden = false; var h = '<div class="hu-title">How it holds up — the questions engineers ask</div>'; HOLDS.forEach(function(x){ h += '<details><summary>' + x.q + '</summary><p>' + x.a + '</p></details>'; }); holds.innerHTML = h; }
+        else { holds.hidden = true; holds.innerHTML = ''; }
+        if (active < 0) showOverview(); else renderDetail(active);
+        moveToken(active < 0 ? idx : active, true);
+      }
+
+      root.querySelectorAll('.aud-btn').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          if (btn.dataset.mode === mode) return;
+          mode = btn.dataset.mode; active = -1;
+          root.querySelectorAll('.aud-btn').forEach(function(b){ var on = b === btn; b.classList.toggle('is-on', on); b.setAttribute('aria-selected', on ? 'true' : 'false'); });
+          render();
+        });
+      });
+
+      render();
+
+      function schedule(){ var d = NODES[idx].gate ? 1700 : 1050; timer = setTimeout(function(){ idx = (idx + 1) % NODES.length; moveToken(idx); schedule(); }, d); }
+      if (!reduce){ moveToken(0); schedule(); }
+
+      var rt; window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(function(){ moveToken(active < 0 ? idx : active, true); }, 120); });
+      if ('IntersectionObserver' in window){ new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) moveToken(active < 0 ? idx : active, true); }); }, { threshold: 0.15 }).observe(root); }
     })();
   </script>
 </body>
