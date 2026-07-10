@@ -141,6 +141,19 @@
     .fact .n { font-size: 26px; font-weight: 680; letter-spacing: -0.02em; }
     .fact .l { font-size: 14px; color: var(--faint); }
 
+    /* Off the clock */
+    .offclock { margin-top: 40px; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .oc-label {
+      font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--faint); font-weight: 600; margin-right: 4px;
+    }
+    .oc-chip {
+      font-size: 14px; color: var(--ink); background: var(--surface);
+      border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px;
+      box-shadow: var(--shadow); transition: transform .12s ease, border-color .12s ease;
+    }
+    .oc-chip:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); }
+
     /* Work cards */
     .work-grid { display: grid; gap: 22px; }
     .card {
@@ -387,6 +400,14 @@
           <div class="fact"><div class="n">5M+</div><div class="l">Users unblocked with JWT-based single sign-on</div></div>
           <div class="fact"><div class="n">0→1</div><div class="l">TreeTales taken to live production, solo</div></div>
         </div>
+      </div>
+      <div class="wrap offclock">
+        <span class="oc-label">Off the clock</span>
+        <span class="oc-chip">🎣 Fishing</span>
+        <span class="oc-chip">🌱 Gardening</span>
+        <span class="oc-chip">🍵 Matcha devotee</span>
+        <span class="oc-chip">⛳ Learning golf</span>
+        <span class="oc-chip">⛪ Production lead at my church</span>
       </div>
     </section>
 
@@ -870,8 +891,8 @@
       if (!fab || !panel) return;
 
       var GREETING = "Hi! I'm a lightweight guide to Oscar's work 👋 — ask about TreeTales, how I build with AI agents, my experience at Boldyn, my skills, or how to get in touch. Tap a question below or type your own.";
-      var START_CHIPS = ["What is TreeTales?", "How do you build with AI agents?", "What do you do at Boldyn?", "What are your skills?", "How can I reach you?"];
-      var MORE_CHIPS = ["Tell me about yourself", "What's your experience?", "Your education?", "How can I reach you?"];
+      var START_CHIPS = ["What is TreeTales?", "How do you build with AI agents?", "What do you do at Boldyn?", "What are your skills?", "What do you do for fun?", "How can I reach you?"];
+      var MORE_CHIPS = ["Tell me about yourself", "What's your experience?", "What do you do for fun?", "Your education?", "How can I reach you?"];
 
       // Intents ordered specific → general (first match wins on ties)
       var INTENTS = [
@@ -901,6 +922,8 @@
           a: "I don't just spec the work — I <strong>build</strong> it. I combine enterprise data/systems judgment with hands-on agentic engineering, and I'm honest about AI's tradeoffs rather than hyping them. Shipping real product solo at small-team velocity while grounding it in reliable data architecture is what sets me apart." },
         { keys: ["contact","hire","reach","get in touch","email","connect","linkedin","available","work with","talk"],
           a: "The best way to reach me is <a href=\"https://www.linkedin.com/in/oscargarcia-nyc/\" target=\"_blank\" rel=\"noopener\">LinkedIn</a> — I'm open to conversations about AI product, enterprise data &amp; integrations, and 0→1 building. My work also lives on <a href=\"https://github.com/OscarGarciaNYC\" target=\"_blank\" rel=\"noopener\">GitHub</a>." },
+        { keys: ["for fun","do for fun","free time","spare time","outside work","outside of work","when you're not","hobby","hobbies","interests","personal","fishing","fish","gardening","garden","matcha","golf","church","fun"],
+          a: "Outside of work I'm happiest outdoors — I love to <strong>fish</strong> and <strong>garden</strong>, I'm a serious <strong>matcha</strong> devotee, and I'm currently learning <strong>golf</strong>. I also lead the <strong>production team at my church</strong>. 🎣🌱🍵⛳" },
         { keys: ["about you","about oscar","tell me about","yourself","summary","what do you do","elevator","who are you"],
           a: "I'm a <strong>Senior Technical Product Manager</strong> who ships AI products end to end — from customer problem to production. I pair enterprise data strategy with a solution architect's judgment and hands-on, agentic engineering. Ten years across 0→1 product creation and B2B SaaS at scale." },
         { keys: ["hi","hello","hey","hiya","howdy","yo","greetings"], a: GREETING },
