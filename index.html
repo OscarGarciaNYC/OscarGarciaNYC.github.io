@@ -714,7 +714,7 @@
     // Scroll reveal (sections + work cards, staggered) + count-up trigger
     (function(){
       var targets = [];
-      document.querySelectorAll('section, .card, .kit-group').forEach(function(el){
+      document.querySelectorAll('main section, .card, .kit-group').forEach(function(el){
         el.classList.add('reveal'); targets.push(el);
       });
       if (reduceMotion || !('IntersectionObserver' in window)) {
