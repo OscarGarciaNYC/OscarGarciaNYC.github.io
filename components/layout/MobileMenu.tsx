@@ -173,7 +173,7 @@ export function MobileMenu({ items }: { items: readonly NavItem[] }) {
           >
             <ThemeToggle />
             <span className="text-[14px] leading-5 text-secondary">
-              Colour theme
+              Color theme
             </span>
           </div>
         </div>

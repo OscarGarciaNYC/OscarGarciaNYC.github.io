@@ -12,6 +12,8 @@ import { cx, FOCUS_RING, HOVER_TRANSITION } from "./styles";
  */
 
 const REPO_PATH = "github.com/OscarGarciaNYC/OscarGarciaNYC.github.io";
+// The full URL is 370px wide with no break opportunity, which overflowed a
+// 360px viewport (WCAG 1.4.10). Allow it to break anywhere.
 const REPO_URL = `https://${REPO_PATH}`;
 
 /** ISO `YYYY-MM-DD` in UTC, so the date does not shift with the build host. */

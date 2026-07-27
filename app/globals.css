@@ -24,7 +24,7 @@
   --dk-accent: #6fc3ae; /*  9.28 */
   --dk-signal-caveat: #e3b341; /*  9.92 */
   --dk-signal-regret: #f0857d; /*  7.68 */
-  --dk-border-interactive: #5c6169; /*  3.10 */
+  --dk-border-interactive: #63686f; /*  3.55 canvas / 3.30 raised */
   --dk-stroke-diagram: #7c828b; /*  4.99 */
 
   /* Light — warm paper, not white */
@@ -503,6 +503,7 @@
 
   /* The transferable idea, stated before the reader commits to the page.
      Lede size so it outranks the meta line but never the title. */
+  .prose .doc-teaches,
   .doc-teaches {
     margin-top: var(--space-24);
     font-family: var(--font-serif);
@@ -531,13 +532,17 @@
 
   /* The standfirst. Serif at lede size, one notch of colour below the body,
      so it reads as an introduction rather than as the first paragraph. */
+  .prose .doc-lede,
   .doc-lede {
+    /* Scoped inside .prose too: `.prose p { margin-block: 0 }` is (0,1,1) and
+       was winning over a bare `.doc-lede` (0,1,0), which zeroed this gap on
+       every document header on the site. */
     margin-top: var(--space-24);
     font-family: var(--font-serif);
     font-size: var(--text-lede);
     line-height: 1.5;
     letter-spacing: -0.005em;
-    max-width: 60ch;
+    max-width: 52ch;
     color: var(--text-secondary);
     text-wrap: pretty;
   }
@@ -709,6 +714,8 @@
      --------------------------------------------------------------------- */
   .prose .heading-anchor {
     margin-inline-start: 0.4em;
+    padding: 8px;
+    margin-block: -8px;
     font-family: var(--font-mono);
     font-size: 0.7em;
     font-weight: 400;
@@ -764,9 +771,13 @@
 
   .prose h2 {
     font-size: var(--text-h2);
+    font-weight: 550;
     line-height: 1.2;
     letter-spacing: -0.018em;
-    max-width: var(--container-h2-measure);
+    /* Full reading measure, not 30ch: this element also carries the section
+       rule, and a 30ch cap left every divider short of the column it divides.
+       `text-wrap: balance` still handles the line breaking. */
+    max-width: var(--container-reading);
     /* §2.1: 96px above, 64px on mobile. Mobile-first, so 64 is the base. */
     margin-top: var(--space-64);
     margin-bottom: var(--space-16);
@@ -1460,5 +1471,13 @@
       height: 140px;
       margin-block: var(--space-32);
     }
+  }
+}
+
+/* The footer repo URL is a single 370px unbreakable token; without this it
+   overflowed a 360px viewport by 25px (WCAG 1.4.10 Reflow), site-wide. */
+@layer components {
+  footer a {
+    overflow-wrap: anywhere;
   }
 }
