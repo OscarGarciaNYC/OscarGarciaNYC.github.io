@@ -31,8 +31,8 @@ review capacity the binding constraint on the project. Every governance decision
 follows from treating that capacity as a hard number. So the delivery system
 came first: separate architect, builder, and reviewer agents, no agent permitted
 to both write and approve, all output landing as draft pull requests, and me as
-the only merge. That caps overnight throughput at my morning reading speed on
-purpose. It is live, and the cap has never been the thing that hurt.
+the only merge, which caps overnight throughput at my morning reading speed
+deliberately and has never once been the thing that slowed the product down.
 
 ## Product problem and stakes
 
@@ -61,17 +61,18 @@ and copying either produces the wrong product. So I started from what a
 memory book is actually for: a person reads it and recognizes the people who
 wrote it.
 
-Everything follows from that sentence. If recognition is the goal, the unit of
-value is a voice: a book with six voices beats a book with sixty pages from
-two. It means the writing has to sound like the person who wrote it, so
-anything that averages the prose destroys the product while improving every
-individual sentence. And it means the recipient only ever reads. There is
-nothing to retain, notify, or re-engage, so the entire engagement surface
-faces the contributors, who each show up roughly once.
+If recognition is the goal then the unit of value is a voice and not a page, so
+a book carrying six distinct voices beats a longer one assembled from two, and
+the writing has to keep sounding like whoever wrote it, which disqualifies
+anything that averages the prose even where it improves every individual
+sentence. The same sentence also settles who the software is for: the recipient
+only ever reads, so there is nobody to retain or notify or re-engage, and the
+entire engagement surface faces contributors who each show up roughly once.
 
-That reasoning is what made the AI guardrail obvious.
-A ghostwriting feature would have improved the average sentence and destroyed
-the only thing the product sells.
+Following that reasoning is what turned the AI guardrail from a stated value
+into an obvious consequence, since a ghostwriting feature would have improved
+the average sentence in the book while destroying the only thing the book
+sells.
 
 ### The assumptions that could kill it
 
@@ -240,9 +241,10 @@ there was not enough product to be worth governing.
 
 </Details>
 
-The ordering principle is boring and it holds: spend on the question whose
-wrong answer ends the project. Twice that question was about contributors.
-Once it was about me.
+The ordering principle underneath all three rounds is that you spend on the
+question whose wrong answer ends the project, which twice turned out to be a
+question about whether contributors would show up and once turned out to be a
+question about how much I could personally read in a morning.
 
 ### What this unlocked, and what it foreclosed
 
@@ -292,8 +294,9 @@ property of the system:
 3. The contributor sees the correction and can decline it. The last word on
    someone's own sentence belongs to them.
 
-The third one is the only one a user ever notices, and it is the one that makes
-the other two honest.
+The third is the only one a contributor ever notices, and putting the final
+decision back in their hands is what keeps the first two from being a promise I
+make to myself.
 
 </Details>
 
@@ -335,13 +338,15 @@ nothing to abstract.
 Three things I would carry to any project where agents do the building.
 
 **Review capacity is the real capacity.** It is tempting to measure an agentic
-setup by how much it can produce. Optimizing that number makes things worse,
-because unreviewed output is a liability that compounds. Measure how cheaply a
-human can decide to accept something, and design toward that.
+setup by how much it can produce, but optimizing that number actively makes
+things worse, because unreviewed output is a liability that compounds while it
+waits; the number worth measuring is how cheaply a human can decide to accept
+something, and the system should be designed toward that instead.
 
 **Separation of duties earns its cost.** The single most useful thing I built
-was an agent whose only job is to object. It works because it hasn't just spent
-an hour convincing itself the approach was correct.
+was an agent whose only job is to object, which works precisely because it has
+not just spent an hour assembling the change and convincing itself the approach
+was correct.
 
 **Write the guardrail into the product promise.** "AI proofreads, never
 ghostwrites" is a constraint I can be held to, and it has killed features I
