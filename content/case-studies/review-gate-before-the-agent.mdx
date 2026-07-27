@@ -1,0 +1,358 @@
+---
+title: Building the review gate before building the agent
+summary: A one-person product where the binding constraint was how much generated work one person could read in a day.
+teaches: Agent autonomy is bounded by review capacity. Design the merge gate before you design the agent.
+myRole: owned
+org: TreeTales
+orgType: own-product
+timeframe: 2026–present
+oneLineProblem: A collaborative gift product dies when contributing feels like homework, and a solo build dies when review becomes the bottleneck.
+publishedAt: "2026-07-27"
+status: published
+generalizesRealWork: false
+stack:
+  - Next.js
+  - React
+  - TypeScript
+  - Supabase / Postgres
+  - Vercel
+  - Claude
+  - GPT
+liveUrl: https://treetales.io
+---
+
+## Executive summary
+
+TreeTales is a gift-first Memory Book: several people write short stories about
+one person, and those stories become a printed and digital keepsake. I own it
+end to end, product and architecture and code. Working with coding agents,
+production outpaced my ability to read it almost immediately, which made my own
+review capacity the binding constraint on the project. Every governance decision
+follows from treating that capacity as a hard number. So the delivery system
+came first: separate architect, builder, and reviewer agents, no agent permitted
+to both write and approve, all output landing as draft pull requests, and me as
+the only merge, which caps overnight throughput at my morning reading speed
+deliberately and has never once been the thing that slowed the product down.
+
+## Product problem and stakes
+
+Group gifts fail in a specific and predictable way. The organizer is
+enthusiastic, the contributors are willing, and the thing still collapses,
+because contributing is unbounded work with no obvious finish line. "Write
+something about Mom" is a request for an essay, a commitment, and a judgment
+about your own writing, all at once. Most people quietly opt out, and the
+organizer ends up writing five entries themselves and calling it a book.
+
+So the product problem is making a contribution feel finishable. That reframe
+determines nearly everything downstream: how an invitation reads, how much
+scaffolding a prompt provides, whether an account is required before writing,
+and the one that turned out to matter most, what an AI is allowed to do to
+someone's words.
+
+The stakes are unusual for a consumer product, because the artifact is a gift
+about a real person, often an older relative, sometimes assembled after a
+diagnosis. A generic paragraph in a book like that reads as a small betrayal,
+and it is obvious to the recipient.
+
+### Working from first principles
+
+The available reference points are group-gift sites and photo-book builders,
+and copying either produces the wrong product. So I started from what a
+memory book is actually for: a person reads it and recognizes the people who
+wrote it.
+
+If recognition is the goal then the unit of value is a voice, which means a
+sixty-page book assembled from two contributors is worth less than a thin one
+carrying six, and it means the writing has to keep sounding like whoever wrote
+it, which disqualifies
+anything that averages the prose even where it improves every individual
+sentence. The same sentence also settles who the software is for: the recipient
+only ever reads, so there is nobody to retain or notify or re-engage, and the
+entire engagement surface faces contributors who each show up roughly once.
+
+Following that reasoning is what turned the AI guardrail from a stated value
+into an obvious consequence, since a ghostwriting feature would have improved
+the average sentence in the book while destroying the only thing the book
+sells.
+
+### The assumptions that could kill it
+
+I built this the way I would run any 0→1: rank the assumptions by what happens
+if they are wrong, test the fatal ones first, and keep each test small enough
+that being wrong stays cheap.
+
+<TradeoffTable
+  caption="Ordered by consequence. The first two would have ended the product."
+  columns={[
+    { key: "assumption", header: "Assumption" },
+    { key: "fatal", header: "If wrong" },
+    { key: "test", header: "Cheapest test" },
+    { key: "result", header: "What happened" },
+  ]}
+  rows={[
+    {
+      assumption: "People will write about someone else when the ask is bounded",
+      fatal: "No content, so no book, so no product",
+      test: "Ship the smallest invitation-to-prompt flow and watch completions",
+      result: "58 stories from 35 people — more than one each, so they came back",
+    },
+    {
+      assumption: "Friction is what blocks contribution",
+      fatal: "Removing signup does nothing and the real problem is untouched",
+      test: "Anonymous-first: write now, settle identity afterward if at all",
+      result: "Held. It is the identity model still in production",
+    },
+    {
+      assumption: "Contributors want their own voice preserved over better prose",
+      fatal: "Every book reads the same and the gift stops landing",
+      test: "Constrain AI to bounded proofreading and let contributors decline it",
+      result: "Held, and it has killed features I wanted to build",
+    },
+    {
+      assumption: "The physical artifact is what makes it a gift",
+      fatal: "The most expensive part of the pipeline earns nothing",
+      test: "Print on demand, so no inventory exists to be wrong about",
+      result: "4 books printed and delivered end to end",
+    },
+    {
+      assumption: "One capable agent with a good prompt can do the building",
+      fatal: "Unreviewed work accumulates and the codebase stops being trustworthy",
+      test: "Run it, and read what it produced",
+      result: "Rejected. It missed the category of error it had just made",
+    },
+  ]}
+/>
+
+The last row is the one that redirected the project. It was an assumption about
+delivery, and it turned out to have the shortest fuse of any of them.
+
+<Constraint>
+The product's core promise is that the recipient reads their people's actual
+voices. Any feature that improves prose quality by making the voices more
+similar is disqualified, however much it improves the average sentence.
+</Constraint>
+
+## Constraints and stakeholders
+
+Three constraints shaped the build, and only one of them is technical.
+
+**A contributor's willingness expires in minutes.** Someone opens an invitation
+on a phone, between other things. Any friction placed before the writing, like
+account creation or email verification or a password, spends goodwill that does
+not come back. That pushed identity toward anonymous-first: you write, and the
+question of who you are is settled afterward if it needs to be settled at all.
+
+**The recipient never sees the software.** They receive a book. That sounds
+obvious, and it quietly kills a whole class of engagement features, because the
+person the product exists for cannot be retained, notified, or re-engaged.
+
+**I am the only reviewer.** No second engineer, no on-call rotation, no
+teammate who notices that a change looks wrong. With agents producing work
+around the clock, this is the constraint that actually governs the system.
+
+<Details summary="Why review capacity is a hard constraint">
+
+The tempting framing is that review is a bottleneck to be widened later: hire,
+or trust the agents more as they improve. Both fail here.
+
+Hiring doesn't apply. This is a solo product by choice, and the economics only
+work at a five-dependency runtime and near-zero fixed cost. Trusting the agents
+more fails differently. The reviewer agent is good at finding defects in a diff
+and structurally incapable of noticing that a change is the wrong thing to
+build. That judgment is the part I'm not delegating, and it requires reading.
+
+So review capacity sits at roughly an hour a day. Treating it as a budget
+changes what you build: you stop optimizing for how much work the agents can
+produce and start optimizing for how cheaply a human can decide whether to
+accept it.
+
+</Details>
+
+## Decision process and tradeoffs
+
+<DecisionRecord
+  id="ADR-004"
+  status="Accepted 2026-02 · Active"
+  context={<>An overnight orchestrator can open more pull requests than one person can review before the next working day. Unreviewed agent output accumulates faster than it is retired, and that backlog is risk, because each unread change makes the next one harder to reason about.</>}
+  decision={<>Architect, builder, and reviewer are separate agents with separate context. No agent may both write and approve its own work. All agent output lands as draft pull requests. A human is the sole merge gate, and dispatch runs under a hard budget that stops the night when it runs out.</>}
+  alternatives={<>A single capable agent with a strong system prompt was simpler and roughly 40% cheaper per change; it was rejected because an agent reviewing its own diff reliably misses the category of error it just made. Auto-merge behind a green test suite was rejected because the failures that matter here are product judgment failures, and those pass tests. Relaxing the draft-only rule to widen review was rejected on the arithmetic: the backlog grows, and the first unread merge is the one that makes the second one unreviewable.</>}
+  consequences={<>Overnight throughput is capped at my morning reading speed, and some runs stop mid-task and resume the following night. Token cost is materially higher. In exchange, no unreviewed change has ever reached main, and I have never had to reconstruct why something was built.</>}
+/>
+
+<TradeoffTable
+  caption="Each row buys something and spends something. The right column is the one that took the longest to write honestly."
+  columns={[
+    { key: "choice", header: "Decision" },
+    { key: "gained", header: "Gained" },
+    { key: "cost", header: "Gave up" },
+  ]}
+  rows={[
+    {
+      choice: "Separate reviewer agent",
+      gained: "Catches scope drift the builder cannot see in its own diff",
+      cost: "Roughly 40% more tokens per change",
+    },
+    {
+      choice: "Draft-PR-only output",
+      gained: "No unreviewed code has reached main",
+      cost: "Overnight throughput is capped by my morning review capacity",
+    },
+    {
+      choice: "Hard dispatch budget",
+      gained: "Cost is bounded and predictable; a bad night is cheap",
+      cost: "Runs stop mid-task and resume later, so some work takes two nights",
+    },
+    {
+      choice: "Decisions recorded as ADRs",
+      gained: "Agents inherit context; I stop re-litigating settled questions",
+      cost: "Writing them is real work, and I did it late (see below)",
+    },
+    {
+      choice: "Anonymous-first identity",
+      gained: "Contribution starts in seconds, which is the whole product",
+      cost: "Row-level security becomes load-bearing",
+    },
+  ]}
+/>
+
+### How I sequenced the bets
+
+Solo, the scarce resource is attention, so the order of the work is the whole
+strategy. I ran it as three rounds, each one gated on a question I could answer
+cheaply.
+
+<Details summary="The three rounds, and what each one had to prove">
+
+**Round one — will anyone write?** The smallest thing that could answer it was
+an invitation, a prompt, and somewhere to put the words. No accounts, no
+editor, no book. If people opened the invitation and closed it, nothing else
+mattered and the product was finished. Kill criterion: contributors who start
+and abandon.
+
+**Round two — does the artifact justify the pipeline?** Printing is the
+expensive, slow, physical part, and it is where a consumer product usually
+dies. Print on demand meant the bet could be tested at a quantity of one,
+with no inventory to be wrong about. Kill criterion: a book that arrives and
+disappoints.
+
+**Round three — can one person sustain this?** By this point the product
+questions were answered and the constraint moved to me. That is when the
+delivery system got built, and it is why it got built third. Before round two
+there was not enough product to be worth governing.
+
+</Details>
+
+Underneath all three rounds is the same rule about where attention goes: spend
+it on the question whose wrong answer ends the project. Twice that meant asking
+whether anyone would write, and the third time it meant admitting the limit was
+how much I could get through before work on a Tuesday morning.
+
+### What this unlocked, and what it foreclosed
+
+What it unlocked is the reason to do any of this: the delivery system is the
+durable asset. Because roles are separated and decisions are written down,
+adding a capability is mostly a matter of describing it well. Feature work that
+would normally justify a small team is tractable alone, which is what makes a
+five-dependency runtime and near-zero fixed cost sustainable.
+
+The cost of that arrives the day a second person does. Every governance rule in
+the system assumes one human holding merge authority, so a collaborator would
+need their own review lane, their own dispatch budget, and a trust model that
+currently exists nowhere except in my head and thirteen decision records. I
+built this knowing it would be excellent for one person and genuinely awkward
+for two, and that hiring anyone would put the whole governance layer back on
+the drawing board before they could ship a line.
+
+## Technical architecture or implementation considerations
+
+The delivery system and the product share one principle: make the expensive
+thing structurally impossible.
+
+In delivery, that is separation of duties. In the product, it is
+**anonymous-first identity with row-level security in Postgres**. A contributor
+writes before any account exists. That's a product decision, and it's the
+difference between a contribution that happens and one that doesn't, but it
+means authorization can never depend on the application remembering to check.
+The database enforces who can read a story, so a mistake in application code
+cannot leak someone's writing about their mother.
+
+The guardrail that most defines the product is a constraint on the model:
+**AI proofreads, never ghostwrites.** It fixes spelling, punctuation, and
+obvious grammar. It does not improve phrasing, lengthen, or smooth. This is the
+rule that gets argued with most, and it holds, because the failure mode is
+invisible. Nobody complains that their paragraph came back better, and the
+recipient reads a book where everyone sounds faintly the same.
+
+<Details summary="Where the guardrail actually lives">
+
+Stating a guardrail in a prompt makes it a preference. Three things make it a
+property of the system:
+
+1. The proofreading path is a separate, narrowly scoped call with its own
+   instructions. It never shares a context window with any generative feature,
+   so there is no path by which "improve this" leaks into "correct this."
+2. The output is diffed against the input, and a change beyond a bounded edit
+   distance is rejected. A rewrite fails closed.
+3. The contributor sees the correction and can decline it. The last word on
+   someone's own sentence belongs to them.
+
+The third is the only one a contributor ever notices, and putting the final
+decision back in their hands is what keeps the first two from being a promise I
+make to myself.
+
+</Details>
+
+Beyond that, the deliberate choices are unglamorous and mostly about staying
+cheap to change: a five-dependency runtime, a print-on-demand pipeline so no
+inventory exists, and a glossary that fixes what words like *story*,
+*contributor*, and *book* mean, so that agents and I are not quietly building
+against different definitions.
+
+## Outcome and lessons
+
+<WhatIdDoDifferently
+  change={<>Write the decision records before the first architectural argument.</>}
+  why={<>I started recording decisions once I noticed I was re-explaining the same reasoning to agents in different sessions. By then two decisions had drifted, and reconstructing which version was intended cost more than writing them down would have.</>}
+  cost={<>Perhaps a day of writing up front, at a point when it feels premature and there is nothing to point at yet. That is exactly why it does not get done.</>}
+/>
+
+It is live, and the numbers are exact. This is my own product, so there is
+nothing to abstract.
+
+<MetricRow>
+  <Metric
+    value="35"
+    label="people wrote something for someone else, which is the metric that predicts whether a collaborative gift works"
+    source="live product data"
+  />
+  <Metric
+    value="58"
+    label="stories collected, the number that says contributors came back and wrote again"
+    source="live product data"
+  />
+  <Metric
+    value="4"
+    label="books printed and delivered, each one an end-to-end pass through the whole pipeline"
+    source="live product data"
+  />
+</MetricRow>
+
+Three things I would carry to any project where agents do the building.
+
+**Review capacity is the real capacity.** It is tempting to measure an agentic
+setup by how much it can produce, but optimizing that number actively makes
+things worse, because unreviewed output is a liability that compounds while it
+waits; the number worth measuring is how cheaply a human can decide to accept
+something, and the system should be designed toward that instead.
+
+**Separation of duties earns its cost.** The single most useful thing I built
+was an agent whose only job is to object, which works precisely because it has
+not just spent an hour assembling the change and convincing itself the approach
+was correct.
+
+**Write the guardrail into the product promise.** "AI proofreads, never
+ghostwrites" sits in the marketing copy where a contributor can hold me to it,
+which is why it survived the three or four occasions I wanted to build
+something that would have quietly broken it. I would treat any responsible-AI
+commitment that has never once cost its author a feature they wanted as a
+statement of intent that has not been tested yet.
