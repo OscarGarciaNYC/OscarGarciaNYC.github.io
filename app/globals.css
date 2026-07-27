@@ -206,6 +206,14 @@
   --font-mono: var(--font-mono-src), ui-monospace, SFMono-Regular, "SF Mono",
     Menlo, Consolas, monospace;
 
+  /* Headings are set in the serif, the same face as the body (D2 amended
+     2026-07-27). A sans headline over a serif body is the shape every AI
+     product uses, and it read as generated to a fresh pair of eyes. A serif
+     headline over mono metadata reads as a specification, which is the
+     register this site is arguing for. Nav, kickers and labels stay sans —
+     an all-serif interface tips from document into literary journal. */
+  --font-display: var(--font-serif);
+
   /* ---- Type scale (§2.1, root 16px) ---------------------------------
      DEVIATION (representation only): the blueprint states the fixed sizes in
      px. They are expressed in rem here, which computes to the identical pixel
@@ -491,11 +499,13 @@
   }
 
   .doc-header h1 {
-    font-family: var(--font-sans);
+    font-family: var(--font-display);
     font-size: var(--text-h1);
     font-weight: 600;
-    line-height: 1.1;
-    letter-spacing: -0.022em;
+    line-height: 1.12;
+    /* Source Serif has wider natural sidebearings than Inter, so it needs
+       roughly half the negative tracking at the same size. */
+    letter-spacing: -0.011em;
     text-wrap: balance;
     max-width: var(--container-h1-measure, 22ch);
     margin: 0;
@@ -764,16 +774,16 @@
   .prose h2,
   .prose h3,
   .prose h4 {
-    font-family: var(--font-sans);
+    font-family: var(--font-display);
     text-wrap: balance;
     scroll-margin-top: var(--scroll-offset);
   }
 
   .prose h2 {
     font-size: var(--text-h2);
-    font-weight: 550;
-    line-height: 1.2;
-    letter-spacing: -0.018em;
+    font-weight: 600;
+    line-height: 1.22;
+    letter-spacing: -0.009em;
     /* Full reading measure, not 30ch: this element also carries the section
        rule, and a 30ch cap left every divider short of the column it divides.
        `text-wrap: balance` still handles the line breaking. */
@@ -1299,11 +1309,11 @@
 
   .cs-row-title {
     margin: 0;
-    font-family: var(--font-sans);
+    font-family: var(--font-display);
     font-size: 1.3125rem;
     font-weight: 600;
-    line-height: 1.3;
-    letter-spacing: -0.012em;
+    line-height: 1.32;
+    letter-spacing: -0.008em;
     max-width: 34ch;
     color: var(--text-primary);
     text-wrap: balance;
