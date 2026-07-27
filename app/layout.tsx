@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Source_Serif_4 } from "next/font/google";
+import {
+  Instrument_Sans,
+  Inter,
+  JetBrains_Mono,
+  Source_Serif_4,
+} from "next/font/google";
 import { Footer, SiteHeader, SkipLink } from "@/components/layout";
 import { ThemeScript } from "@/components/layout/ThemeScript";
 import { MAIN_CONTENT_ID } from "@/lib/nav";
@@ -42,6 +47,14 @@ const sourceSerifItalic = Source_Serif_4({
   variable: "--font-serif-italic-src",
   subsets: ["latin"],
   style: ["italic"],
+  display: "swap",
+  preload: false,
+});
+
+// TEMPORARY: only here to render the type comparison. Removed once Oscar picks.
+const instrumentSans = Instrument_Sans({
+  variable: "--font-alt-sans-src",
+  subsets: ["latin"],
   display: "swap",
   preload: false,
 });
@@ -104,7 +117,7 @@ export default function RootLayout({
       // never renders that attribute, so this is required — and it is scoped
       // to <html>'s own attributes, not to the tree below it.
       suppressHydrationWarning
-      className={`${sourceSerif.variable} ${sourceSerifItalic.variable} ${inter.variable} ${jetBrainsMono.variable} h-full`}
+      className={`${sourceSerif.variable} ${sourceSerifItalic.variable} ${inter.variable} ${instrumentSans.variable} ${jetBrainsMono.variable} h-full`}
     >
       <head>
         {/* Must run before first paint. Keep it first in <head>. */}

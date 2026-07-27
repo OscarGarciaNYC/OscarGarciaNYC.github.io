@@ -205,6 +205,11 @@
     "Segoe UI", Helvetica, sans-serif;
   --font-mono: var(--font-mono-src), ui-monospace, SFMono-Regular, "SF Mono",
     Menlo, Consolas, monospace;
+  --font-alt-sans: var(--font-alt-sans-src), ui-sans-serif, system-ui, sans-serif;
+
+  /* Display is what headings use. Splitting it from --font-sans means the
+     voice of the headlines can change without touching labels and nav. */
+  --font-display: var(--font-sans);
 
   /* ---- Type scale (§2.1, root 16px) ---------------------------------
      DEVIATION (representation only): the blueprint states the fixed sizes in
@@ -491,7 +496,7 @@
   }
 
   .doc-header h1 {
-    font-family: var(--font-sans);
+    font-family: var(--font-display);
     font-size: var(--text-h1);
     font-weight: 600;
     line-height: 1.1;
@@ -764,7 +769,7 @@
   .prose h2,
   .prose h3,
   .prose h4 {
-    font-family: var(--font-sans);
+    font-family: var(--font-display);
     text-wrap: balance;
     scroll-margin-top: var(--scroll-offset);
   }
@@ -1299,7 +1304,7 @@
 
   .cs-row-title {
     margin: 0;
-    font-family: var(--font-sans);
+    font-family: var(--font-display);
     font-size: 1.3125rem;
     font-weight: 600;
     line-height: 1.3;
@@ -1493,4 +1498,23 @@
   .policy-summary {
     margin-top: var(--space-24);
   }
+}
+
+/* =========================================================================
+   TEMPORARY — type comparison harness. Delete once a direction is chosen.
+   ========================================================================= */
+:root[data-type="serif"] {
+  --font-display: var(--font-serif);
+}
+:root[data-type="serif"] .doc-header h1,
+:root[data-type="serif"] .prose h2,
+:root[data-type="serif"] .prose h3,
+:root[data-type="serif"] .cs-row-title {
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+
+:root[data-type="alt"] {
+  --font-display: var(--font-alt-sans);
+  --font-sans: var(--font-alt-sans);
 }
