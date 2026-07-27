@@ -46,33 +46,38 @@ test it.
 ## How I work
 
 **Kill use cases before engineering commits to them.** A prioritized pipeline
-is only worth maintaining if things actually come off it, and the expensive
-failure is not choosing wrong at the start but discovering it a quarter later
-with four engineers already committed.
+is only worth maintaining if things actually come off it, and the failure that
+costs real money is the one you find a quarter in, when four engineers have
+already built against an assumption about the data that nobody checked at the
+start.
 
 **Name the constraint.** Every system I have shipped was shaped by something I
-could not do — a close date that would not move, a security review that would
-not bend, a review capacity I could not expand — and that constraint is the
-part of the story worth telling, because it is the part that transfers to
-somebody else's problem.
+could not do: a finance close that fell on the third business day and would not
+move, a security review that had to pass before a renewal cleared, a review
+capacity of about an hour a day. Those are the details somebody with a
+different problem can actually use, and they are usually the first thing a
+case study leaves out.
 
 **Treat autonomy as a budget.** On my own product, agents produce work faster
-than I can read it, so the review gate came before the agents, the dispatch
-budget is hard, everything lands as a draft, and I am the only merge, all of
-which is arithmetic about my reading speed dressed up as governance.
+than I can read it, so the review gate was designed before the agents were, the
+dispatch budget stops the night when it runs out, and everything waits as a
+draft until I merge it. What looks like a governance philosophy is mostly an
+honest estimate of how many diffs I can read before losing the thread.
 
-**Say what a thing costs.** An architecture decision without a stated cost is
-an advertisement, so every architecture piece on this site names what I gave
-up, on the theory that a tradeoff I cannot articulate is one I did not actually
-make on purpose.
+**Say what a thing costs.** Every architecture piece on this site names what
+the decision gave up, usually in a column next to what it bought, because the
+version without that column is a sales page. When I cannot fill the column in,
+it generally turns out I inherited the decision from somebody else and never
+examined it.
 
 ## Outside work
 
 I have been production lead at my church for several years, running live sound
 and video against a fixed Sunday deadline with a volunteer crew who are doing
-me a favour, which has taught me more about rollout planning than most
-retrospectives: you cannot schedule a maintenance window during the service,
-and you cannot fire a volunteer.
+me a favor. It has taught me more about rollout planning than most
+retrospectives I have sat through, mostly because the service starts at the
+same time whatever state you are in, and the person who did not show up is
+someone you will see again next Sunday.
 
 The rest of it is fishing, gardening, a serious matcha habit, and a golf swing
 still under active development.

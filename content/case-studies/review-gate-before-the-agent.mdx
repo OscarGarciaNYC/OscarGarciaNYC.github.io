@@ -61,9 +61,10 @@ and copying either produces the wrong product. So I started from what a
 memory book is actually for: a person reads it and recognizes the people who
 wrote it.
 
-If recognition is the goal then the unit of value is a voice and not a page, so
-a book carrying six distinct voices beats a longer one assembled from two, and
-the writing has to keep sounding like whoever wrote it, which disqualifies
+If recognition is the goal then the unit of value is a voice, which means a
+sixty-page book assembled from two contributors is worth less than a thin one
+carrying six, and it means the writing has to keep sounding like whoever wrote
+it, which disqualifies
 anything that averages the prose even where it improves every individual
 sentence. The same sentence also settles who the software is for: the recipient
 only ever reads, so there is nobody to retain or notify or re-engage, and the
@@ -241,10 +242,10 @@ there was not enough product to be worth governing.
 
 </Details>
 
-The ordering principle underneath all three rounds is that you spend on the
-question whose wrong answer ends the project, which twice turned out to be a
-question about whether contributors would show up and once turned out to be a
-question about how much I could personally read in a morning.
+Underneath all three rounds is the same rule about where attention goes: spend
+it on the question whose wrong answer ends the project. Twice that meant asking
+whether anyone would write, and the third time it meant admitting the limit was
+how much I could get through before work on a Tuesday morning.
 
 ### What this unlocked, and what it foreclosed
 
@@ -254,12 +255,13 @@ adding a capability is mostly a matter of describing it well. Feature work that
 would normally justify a small team is tractable alone, which is what makes a
 five-dependency runtime and near-zero fixed cost sustainable.
 
-What it forecloses is worth naming, because it is permanent. This architecture
-cannot absorb a second person cheaply. Every governance rule assumes exactly one
-human with merge authority, so adding a collaborator means rewriting the trust
-model. I chose a system that is excellent for one and awkward for two,
-deliberately. If TreeTales ever needs a team, that decision gets paid for in
-full.
+The cost of that arrives the day a second person does. Every governance rule in
+the system assumes one human holding merge authority, so a collaborator would
+need their own review lane, their own dispatch budget, and a trust model that
+currently exists nowhere except in my head and thirteen decision records. I
+built this knowing it would be excellent for one person and genuinely awkward
+for two, and that hiring anyone would put the whole governance layer back on
+the drawing board before they could ship a line.
 
 ## Technical architecture or implementation considerations
 
@@ -349,6 +351,8 @@ not just spent an hour assembling the change and convincing itself the approach
 was correct.
 
 **Write the guardrail into the product promise.** "AI proofreads, never
-ghostwrites" is a constraint I can be held to, and it has killed features I
-wanted. A responsible-AI principle that has never cost you a feature is not a
-principle yet.
+ghostwrites" sits in the marketing copy where a contributor can hold me to it,
+which is why it survived the three or four occasions I wanted to build
+something that would have quietly broken it. I would treat any responsible-AI
+commitment that has never once cost its author a feature they wanted as a
+statement of intent that has not been tested yet.
