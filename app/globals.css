@@ -548,6 +548,62 @@
     -webkit-hyphens: none;
   }
 
+  /* ---------------------------------------------------------------------
+     Prose links (§2.2). Accent colour plus an offset underline, so a link is
+     identifiable without colour alone — the underline is the non-colour
+     channel required by §2.5.
+     --------------------------------------------------------------------- */
+  .prose a:not(.heading-anchor) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    text-decoration-color: color-mix(in oklab, var(--accent) 45%, transparent);
+    transition:
+      color 120ms cubic-bezier(0.2, 0, 0, 1),
+      text-decoration-color 120ms cubic-bezier(0.2, 0, 0, 1),
+      text-underline-offset 120ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .prose a:not(.heading-anchor):hover {
+    text-decoration-color: var(--accent);
+    text-underline-offset: 0.22em;
+  }
+
+  /* ---------------------------------------------------------------------
+     Heading anchors (§1.1 — documents get linked to and quoted, so every
+     heading needs a stable, copyable target). Hidden until hover or focus on
+     pointer devices; always faintly visible on touch, where there is no hover.
+     --------------------------------------------------------------------- */
+  .prose .heading-anchor {
+    margin-inline-start: 0.4em;
+    font-family: var(--font-mono);
+    font-size: 0.7em;
+    font-weight: 400;
+    color: var(--text-muted);
+    text-decoration: none;
+    opacity: 0.4;
+    transition: opacity 120ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  @media (hover: hover) {
+    .prose .heading-anchor {
+      opacity: 0;
+    }
+
+    .prose :is(h2, h3, h4):hover .heading-anchor,
+    .prose .heading-anchor:focus-visible {
+      opacity: 1;
+    }
+  }
+
+  /* A single hairline above top-level H2s only (§3.3): enough to signal a
+     chapter, not enough to fragment the page. H3 gets no rule. */
+  .prose h2 {
+    padding-top: var(--space-32);
+    border-top: 1px solid var(--border-hairline);
+  }
+
   /* Emphasis gets the real italic face rather than a synthesised oblique. */
   .prose em,
   .prose i,

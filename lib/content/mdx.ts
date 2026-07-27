@@ -1,4 +1,5 @@
 import type { MDXRemoteProps } from "next-mdx-remote/rsc";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
 
 /**
@@ -30,6 +31,22 @@ export const mdxCompileOptions: MDXRemoteProps["options"] = {
    */
   blockJS: false,
   mdxOptions: {
-    rehypePlugins: [rehypeSlug],
+    rehypePlugins: [
+      rehypeSlug,
+      [
+        rehypeAutolinkHeadings,
+        {
+          // Wrapping the heading text would put a link around the whole title,
+          // which reads as a navigation target. Appending a small, separately
+          // labelled control keeps the heading a heading.
+          behavior: "append",
+          properties: {
+            className: "heading-anchor",
+            "aria-label": "Link to this section",
+          },
+          content: { type: "text", value: "#" },
+        },
+      ],
+    ],
   },
 };
