@@ -1433,51 +1433,64 @@
   }
 }
 
-/* =========================================================================
-   Node field — the one piece of decorative motion on the site, on /about only.
-   A bounded band, never a background behind text. See components/ui/NodeField.
-   ========================================================================= */
-@layer components {
-  .node-field {
-    position: relative;
-    height: 200px;
-    margin-block: var(--space-48);
-    overflow: hidden;
-    border-block: 1px solid var(--border-hairline);
-    /* Fades at both edges so the field reads as a band rather than a boxed
-       widget with a hard stop. */
-    mask-image: linear-gradient(
-      to right,
-      transparent,
-      black 12%,
-      black 88%,
-      transparent
-    );
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent,
-      black 12%,
-      black 88%,
-      transparent
-    );
-  }
-
-  .node-field > canvas {
-    display: block;
-  }
-
-  @media (max-width: 40rem) {
-    .node-field {
-      height: 140px;
-      margin-block: var(--space-32);
-    }
-  }
-}
-
 /* The footer repo URL is a single 370px unbreakable token; without this it
    overflowed a 360px viewport by 25px (WCAG 1.4.10 Reflow), site-wide. */
 @layer components {
   footer a {
     overflow-wrap: anywhere;
+  }
+}
+
+/* =========================================================================
+   Agent field box + its reticle cursor.
+   ========================================================================= */
+@layer components {
+  .agent-field {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    border-block: 1px solid var(--border-hairline);
+    /* A reticle rather than an arrow: it says "this is a diagram you can
+       probe", and it is the only cursor change on the site. A mid grey so
+       the same file reads on both the dark canvas and the warm light one. */
+    cursor:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cg fill='none' stroke='%238a9099' stroke-width='1.25'%3E%3Ccircle cx='14' cy='14' r='6.5'/%3E%3Cpath d='M14 1.5v5M14 21.5v5M1.5 14h5M21.5 14h5'/%3E%3C/g%3E%3Ccircle cx='14' cy='14' r='1.4' fill='%238a9099'/%3E%3C/svg%3E")
+        14 14,
+      crosshair;
+  }
+
+  .agent-field > canvas {
+    display: block;
+  }
+
+  @media (max-width: 45rem) {
+    .agent-field {
+      height: 150px;
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     Section counter as a spine in the left gutter (>=1200px only).
+     The reading column sits in the middle of a wide viewport with ~378px of
+     dead space beside it; this reclaims some of it and gives About the same
+     structural idiom the resume uses for dates.
+     ----------------------------------------------------------------------- */
+  @media (min-width: 75rem) {
+    .prose h2 {
+      position: relative;
+    }
+
+    .prose h2::before {
+      position: absolute;
+      left: calc(-1 * (var(--space-96) + var(--space-32)));
+      top: var(--space-32);
+      margin-bottom: 0;
+    }
+  }
+
+  /* The disclosure summary table — the site's signature device applied to
+     the policy every case study links to. */
+  .policy-summary {
+    margin-top: var(--space-24);
   }
 }

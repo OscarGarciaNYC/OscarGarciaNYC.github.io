@@ -3,7 +3,6 @@ import { compileMDX } from "next-mdx-remote/rsc";
 import { notFound } from "next/navigation";
 import { mdxComponents } from "@/components/mdx";
 import { FrontMatter } from "@/components/ui/FrontMatter";
-import { NodeField } from "@/components/ui/NodeField";
 import { pageFrontmatter, readCollection } from "@/lib/content/loader";
 import { mdxCompileOptions } from "@/lib/content/mdx";
 
@@ -55,6 +54,14 @@ export default async function AboutPage() {
               { label: "Building", value: "TreeTales (live in production)" },
               { label: "Based", value: "New York, NY" },
               {
+                label: "Source",
+                value: (
+                  <a href="https://github.com/OscarGarciaNYC/OscarGarciaNYC.github.io/blob/main/content/pages/about.mdx">
+                    content/pages/about.mdx
+                  </a>
+                ),
+              },
+              {
                 label: "Updated",
                 value: (
                   <time dateTime={doc.frontmatter.updatedAt}>
@@ -68,11 +75,6 @@ export default async function AboutPage() {
             ]}
           />
         </header>
-
-        {/* The one piece of decorative motion on the site. It sits between the
-            doc header and the prose, so it reads as a beat between the
-            metadata and the reading instead of a texture underneath either. */}
-        <NodeField />
 
         {content}
       </article>

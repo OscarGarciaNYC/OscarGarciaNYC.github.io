@@ -638,3 +638,20 @@
     padding: var(--space-24);
   }
 }
+
+/* ==========================================================================
+   Agent field — the site's one decorative figure. Hairline-bounded and
+   captioned, so it reads as an artifact inside a document.
+   ========================================================================== */
+.agentFigure {
+  margin-block: var(--space-48);
+}
+
+.agentCaption {
+  margin-top: var(--space-12);
+  font-family: var(--font-sans);
+  font-size: var(--text-caption);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  max-width: 68ch;
+}

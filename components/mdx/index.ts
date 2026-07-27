@@ -13,6 +13,7 @@
  * at 68ch, so they read as artifacts inserted into a document.
  */
 
+export { AgentField } from "./AgentField";
 export { Constraint } from "./Constraint";
 export { DecisionRecord } from "./DecisionRecord";
 export { Details } from "./Details";
@@ -23,6 +24,7 @@ export { TradeoffTable } from "./TradeoffTable";
 export type { TradeoffColumn, TradeoffRow } from "./TradeoffTable";
 export { WhatIdDoDifferently } from "./WhatIdDoDifferently";
 
+import { AgentField } from "./AgentField";
 import { Constraint } from "./Constraint";
 import { DecisionRecord } from "./DecisionRecord";
 import { Details } from "./Details";
@@ -38,6 +40,7 @@ import { WhatIdDoDifferently } from "./WhatIdDoDifferently";
  * map, which is deliberate: the library is closed, not a component grab bag.
  */
 export const mdxComponents = {
+  AgentField,
   Constraint,
   DecisionRecord,
   Details,
