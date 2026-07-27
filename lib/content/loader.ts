@@ -23,6 +23,22 @@ export const baseFrontmatter = z.object({
 
 export type BaseFrontmatter = z.infer<typeof baseFrontmatter>;
 
+export type DocStatus = "draft" | "published";
+
+/**
+ * Standing pages (About, and later the colophon-style routes) are documents
+ * too, but they make no claim about work, so `teaches` and `myRole` — which
+ * exist to hold case studies honest — would be noise here.
+ */
+export const pageFrontmatter = z.object({
+  title: z.string().min(1),
+  summary: z.string().max(200),
+  updatedAt: z.string(),
+  status: z.enum(["draft", "published"]),
+});
+
+export type PageFrontmatter = z.infer<typeof pageFrontmatter>;
+
 export type Doc<T> = {
   slug: string;
   frontmatter: T;
@@ -40,7 +56,7 @@ function formatIssues(error: z.ZodError): string {
  * frontmatter throws, which fails `next build` — that is the point. Drafts
  * are excluded from the build entirely.
  */
-export function readCollection<S extends z.ZodType<BaseFrontmatter>>(
+export function readCollection<S extends z.ZodType<{ status: DocStatus }>>(
   collection: string,
   schema: S,
 ): Doc<z.infer<S>>[] {

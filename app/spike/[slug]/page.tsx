@@ -1,9 +1,7 @@
 import { compileMDX } from "next-mdx-remote/rsc";
 import { notFound } from "next/navigation";
 import { baseFrontmatter, readCollection } from "@/lib/content/loader";
-import { Details } from "@/components/mdx/Details";
-
-const mdxComponents = { Details };
+import { mdxComponents } from "@/components/mdx";
 
 function spikeDocs() {
   return readCollection("spike", baseFrontmatter);

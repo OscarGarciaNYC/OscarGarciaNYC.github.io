@@ -1,0 +1,606 @@
+/*
+ * Evidence pattern library — shared styling.
+ * BLUEPRINT.md §2.6 (patterns), §2.7 (diagrams), §2.5 (a11y), §2.4 (motion),
+ * §2.3 (radius/separation), §2.2 (color), §2.1 (type scale).
+ *
+ * CONTRACT: there is not a single literal color value in this file. Every
+ * color resolves through a custom property defined in app/globals.css.
+ *
+ * `--border-hairline` is NOT named in §2.2. Where a plain separator is needed
+ * it is written as `var(--border-hairline, var(--border-interactive))` so the
+ * file depends only on tokens §2.2 actually defines, while picking up a
+ * dedicated hairline token the moment globals.css declares one.
+ */
+
+/* ---------------------------------------------------------------- layout */
+
+/*
+ * §2.6: "All break out to 860px while prose stays at 68ch."
+ *
+ * Centred on the PARENT's centre (not the viewport), so this stays correct
+ * when the prose column is offset by the right-rail TOC at >=1200px.
+ * `max(100%, ...)` means it can never be narrower than its parent, and the
+ * 100vw cap means it can never cause a horizontal scrollbar.
+ *
+ * Why this and not globals.css's `.prose > [data-breakout]`: that rule sets
+ * `max-width: 860px` on a child of a container that is itself 68ch, which
+ * cannot widen anything — a block can't exceed its containing block without
+ * negative margins or a translation. Components still carry `data-breakout`
+ * so the project convention is honoured and the intent is greppable, and this
+ * rule wins the cascade regardless of specificity because CSS-module styles
+ * are unlayered while that rule sits in `@layer components`. If .prose is ever
+ * widened to 860px with prose children constrained instead, `max(100%, ...)`
+ * still resolves to 860px and nothing here needs to change.
+ */
+.breakout {
+  position: relative;
+  left: 50%;
+  translate: -50%;
+  width: max(100%, min(860px, 100vw - 48px));
+}
+
+/* ------------------------------------------------------------ type roles */
+
+/* §2.1 `kicker` — Inter 550 / 12px / +0.10em / uppercase. Never a heading. */
+.kicker {
+  font-family: var(--font-sans);
+  font-weight: 550;
+  font-size: 12px;
+  line-height: 1.2;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* §2.1 `meta` — mono / 13px. */
+.meta {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  font-variant-ligatures: none;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* §2.1 `caption` — Inter / 14px. */
+.caption {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.005em;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.body {
+  color: var(--text-primary);
+}
+
+.body > :first-child {
+  margin-block-start: 0;
+}
+
+.body > :last-child {
+  margin-block-end: 0;
+}
+
+/* ------------------------------------------------------------ focus ring */
+
+/* §2.5 — :focus-visible only, ring readable on canvas, raised and sunken. */
+.focusable:focus-visible {
+  outline: none;
+  border-radius: 4px;
+  box-shadow:
+    0 0 0 2px var(--surface-canvas),
+    0 0 0 4px var(--focus-ring);
+}
+
+@media (forced-colors: active) {
+  .focusable:focus-visible {
+    outline: 2px solid CanvasText;
+    outline-offset: 2px;
+  }
+}
+
+/* ================================================================ Details */
+
+/*
+ * §2.6 — the entire depth mechanism under D5. Native <details>/<summary>,
+ * summary Inter 15px with a rotating chevron, content indented behind a 2px
+ * hairline rule, 180ms open. NEVER NESTED — one level only, always.
+ */
+.details {
+  margin-block: 32px;
+  /* Lets ::details-content animate from 0 to `auto`. Ignored where
+     unsupported, which degrades to an instant native open. */
+  interpolate-size: allow-keywords;
+}
+
+.summary {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  /* Padding only — no fixed height (§2.5, WCAG 1.4.12). ~45px tall. */
+  padding-block: 12px;
+  padding-inline: 4px;
+  margin-inline: -4px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-primary);
+  cursor: pointer;
+  list-style: none;
+  transition: color 120ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary:hover {
+  color: var(--accent);
+}
+
+.chevron {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  /* Optical alignment with the 15px/1.4 baseline. */
+  translate: 0 1px;
+  color: var(--text-muted);
+  transition: rotate 180ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.details[open] .chevron {
+  rotate: 90deg;
+}
+
+/* §2.6 — the rule is what signals "elaboration", not "a new section". */
+.detailsContent {
+  padding-block-start: 4px;
+  padding-inline-start: 20px;
+  margin-inline-start: 5px;
+  border-inline-start: 2px solid
+    var(--border-hairline, var(--border-interactive));
+}
+
+/* §2.4 — <details> disclosure, 180ms height + opacity. */
+.details::details-content {
+  block-size: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    block-size 180ms cubic-bezier(0.2, 0, 0, 1),
+    opacity 180ms cubic-bezier(0.2, 0, 0, 1),
+    content-visibility 180ms allow-discrete;
+}
+
+.details[open]::details-content {
+  block-size: auto;
+  opacity: 1;
+}
+
+/* ================================================================= Metric */
+
+/*
+ * §2.6 — value Inter 600/32px tnum, label 14px, optional 13px mono source.
+ * Hairline-separated cells, no boxes, NO ACCENT ON THE NUMBER. Under D4
+ * there are no inline disclosure markers: no `~=` glyph, no dotted underline,
+ * no required provenance line.
+ */
+.metricRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  column-gap: 32px;
+  row-gap: 24px;
+  margin-block: 48px;
+}
+
+.metric {
+  /* The hairline separates; nothing is boxed. */
+  border-block-start: 1px solid
+    var(--border-hairline, var(--border-interactive));
+  padding-block-start: 16px;
+}
+
+/* A standalone <Metric> outside a row still needs its own vertical rhythm. */
+.metricStandalone {
+  margin-block: 32px;
+}
+
+.metricValue {
+  /* §2.1 `metric` */
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.metricLabel {
+  margin-block-start: 8px;
+  max-width: 44ch;
+}
+
+.metricSource {
+  margin-block-start: 8px;
+}
+
+/* ========================================================= DecisionRecord */
+
+/*
+ * §2.6 — hairline block, fixed five-field grid. "Alternatives considered" is
+ * the field a fabricated ADR always omits, so it is a required prop.
+ */
+.record {
+  margin-block: 48px;
+  padding: 24px;
+  border: 1px solid var(--border-hairline, var(--border-interactive));
+  border-radius: 8px; /* §2.3 — 8px containers. No fill, no shadow. */
+}
+
+.recordId {
+  margin-block-end: 16px;
+}
+
+.recordGrid {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr);
+  column-gap: 24px;
+  row-gap: 16px;
+  margin: 0;
+}
+
+.recordItem {
+  display: contents;
+}
+
+.recordTerm {
+  /* Kicker labels sit on the value's first baseline, not above it. */
+  padding-block-start: 4px;
+}
+
+.recordValue {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+/* Labels above values, never a squeezed two-column grid. */
+@media (max-width: 639px) {
+  .recordGrid {
+    display: block;
+  }
+
+  .recordItem {
+    display: block;
+  }
+
+  .recordItem + .recordItem {
+    margin-block-start: 24px;
+  }
+
+  .recordTerm {
+    padding-block-start: 0;
+    margin-block-end: 4px;
+  }
+}
+
+/* ========================================================== TradeoffTable */
+
+/*
+ * §2.6 — a real <table>. Horizontal hairlines only, no zebra, no vertical
+ * rules. Verdicts are words, never icons. Numeric columns tnum + right.
+ * Below 640px the table is replaced by one stacked block per row with
+ * repeated labels — never a horizontally scrolling table (§2.5 reflow).
+ */
+.tableWrap {
+  margin-block: 48px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.tableCaption {
+  caption-side: top;
+  text-align: start;
+  margin-block-end: 16px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.table th,
+.table td {
+  /* Padding only — no fixed row height (§2.5). */
+  padding: 16px 16px 16px 0;
+  text-align: start;
+  vertical-align: baseline;
+  border-block-end: 1px solid var(--border-hairline, var(--border-interactive));
+}
+
+.table th:last-child,
+.table td:last-child {
+  padding-inline-end: 0;
+}
+
+.table thead th {
+  /* §2.1 kicker, reused as the column header role. */
+  font-weight: 550;
+  font-size: 12px;
+  line-height: 1.2;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-block: 0 12px;
+}
+
+.table tbody th {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.table tbody tr:last-child th,
+.table tbody tr:last-child td {
+  border-block-end: 0;
+}
+
+.numeric {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The stacked restructure. Exactly one of the two is ever displayed, so the
+   hidden one is out of the accessibility tree and out of find-in-page. */
+.tableStack {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .table {
+    display: none;
+  }
+
+  .tableStack {
+    display: block;
+  }
+}
+
+.stackRow {
+  padding-block: 24px;
+  border-block-start: 1px solid
+    var(--border-hairline, var(--border-interactive));
+}
+
+.stackRow:last-child {
+  padding-block-end: 0;
+}
+
+.stackTitle {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.stackKicker + .stackTitle {
+  margin-block-start: 4px;
+}
+
+.stackList {
+  margin: 16px 0 0;
+}
+
+.stackItem + .stackItem {
+  margin-block-start: 12px;
+}
+
+.stackTerm {
+  margin-block-end: 4px;
+}
+
+.stackValue {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.stackValueNumeric {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================ Constraint / WhatIdDoDifferently */
+
+/*
+ * §2.6 Constraint — 2px border-interactive left rule, NO fill, kicker
+ * heading. Deliberately the plainest treatment on the page, so it reads as
+ * fact rather than as a brag about difficulty.
+ */
+.rule {
+  margin-block: 40px;
+  padding-inline-start: 20px;
+  border-inline-start-width: 2px;
+  border-inline-start-style: solid;
+}
+
+.ruleConstraint {
+  border-inline-start-color: var(--border-interactive);
+}
+
+/*
+ * §2.6 WhatIdDoDifferently — 2px signal-regret left rule. The three labels
+ * carry the meaning on their own, so the colour is never the only encoding
+ * (§2.5).
+ */
+.ruleRegret {
+  border-inline-start-color: var(--signal-regret);
+}
+
+.ruleBody {
+  margin-block-start: 12px;
+}
+
+.regretList {
+  margin: 12px 0 0;
+}
+
+.regretItem + .regretItem {
+  margin-block-start: 20px;
+}
+
+.regretTerm {
+  margin-block-end: 4px;
+}
+
+.regretValue {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+/* ============================================================= Disclosure */
+
+/*
+ * D4 / §2.6 — one per document, under the doc header. 14px, muted, hairlines
+ * above and below, no fill, no icon. The wording is a module-level constant
+ * in Disclosure.tsx and is never authored per page.
+ */
+.disclosure {
+  margin-block: 32px;
+  padding-block: 16px;
+  border-block: 1px solid var(--border-hairline, var(--border-interactive));
+}
+
+.disclosureText {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.005em;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 76ch;
+}
+
+/* ================================================== Figure / SystemDiagram */
+
+/* §2.7 — hand-authored inline SVG, coloured entirely by custom properties. */
+.figure {
+  margin-block: 48px;
+}
+
+/*
+ * §2.5 — the one permitted two-dimensional scroll region on the site, so it
+ * is keyboard reachable: role="group" + tabindex="0" + aria-label.
+ */
+.diagramScroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding-block: 4px;
+}
+
+/* §2.7 — never scale below 100%: viewBox + width:100% + min-width, and let
+   the container scroll. */
+.diagramSvg {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* Diagram authors inherit these rather than writing colours per shape. */
+  color: var(--stroke-diagram);
+  stroke: var(--stroke-diagram);
+  fill: none;
+}
+
+.diagramSvg text {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  fill: var(--text-primary);
+  stroke: none;
+}
+
+.figcaption {
+  margin-block-start: 12px;
+}
+
+/* The text equivalent is always present in the DOM so Cmd+F finds it, and is
+   open by default below 768px. Two renderings, one displayed — this is what
+   keeps the whole library free of client JavaScript. */
+.equivalentNarrow {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .equivalentNarrow {
+    display: block;
+  }
+
+  .equivalentWide {
+    display: none;
+  }
+}
+
+.equivalent {
+  margin-block: 16px 0;
+}
+
+/* §2.6 — stacked vertically below 1024px, never side-by-side on mobile. */
+.diagramPair {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  margin-block: 48px;
+}
+
+@media (min-width: 1024px) {
+  .diagramPair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* A <Figure> inside a pair must NOT break out again — nested breakout would
+   resolve 860px against a half-width grid cell and overflow it. */
+.diagramPair .figure {
+  position: static;
+  left: auto;
+  translate: none;
+  width: auto;
+  margin-block: 0;
+}
+
+.delta {
+  margin-block-start: 32px;
+}
+
+.deltaBody {
+  margin-block-start: 12px;
+}
+
+/* ======================================================== reduced motion */
+
+/*
+ * §2.4 — nothing animates. Note what is NOT reset here: the chevron's open
+ * rotation and the .breakout translation are static state and static layout,
+ * not motion. Zeroing the chevron would delete a non-colour state indicator,
+ * which §2.5 forbids; only the transition to it is removed.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .summary,
+  .chevron,
+  .details::details-content {
+    transition: none;
+  }
+}

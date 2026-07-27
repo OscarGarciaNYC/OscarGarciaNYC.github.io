@@ -1,26 +1,763 @@
 @import "tailwindcss";
 
+/* =========================================================================
+   Design tokens — docs/BLUEPRINT.md §2.1–2.5
+   Values are transcribed verbatim from the blueprint. Do not "improve" them.
+   Deviations are individually annotated below with DEVIATION.
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   1. Palette constants (§2.2)
+
+   Every literal hex on this site appears exactly once, here. The theme
+   mapping blocks below only alias these, so dark and light can never drift
+   apart the way they do when both blocks carry their own hex values.
+   ------------------------------------------------------------------------- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Dark — the default theme */
+  --dk-surface-canvas: #0d0e10;
+  --dk-surface-raised: #141517;
+  --dk-surface-sunken: #08090a;
+  --dk-text-primary: #edeef0; /* 16.63 on canvas */
+  --dk-text-secondary: #a9aeb6; /*  8.66 */
+  --dk-text-muted: #7e848d; /*  5.12 on canvas, 4.85 on raised — floor */
+  --dk-accent: #6fc3ae; /*  9.28 */
+  --dk-signal-caveat: #e3b341; /*  9.92 */
+  --dk-signal-regret: #f0857d; /*  7.68 */
+  --dk-border-interactive: #5c6169; /*  3.10 */
+  --dk-stroke-diagram: #7c828b; /*  4.99 */
+
+  /* Light — warm paper, not white */
+  --lt-surface-canvas: #faf9f7;
+  --lt-surface-raised: #ffffff;
+  --lt-surface-sunken: #f1f0ed;
+  --lt-text-primary: #14161a; /* 17.21 on canvas */
+  --lt-text-secondary: #4b5058; /*  7.71 */
+  --lt-text-muted: #63686f; /*  5.34 on canvas, 4.93 on sunken — floor */
+  --lt-accent: #0f6e5c; /*  5.86 */
+  --lt-signal-caveat: #7a5200; /*  6.58 */
+  --lt-signal-regret: #a3322b; /*  6.55 */
+  --lt-stroke-diagram: #767b82; /*  4.05 */
+
+  /* DEVIATION: §2.2's light table omits `border-interactive`. It is required
+     by <Constraint> (2px left rule) and by every control boundary, which must
+     clear 3:1. Reusing the light `stroke-diagram` value rather than inventing
+     a hex: 4.05 canvas / 4.26 raised / 3.74 sunken. The next step lighter
+     (#8A9099) fails on sunken at 2.82, so this is the loosest safe choice. */
+  --lt-border-interactive: #767b82;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* -------------------------------------------------------------------------
+   2. Theme mapping
+
+   Dark is declared on :root, so dark is what you get with no JS, no
+   preference, and no stored choice. Light applies when the user's OS asks
+   for it AND they have made no explicit choice, or when they have explicitly
+   chosen it. `:not([data-theme])` inside the media query is what lets an
+   explicit `data-theme="dark"` beat a light OS preference — the explicit
+   attribute wins in both directions.
+   ------------------------------------------------------------------------- */
+:root {
+  color-scheme: dark;
+
+  --surface-canvas: var(--dk-surface-canvas);
+  --surface-raised: var(--dk-surface-raised);
+  --surface-sunken: var(--dk-surface-sunken);
+  --text-primary: var(--dk-text-primary);
+  --text-secondary: var(--dk-text-secondary);
+  --text-muted: var(--dk-text-muted);
+  --accent: var(--dk-accent);
+  --signal-caveat: var(--dk-signal-caveat);
+  --signal-regret: var(--dk-signal-regret);
+  --border-interactive: var(--dk-border-interactive);
+  --stroke-diagram: var(--dk-stroke-diagram);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    color-scheme: light;
+
+    --surface-canvas: var(--lt-surface-canvas);
+    --surface-raised: var(--lt-surface-raised);
+    --surface-sunken: var(--lt-surface-sunken);
+    --text-primary: var(--lt-text-primary);
+    --text-secondary: var(--lt-text-secondary);
+    --text-muted: var(--lt-text-muted);
+    --accent: var(--lt-accent);
+    --signal-caveat: var(--lt-signal-caveat);
+    --signal-regret: var(--lt-signal-regret);
+    --border-interactive: var(--lt-border-interactive);
+    --stroke-diagram: var(--lt-stroke-diagram);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --surface-canvas: var(--lt-surface-canvas);
+  --surface-raised: var(--lt-surface-raised);
+  --surface-sunken: var(--lt-surface-sunken);
+  --text-primary: var(--lt-text-primary);
+  --text-secondary: var(--lt-text-secondary);
+  --text-muted: var(--lt-text-muted);
+  --accent: var(--lt-accent);
+  --signal-caveat: var(--lt-signal-caveat);
+  --signal-regret: var(--lt-signal-regret);
+  --border-interactive: var(--lt-border-interactive);
+  --stroke-diagram: var(--lt-stroke-diagram);
+}
+
+/* -------------------------------------------------------------------------
+   3. Derived tokens
+
+   These are not in §2.2's table because they have no independent value —
+   they are expressed in terms of tokens that are. Deriving rather than
+   inventing keeps the "one accent, two signal colors" rule intact.
+   ------------------------------------------------------------------------- */
+:root {
+  /* §2.5 names `var(--focus-ring)` but does not assign it. Accent is the only
+     candidate that clears 3:1 on all three surfaces in both themes
+     (dark 9.28/8.78/9.58, light 5.86/6.17/5.41) and it is already the site's
+     single interactive colour. */
+  --focus-ring: var(--accent);
+
+  /* §2.3 says "hairlines separate" and §2.6 builds six of seven components on
+     them, but no hairline value is given. Derived from muted text so it
+     tracks the theme instead of being a fourth grey. */
+  --border-hairline: color-mix(in srgb, var(--text-muted) 30%, var(--surface-canvas));
+
+  /* Spacing scale (§2.1) — 4·8·12·16·24·32·48·64·96·128, nothing off it.
+     These land exactly on Tailwind's default numeric steps (p-1 p-2 p-3 p-4
+     p-6 p-8 p-12 p-16 p-24 p-32), so utilities already speak the scale. These
+     named vars exist for hand-written CSS and `mt-(--space-96)` syntax. */
+  --space-4: 0.25rem;
+  --space-8: 0.5rem;
+  --space-12: 0.75rem;
+  --space-16: 1rem;
+  --space-24: 1.5rem;
+  --space-32: 2rem;
+  --space-48: 3rem;
+  --space-64: 4rem;
+  --space-96: 6rem;
+  --space-128: 8rem;
+
+  /* DEVIATION: §2.1 mandates "H3 gets 40px" above, but 40 is not on the
+     spacing scale that same paragraph declares. The explicit instruction
+     wins; this is the single documented exception. */
+  --space-h3-above: 2.5rem; /* 40px */
+
+  /* Motion durations (§2.4). Nothing here may exceed 240ms. */
+  --duration-hover: 120ms;
+  --duration-toc: 150ms;
+  --duration-disclosure: 180ms;
+  --duration-docheader: 200ms;
+  --duration-max: 240ms;
+
+  /* WCAG 2.2 §2.4.11. Sized for the sticky header; the header component owns
+     the real number and may override this on :root. */
+  --scroll-offset: var(--space-96);
+}
+
+/* -------------------------------------------------------------------------
+   4. Tailwind theme registration
+
+   `@theme inline` substitutes the *value* into generated utilities, so
+   `bg-canvas` compiles to `background-color: var(--surface-canvas)` and stays
+   live across theme switches. A non-inline `@theme` would freeze the colour
+   at :root and the toggle would do nothing.
+   ------------------------------------------------------------------------- */
+@theme inline {
+  --color-canvas: var(--surface-canvas);
+  --color-raised: var(--surface-raised);
+  --color-sunken: var(--surface-sunken);
+
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+
+  --color-accent: var(--accent);
+  --color-caveat: var(--signal-caveat);
+  --color-regret: var(--signal-regret);
+
+  --color-interactive: var(--border-interactive);
+  --color-hairline: var(--border-hairline);
+  --color-diagram: var(--stroke-diagram);
+  --color-focus: var(--focus-ring);
+}
+
+/* `static` — not decoration. Tailwind v4 otherwise drops any theme variable
+   it cannot see used in a scanned class name, and the evidence components in
+   components/mdx/ read these through CSS modules, which the scanner does not
+   inspect. Without `static`, tokens like --text-metric and --radius-node
+   vanish from the bundle and those components fail silently. */
+@theme static {
+  /* ---- Families (§2.1, D2) -------------------------------------------
+     next/font self-hosts these at build time and emits the --font-*-src
+     variables on <html>, including metric-matched size-adjust fallbacks. */
+  --font-serif: var(--font-serif-src), Iowan Old Style, Georgia, Cambria,
+    "Times New Roman", serif;
+  --font-sans: var(--font-sans-src), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Helvetica, sans-serif;
+  --font-mono: var(--font-mono-src), ui-monospace, SFMono-Regular, "SF Mono",
+    Menlo, Consolas, monospace;
+
+  /* ---- Type scale (§2.1, root 16px) ---------------------------------
+     DEVIATION (representation only): the blueprint states the fixed sizes in
+     px. They are expressed in rem here, which computes to the identical pixel
+     value at the blueprint's stated 16px root while still honouring a reader
+     who has raised their browser's default font size. The clamp() expressions
+     are copied character-for-character. */
+  --text-display: clamp(2.625rem, 1.9rem + 3.1vw, 4rem);
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.028em;
+
+  --text-h1: clamp(1.875rem, 1.5rem + 1.7vw, 2.75rem);
+  --text-h1--line-height: 1.1;
+  --text-h1--letter-spacing: -0.022em;
+
+  --text-h2: clamp(1.5rem, 1.35rem + 0.6vw, 2rem);
+  --text-h2--line-height: 1.2;
+  --text-h2--letter-spacing: -0.018em;
+
+  --text-h3: 1.3125rem; /* 21px */
+  --text-h3--line-height: 1.3;
+  --text-h3--letter-spacing: -0.012em;
+
+  --text-kicker: 0.75rem; /* 12px */
+  --text-kicker--line-height: 1.2;
+  --text-kicker--letter-spacing: 0.1em;
+  --text-kicker--font-weight: 550;
+
+  --text-lede: 1.375rem; /* 22px */
+  --text-lede--line-height: 1.5;
+  --text-lede--letter-spacing: -0.005em;
+
+  --text-body: 1.1875rem; /* 19px */
+  --text-body--line-height: 1.65;
+  --text-body--letter-spacing: 0;
+
+  --text-caption: 0.875rem; /* 14px */
+  --text-caption--line-height: 1.5;
+  --text-caption--letter-spacing: 0.005em;
+
+  --text-meta: 0.8125rem; /* 13px */
+  --text-meta--line-height: 1.45;
+  --text-meta--letter-spacing: 0.01em;
+
+  --text-metric: 2rem; /* 32px */
+  --text-metric--line-height: 1.05;
+  --text-metric--letter-spacing: -0.02em;
+  --text-metric--font-weight: 600;
+
+  /* ---- Measures (§2.1) — `max-w-prose`, `max-w-lede`, … --------------
+     `max-w-artifact` is §2.6's 860px breakout for evidence components. */
+  --container-display-measure: 18ch;
+  --container-h1-measure: 22ch;
+  --container-h2-measure: 30ch;
+  --container-h3-measure: 40ch;
+  --container-lede: 60ch;
+  /* NOT `--container-prose`. Tailwind ships a built-in `max-w-prose` hard-coded
+     to 65ch which a theme variable cannot override, so `max-w-prose` would
+     silently hand you 65ch and look like it worked. `max-w-reading` is the
+     blueprint's 68ch measure and the only one to use. */
+  --container-reading: 68ch;
+  --container-caption: 76ch;
+  --container-artifact: 860px;
+
+  /* ---- Radius (§2.3) ------------------------------------------------- */
+  --radius-control: 4px;
+  --radius-container: 8px;
+  --radius-node: 6px;
+  --radius-table: 0;
+
+  /* ---- Motion (§2.4) — one easing curve, no springs, no overshoot ---- */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* =========================================================================
+   Base layer — everything below is layered so utility classes still win.
+   ========================================================================= */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--surface-canvas);
+    color: var(--text-primary);
+    font-family: var(--font-serif);
+    font-size: var(--text-body);
+    line-height: 1.65;
+    /* §2.1: hyphenation inside identifiers like `row-level-security` creates
+       false breaks. Off everywhere, no exceptions. */
+    hyphens: none;
+    -webkit-hyphens: none;
+    text-align: start; /* §2.1: no justified text, anywhere. */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-synthesis-weight: none;
+  }
+
+  /* Headings are Inter; body is Source Serif 4. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+    /* WCAG 2.2 §2.4.11 — a deep-linked anchor must not land under the header. */
+    scroll-margin-top: var(--scroll-offset);
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--text-h1);
+    line-height: 1.1;
+    letter-spacing: -0.022em;
+  }
+
+  h2 {
+    font-size: var(--text-h2);
+    line-height: 1.2;
+    letter-spacing: -0.018em;
+  }
+
+  h3 {
+    font-size: var(--text-h3);
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Anything a keyboard user can land on also needs the scroll offset. */
+  a[id],
+  [id][tabindex],
+  section[id],
+  article[id],
+  figure[id] {
+    scroll-margin-top: var(--scroll-offset);
+  }
+
+  a {
+    color: inherit;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    transition:
+      color var(--duration-hover) var(--ease-standard),
+      border-color var(--duration-hover) var(--ease-standard),
+      text-underline-offset var(--duration-hover) var(--ease-standard);
+  }
+
+  /* §2.4 allows colour, border-colour and underline-offset only. */
+  a:hover {
+    color: var(--accent);
+    text-underline-offset: 0.24em;
+  }
+
+  /* §2.1: programming ligatures misrepresent the characters actually in the
+     file. `tnum` so columns of digits line up in traces and configs. */
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--font-mono);
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "calt" 0, "tnum" 1;
+    font-variant-numeric: tabular-nums;
+    hyphens: none;
+  }
+
+  pre {
+    overflow-x: auto;
+    background-color: var(--surface-sunken);
+    border-radius: var(--radius-container);
+  }
+
+  /* §2.1: tnum on tables. §2.3: tables have zero radius, hairlines only. */
+  table {
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+    border-collapse: collapse;
+    border-radius: var(--radius-table);
+    width: 100%;
+  }
+
+  th,
+  td {
+    /* §2.5: padding only — no fixed heights, so nothing clips at 1.5
+       line-height / 0.12em tracking (WCAG 1.4.12). */
+    padding: var(--space-12) var(--space-16);
+    text-align: start;
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  th {
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  /* §2.6: numeric columns right-aligned. */
+  th[data-numeric],
+  td[data-numeric] {
+    text-align: end;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--border-hairline);
+    margin-block: var(--space-48);
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--accent) 28%, transparent);
+    color: var(--text-primary);
+  }
+
+  /* ---- Focus (§2.5) --------------------------------------------------
+     :focus-visible only, never :focus. The double ring — canvas first, then
+     the accent — is what makes it read on raised, sunken and tinted
+     surfaces alike, instead of vanishing into whichever one it lands on.
+     The transparent outline is not decoration: Windows High Contrast Mode
+     discards box-shadow, and the outline is all that survives. */
+  :focus-visible {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow:
+      0 0 0 2px var(--surface-canvas),
+      0 0 0 4px var(--focus-ring);
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+    box-shadow: none;
+  }
+
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline: 2px solid Highlight;
+      outline-offset: 2px;
+    }
+  }
+}
+
+/* =========================================================================
+   Components layer — MDX document body (§2.1, §2.6)
+   ========================================================================= */
+@layer components {
+  /* ---------------------------------------------------------------------
+     Page shell. The gutter belongs here, not on .prose: evidence components
+     break out past the reading measure, and a padding on .prose would clip
+     them. §2.10 puts the mobile gutter at 20px.
+     --------------------------------------------------------------------- */
+  .page {
+    padding-inline: 1.25rem; /* 20px — the 360px gutter */
+    padding-block: var(--space-48) var(--space-96);
+  }
+
+  @media (min-width: 40rem) {
+    .page {
+      padding-inline: var(--space-32);
+      padding-block: var(--space-64) var(--space-128);
+    }
+  }
+
+  /* ---------------------------------------------------------------------
+     Doc header (§1.1). Every route opens with one of these instead of a
+     hero: title, then the mono meta line that says when it was last true.
+     --------------------------------------------------------------------- */
+  .doc-header {
+    margin-bottom: var(--space-48);
+  }
+
+  .doc-header h1 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h1);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+    max-width: var(--container-h1-measure, 22ch);
+    margin: 0;
+  }
+
+  .doc-meta {
+    margin-top: var(--space-12);
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: 1.45;
+    letter-spacing: 0.01em;
+    color: var(--text-muted);
+  }
+
+  /* 68ch measure, 19px/1.65 serif. Evidence components break out to 860px on
+     their own; prose never does. */
+  .prose {
+    margin-inline: auto;
+    max-width: var(--container-reading);
+    font-family: var(--font-serif);
+    font-size: var(--text-body);
+    line-height: 1.65;
+    letter-spacing: 0;
+    color: var(--text-primary);
+    text-align: start;
+    hyphens: none;
+    -webkit-hyphens: none;
+  }
+
+  .prose p {
+    text-wrap: pretty;
+    /* §2.1: paragraph spacing 1.1em. Type-relative, so it tracks the measure. */
+    margin-block: 0;
+  }
+
+  .prose p + p {
+    margin-top: 1.1em;
+  }
+
+  .prose h2,
+  .prose h3,
+  .prose h4 {
+    font-family: var(--font-sans);
+    text-wrap: balance;
+    scroll-margin-top: var(--scroll-offset);
+  }
+
+  .prose h2 {
+    font-size: var(--text-h2);
+    line-height: 1.2;
+    letter-spacing: -0.018em;
+    max-width: var(--container-h2-measure);
+    /* §2.1: 96px above, 64px on mobile. Mobile-first, so 64 is the base. */
+    margin-top: var(--space-64);
+    margin-bottom: var(--space-16);
+  }
+
+  @media (min-width: 48rem) {
+    .prose h2 {
+      margin-top: var(--space-96);
+    }
+  }
+
+  .prose h3 {
+    font-size: var(--text-h3);
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+    max-width: var(--container-h3-measure);
+    margin-top: var(--space-h3-above); /* 40px, see DEVIATION above */
+    margin-bottom: var(--space-12);
+  }
+
+  /* The lede is the one paragraph allowed to run larger than body. */
+  .prose > .lede,
+  .prose [data-lede] {
+    font-size: var(--text-lede);
+    line-height: 1.5;
+    letter-spacing: -0.005em;
+    max-width: var(--container-lede);
+    color: var(--text-secondary);
+  }
+
+  .prose a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+  }
+
+  .prose ul,
+  .prose ol {
+    margin-block: var(--space-16);
+    padding-inline-start: var(--space-24);
+  }
+
+  .prose ul {
+    list-style: disc;
+  }
+
+  .prose ol {
+    list-style: decimal;
+  }
+
+  .prose li + li {
+    margin-top: var(--space-8);
+  }
+
+  .prose blockquote {
+    margin-block: var(--space-24);
+    padding-inline-start: var(--space-16);
+    border-inline-start: 2px solid var(--border-interactive);
+    color: var(--text-secondary);
+  }
+
+  .prose code {
+    font-size: 0.9em;
+    font-variant-ligatures: none;
+  }
+
+  .prose :not(pre) > code {
+    background-color: var(--surface-sunken);
+    border-radius: var(--radius-control);
+    padding: 0.1em 0.3em;
+  }
+
+  .prose pre {
+    margin-block: var(--space-24);
+    padding: var(--space-16);
+    font-size: var(--text-meta);
+    line-height: 1.45;
+  }
+
+  .prose figure {
+    margin-block: var(--space-32);
+  }
+
+  .prose figcaption {
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: 1.5;
+    letter-spacing: 0.005em;
+    max-width: var(--container-caption);
+    color: var(--text-muted);
+    margin-top: var(--space-12);
+  }
+
+  .prose table {
+    margin-block: var(--space-32);
+    font-size: var(--text-caption);
+  }
+
+  /* §2.6: evidence components read as artifacts inserted into a document, so
+     they break the 68ch measure out to 860px while prose stays put. */
+  .prose > .breakout,
+  .prose > [data-breakout] {
+    max-width: var(--container-artifact);
+    width: min(100%, var(--container-artifact));
+  }
+
+  /* §2.1: `tnum` on metrics as well as tables. */
+  .tnum,
+  [data-metric] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* §2.1 kicker. §2.5: kickers are never headings — this is a style, not an
+     element, and must not be applied to h1–h6. */
+  .kicker {
+    font-family: var(--font-sans);
+    font-size: var(--text-kicker);
+    font-weight: 550;
+    line-height: 1.2;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+}
+
+/* =========================================================================
+   Reduced motion (§2.4)
+
+   Contract: all transforms → none; opacity transitions ≤100ms or removed;
+   scroll-behavior: auto. Note what is deliberately NOT here — the diagram
+   "trace a request" control is replaced by a Prev/Next step-through in the
+   component, not disabled. The information stays reachable.
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transform: none !important;
+    transition-duration: 100ms !important;
+    transition-delay: 0ms !important;
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =========================================================================
+   Print — force light, drop navigation and motion.
+   ========================================================================= */
+@media print {
+  :root,
+  :root[data-theme="dark"],
+  :root[data-theme="light"] {
+    color-scheme: light;
+
+    --surface-canvas: var(--lt-surface-canvas);
+    --surface-raised: var(--lt-surface-raised);
+    --surface-sunken: var(--lt-surface-sunken);
+    --text-primary: var(--lt-text-primary);
+    --text-secondary: var(--lt-text-secondary);
+    --text-muted: var(--lt-text-muted);
+    --accent: var(--lt-accent);
+    --signal-caveat: var(--lt-signal-caveat);
+    --signal-regret: var(--lt-signal-regret);
+    --border-interactive: var(--lt-border-interactive);
+    --stroke-diagram: var(--lt-stroke-diagram);
+  }
+
+  body {
+    background: #fff;
+    color: var(--lt-text-primary);
+  }
+
+  nav,
+  [data-print-hidden],
+  .print-hidden {
+    display: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Every <details> opens — a printed page has no disclosure affordance. */
+  details {
+    display: block !important;
+  }
+
+  details > *:not(summary) {
+    display: block !important;
+  }
+
+  /* §2.5 bans "read more" link text, so printed URLs are always meaningful. */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: var(--text-meta);
+    color: var(--lt-text-muted);
+    word-break: break-all;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  figure,
+  table,
+  pre {
+    break-inside: avoid;
+  }
 }
