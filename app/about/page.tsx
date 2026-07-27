@@ -3,6 +3,7 @@ import { compileMDX } from "next-mdx-remote/rsc";
 import { notFound } from "next/navigation";
 import { mdxComponents } from "@/components/mdx";
 import { FrontMatter } from "@/components/ui/FrontMatter";
+import { NodeField } from "@/components/ui/NodeField";
 import { pageFrontmatter, readCollection } from "@/lib/content/loader";
 import { mdxCompileOptions } from "@/lib/content/mdx";
 
@@ -67,6 +68,12 @@ export default async function AboutPage() {
             ]}
           />
         </header>
+
+        {/* The one piece of decorative motion on the site. It sits between the
+            doc header and the prose, so it reads as a beat between the
+            metadata and the reading instead of a texture underneath either. */}
+        <NodeField />
+
         {content}
       </article>
     </div>

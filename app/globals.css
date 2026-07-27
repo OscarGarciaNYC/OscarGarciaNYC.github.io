@@ -1421,3 +1421,44 @@
     font-size: var(--text-caption);
   }
 }
+
+/* =========================================================================
+   Node field — the one piece of decorative motion on the site, on /about only.
+   A bounded band, never a background behind text. See components/ui/NodeField.
+   ========================================================================= */
+@layer components {
+  .node-field {
+    position: relative;
+    height: 200px;
+    margin-block: var(--space-48);
+    overflow: hidden;
+    border-block: 1px solid var(--border-hairline);
+    /* Fades at both edges so the field reads as a band rather than a boxed
+       widget with a hard stop. */
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 12%,
+      black 88%,
+      transparent
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 12%,
+      black 88%,
+      transparent
+    );
+  }
+
+  .node-field > canvas {
+    display: block;
+  }
+
+  @media (max-width: 40rem) {
+    .node-field {
+      height: 140px;
+      margin-block: var(--space-32);
+    }
+  }
+}
