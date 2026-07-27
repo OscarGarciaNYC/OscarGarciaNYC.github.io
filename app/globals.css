@@ -241,6 +241,11 @@
   --text-body--line-height: 1.65;
   --text-body--letter-spacing: 0;
 
+  /* §2.1 defines body-sm for table cells and boxed copy. It was missing from
+     the first pass; the Policy block is the first consumer. */
+  --text-body-sm: 1rem; /* 16px */
+  --text-body-sm--line-height: 1.55;
+
   --text-caption: 0.875rem; /* 14px */
   --text-caption--line-height: 1.5;
   --text-caption--letter-spacing: 0.005em;
@@ -522,6 +527,84 @@
 
   .doc-stack {
     margin-top: var(--space-16);
+  }
+
+  /* The standfirst. Serif at lede size, one notch of colour below the body,
+     so it reads as an introduction rather than as the first paragraph. */
+  .doc-lede {
+    margin-top: var(--space-24);
+    font-family: var(--font-serif);
+    font-size: var(--text-lede);
+    line-height: 1.5;
+    letter-spacing: -0.005em;
+    max-width: 60ch;
+    color: var(--text-secondary);
+    text-wrap: pretty;
+  }
+
+  /* ---------------------------------------------------------------------
+     Front-matter block — the site's signature device. Hairline-separated
+     label/value rows, kicker labels, mono values.
+     --------------------------------------------------------------------- */
+  .front-matter {
+    margin-top: var(--space-32);
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .front-matter-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    padding-block: var(--space-12);
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  @media (min-width: 34rem) {
+    .front-matter-row {
+      grid-template-columns: 8.5rem 1fr;
+      gap: var(--space-24);
+      align-items: baseline;
+    }
+  }
+
+  .front-matter-label {
+    font-family: var(--font-sans);
+    font-size: var(--text-kicker);
+    font-weight: 550;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .front-matter-value {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: 1.5;
+    color: var(--text-secondary);
+  }
+
+  /* ---------------------------------------------------------------------
+     Section numbering. A counter on H2s gives the page landmarks and reads
+     as a specification rather than an article. Purely presentational, so it
+     is a ::before on the heading and never enters the accessible name.
+     --------------------------------------------------------------------- */
+  .prose {
+    counter-reset: doc-section;
+  }
+
+  .prose h2 {
+    counter-increment: doc-section;
+  }
+
+  .prose h2::before {
+    content: counter(doc-section, decimal-leading-zero);
+    display: block;
+    margin-bottom: var(--space-8);
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
   }
 
   .doc-meta {

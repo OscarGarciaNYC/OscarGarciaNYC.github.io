@@ -604,3 +604,37 @@
     transition: none;
   }
 }
+
+/* ==========================================================================
+   Policy — a standing rule the author holds themselves to (§2.6).
+   A hairline box rather than a left rule, so it reads as pinned to the wall
+   and survives being screenshotted out of context. No fill, no shadow.
+   ========================================================================== */
+.policy {
+  margin-block: var(--space-48);
+  padding: var(--space-32);
+  border: 1px solid var(--border-interactive);
+  border-radius: 8px;
+}
+
+.policyTitle {
+  margin: 0 0 var(--space-16);
+  color: var(--text-muted);
+}
+
+.policyBody {
+  font-family: var(--font-serif);
+  font-size: var(--text-body-sm);
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.policyBody > * + * {
+  margin-top: 1.1em;
+}
+
+@media (max-width: 40rem) {
+  .policy {
+    padding: var(--space-24);
+  }
+}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { compileMDX } from "next-mdx-remote/rsc";
 import { notFound } from "next/navigation";
 import { mdxComponents } from "@/components/mdx";
+import { FrontMatter } from "@/components/ui/FrontMatter";
 import { pageFrontmatter, readCollection } from "@/lib/content/loader";
 import { mdxCompileOptions } from "@/lib/content/mdx";
 
@@ -35,16 +36,36 @@ export default async function AboutPage() {
       <article className="prose">
         <header className="doc-header">
           <h1>{doc.frontmatter.title}</h1>
-          <p className="doc-meta">
-            Updated{" "}
-            <time dateTime={doc.frontmatter.updatedAt}>
-              {new Date(doc.frontmatter.updatedAt).toLocaleDateString("en-US", {
-                month: "long",
-                year: "numeric",
-                timeZone: "UTC",
-              })}
-            </time>
+          <p className="doc-lede">
+            I take enterprise AI products from a customer problem to something
+            that survives a security review. Here is what I work on, what I
+            will and won&rsquo;t tell you about it, and how I decide.
           </p>
+          <FrontMatter
+            entries={[
+              {
+                label: "Focus",
+                value: "Enterprise AI · identity · integrations · data platforms",
+              },
+              {
+                label: "Current",
+                value: "Technical PM — AI, data & integrations",
+              },
+              { label: "Building", value: "TreeTales (live in production)" },
+              { label: "Based", value: "New York, NY" },
+              {
+                label: "Updated",
+                value: (
+                  <time dateTime={doc.frontmatter.updatedAt}>
+                    {new Date(doc.frontmatter.updatedAt).toLocaleDateString(
+                      "en-US",
+                      { month: "long", year: "numeric", timeZone: "UTC" },
+                    )}
+                  </time>
+                ),
+              },
+            ]}
+          />
         </header>
         {content}
       </article>

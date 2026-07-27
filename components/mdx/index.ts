@@ -19,6 +19,7 @@ export { Details } from "./Details";
 export { Disclosure } from "./Disclosure";
 export { Figure, SystemDiagram } from "./Figure";
 export { Metric, MetricRow } from "./Metric";
+export { Policy } from "./Policy";
 export { TradeoffTable } from "./TradeoffTable";
 export type { TradeoffColumn, TradeoffRow } from "./TradeoffTable";
 export { WhatIdDoDifferently } from "./WhatIdDoDifferently";
@@ -29,6 +30,7 @@ import { Details } from "./Details";
 import { Disclosure } from "./Disclosure";
 import { Figure, SystemDiagram } from "./Figure";
 import { Metric, MetricRow } from "./Metric";
+import { Policy } from "./Policy";
 import { TradeoffTable } from "./TradeoffTable";
 import { WhatIdDoDifferently } from "./WhatIdDoDifferently";
 
@@ -45,6 +47,7 @@ export const mdxComponents = {
   Figure,
   Metric,
   MetricRow,
+  Policy,
   SystemDiagram,
   TradeoffTable,
   WhatIdDoDifferently,
