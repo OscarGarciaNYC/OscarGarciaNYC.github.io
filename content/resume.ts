@@ -221,7 +221,7 @@ export const resume = {
   title: "Senior Technical Product Manager",
   location: "New York, NY",
   links: [
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/oscargarcianyc/" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/oscargarcia-nyc/" },
     {
       label: "oscargarcianyc.github.io",
       href: "https://oscargarcianyc.github.io",

@@ -54,77 +54,77 @@ about a real person, often an older relative, sometimes assembled after a
 diagnosis. A generic paragraph in a book like that reads as a small betrayal,
 and it is obvious to the recipient.
 
-### Working from first principles
+### What discovery actually changed
 
-The available reference points are group-gift sites and photo-book builders,
-and copying either produces the wrong product. So I started from what a
-memory book is actually for: a person reads it and recognizes the people who
-wrote it.
+I went into this believing the product was a curated artifact: good photographs
+and a well-shaped body of writing, assembled on someone's behalf. That belief
+survived about as long as it took to talk to people. Over roughly 150
+conversations — colleagues, members of my church, and a fair number of
+strangers who were willing to humor a question in public — the thing people
+kept asking for was the chance to write their own note in their own words. A
+friend, a pastor's wife, wanted her own voice in the book and wanted her
+friends' voices in it too, which is a different product from the one I had
+been designing.
 
-If recognition is the goal then the unit of value is a voice, which means a
-sixty-page book assembled from two contributors is worth less than a thin one
-carrying six, and it means the writing has to keep sounding like whoever wrote
-it, which disqualifies
-anything that averages the prose even where it improves every individual
-sentence. The same sentence also settles who the software is for: the recipient
-only ever reads, so there is nobody to retain or notify or re-engage, and the
-entire engagement surface faces contributors who each show up roughly once.
+That correction is where the rest of the design comes from. If what a reader
+values is recognizing the people who wrote to them, then the unit of value is
+a voice and not a page, so a thin book carrying six contributors beats a longer
+one assembled from two, and any feature that averages the prose damages the
+book even where it improves the individual sentence. It is also what made the
+AI guardrail obvious instead of principled, because a ghostwriting feature
+would have polished every entry while erasing the reason someone opens the
+book at all.
 
-Following that reasoning is what turned the AI guardrail from a stated value
-into an obvious consequence, since a ghostwriting feature would have improved
-the average sentence in the book while destroying the only thing the book
-sells.
-
-### The assumptions that could kill it
-
-I built this the way I would run any 0→1: rank the assumptions by what happens
-if they are wrong, test the fatal ones first, and keep each test small enough
-that being wrong stays cheap.
+### The assumptions, and what happened to each
 
 <TradeoffTable
-  caption="Ordered by consequence. The first two would have ended the product."
+  caption="Five assumptions, in the order they were tested. The third one was wrong, and being wrong about it produced the product."
   columns={[
     { key: "assumption", header: "Assumption" },
-    { key: "fatal", header: "If wrong" },
-    { key: "test", header: "Cheapest test" },
-    { key: "result", header: "What happened" },
+    { key: "test", header: "How I tested it" },
+    { key: "outcome", header: "Outcome" },
   ]}
   rows={[
     {
-      assumption: "People will write about someone else when the ask is bounded",
-      fatal: "No content, so no book, so no product",
-      test: "Ship the smallest invitation-to-prompt flow and watch completions",
-      result: "58 stories from 35 people — more than one each, so they came back",
+      assumption: "The buyer is an adult with aging parents",
+      test: "Roughly 150 conversations with colleagues, church members, and strangers in public",
+      outcome: "Validated. It is who the product is built for and who it is priced for",
     },
     {
-      assumption: "Friction is what blocks contribution",
-      fatal: "Removing signup does nothing and the real problem is untouched",
-      test: "Anonymous-first: write now, settle identity afterward if at all",
-      result: "Held. It is the identity model still in production",
+      assumption: "A printed book is the fastest route to first revenue",
+      test: "Weighed it against the digital asset platform I actually want to build",
+      outcome: "Held. The platform stays a personal vision; the book is what ships and sells",
     },
     {
-      assumption: "Contributors want their own voice preserved over better prose",
-      fatal: "Every book reads the same and the gift stops landing",
-      test: "Constrain AI to bounded proofreading and let contributors decline it",
-      result: "Held, and it has killed features I wanted to build",
+      assumption: "People want images and curated writing more than their own words",
+      test: "Kept asking contributors what they wanted the finished book to contain",
+      outcome: "Invalidated, repeatedly and clearly. People wanted to write their own notes in their own voice",
     },
     {
-      assumption: "The physical artifact is what makes it a gift",
-      fatal: "The most expensive part of the pipeline earns nothing",
-      test: "Print on demand, so no inventory exists to be wrong about",
-      result: "4 books printed and delivered end to end",
+      assumption: "People want a shared book they can fill alongside other contributors",
+      test: "Followed the invalidation above and opened contribution to a group",
+      outcome: "Validated hard. It is now the center of the product",
     },
     {
-      assumption: "One capable agent with a good prompt can do the building",
-      fatal: "Unreviewed work accumulates and the codebase stops being trustworthy",
-      test: "Run it, and read what it produced",
-      result: "Rejected. It missed the category of error it had just made",
+      assumption: "Recorded voice belongs alongside the writing",
+      test: "Scoped it against transcription APIs and multi-language support",
+      outcome: "Real and deferred. It is a roadmap item, behind the first two iterations",
     },
   ]}
 />
 
-The last row is the one that redirected the project. It was an assumption about
-delivery, and it turned out to have the shortest fuse of any of them.
+The fourth assumption is also where the competitive argument lives. Storyworth
+runs a prompt-a-week model, and the complaint I heard from people who had tried
+it was that they never finished, because the writing burden is long, relentless,
+and lands on the recipient, who ends up authoring their own gift. Opening
+contribution to a group spreads that burden across the people who wanted to
+write anyway, and it shortens what any one person has to produce.
+
+Voice is the assumption I am most confident about and least in a hurry to build.
+My background is in voice AI, so I can see the shape of it clearly enough to
+know that transcription across multiple languages is doable and that it is not
+a first or second iteration of anything.
+
 
 <Constraint>
 The product's core promise is that the recipient reads their people's actual
@@ -215,37 +215,33 @@ accept it.
   ]}
 />
 
-### How I sequenced the bets
+### How I sequenced it
 
-Solo, the scarce resource is attention, so the order of the work is the whole
-strategy. I ran it as three rounds, each one gated on a question I could answer
-cheaply.
+The order was set by which questions could be answered by talking and which
+ones required building. Who the buyer is, and what they wanted the book to
+contain, cost nothing but conversations, so those went first and they are the
+two that changed the product. Whether a printed artifact could reach revenue
+faster than the digital platform I would rather be building was a judgment
+call about my own time, and I made it in favor of the thing a customer can
+hold.
 
-<Details summary="The three rounds, and what each one had to prove">
+Only after those were settled did the constraint move from the product to me.
+That is when the delivery system got built, because governing a product that
+might still change shape is expensive and premature.
 
-**Round one — will anyone write?** The smallest thing that could answer it was
-an invitation, a prompt, and somewhere to put the words. No accounts, no
-editor, no book. If people opened the invitation and closed it, nothing else
-mattered and the product was finished. Kill criterion: contributors who start
-and abandon.
+<Details summary="What I deferred, and why voice is still on the roadmap">
 
-**Round two — does the artifact justify the pipeline?** Printing is the
-expensive, slow, physical part, and it is where a consumer product usually
-dies. Print on demand meant the bet could be tested at a quantity of one,
-with no inventory to be wrong about. Kill criterion: a book that arrives and
-disappoints.
+Voice recording is the clearest example of a validated idea that should wait.
+People genuinely want their own voice preserved, and my background in voice AI
+means I can scope it without guessing: transcription through an API service,
+multiple languages, and the storage and playback questions that follow.
 
-**Round three — can one person sustain this?** By this point the product
-questions were answered and the constraint moved to me. That is when the
-delivery system got built, and it is why it got built third. Before round two
-there was not enough product to be worth governing.
+None of that is hard in a way that worries me, but all of it is work that does
+not change whether the core loop succeeds. A contributor who will not write a
+paragraph is unlikely to record one either, so voice earns its place once the
+writing experience is unambiguously working.
 
 </Details>
-
-Underneath all three rounds is the same rule about where attention goes: spend
-it on the question whose wrong answer ends the project. Twice that meant asking
-whether anyone would write, and the third time it meant admitting the limit was
-how much I could get through before work on a Tuesday morning.
 
 ### What this unlocked, and what it foreclosed
 
@@ -278,10 +274,11 @@ cannot leak someone's writing about their mother.
 
 The guardrail that most defines the product is a constraint on the model:
 **AI proofreads, never ghostwrites.** It fixes spelling, punctuation, and
-obvious grammar. It does not improve phrasing, lengthen, or smooth. This is the
-rule that gets argued with most, and it holds, because the failure mode is
-invisible. Nobody complains that their paragraph came back better, and the
-recipient reads a book where everyone sounds faintly the same.
+obvious grammar, and it leaves phrasing, length, and rhythm alone. This is the
+rule I have argued about most, and it survives those arguments because the
+failure mode never announces itself: nobody writes in to complain that their
+paragraph came back better than they wrote it, and the damage only shows up in
+a finished book where every contributor sounds faintly the same.
 
 <Details summary="Where the guardrail actually lives">
 

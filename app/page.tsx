@@ -119,7 +119,7 @@ export default function Home() {
           <h2 className="home-section-title">Contact</h2>
           <p className="home-prose">
             The best way to reach me is{" "}
-            <a href="https://www.linkedin.com/in/oscargarcianyc/">LinkedIn</a>.
+            <a href="https://www.linkedin.com/in/oscargarcia-nyc/">LinkedIn</a>.
             I&rsquo;m glad to talk about enterprise AI, data and integration
             platforms, and 0→1 building, including the parts of the work above
             that I couldn&rsquo;t publish.
