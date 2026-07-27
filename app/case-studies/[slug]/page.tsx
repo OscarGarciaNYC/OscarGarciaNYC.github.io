@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { compileMDX } from "next-mdx-remote/rsc";
 import { notFound } from "next/navigation";
-import { Disclosure, mdxComponents } from "@/components/mdx";
+import { mdxComponents } from "@/components/mdx";
+import { DisclosureBadge } from "@/components/ui/DisclosureBadge";
+import { FrontMatter } from "@/components/ui/FrontMatter";
 import { readCollection } from "@/lib/content/loader";
 import { mdxCompileOptions } from "@/lib/content/mdx";
 import { caseStudyFrontmatter } from "@/lib/content/schema";
@@ -63,24 +65,34 @@ export default async function CaseStudyPage({
         */}
         <header className="doc-header">
           <h1>{title}</h1>
-          <p className="doc-meta">
-            {ROLE_LABEL[myRole] ?? myRole} · {org} · {timeframe} · Updated{" "}
-            <time dateTime={doc.frontmatter.publishedAt}>
-              {new Date(doc.frontmatter.publishedAt).toLocaleDateString(
-                "en-US",
-                { month: "long", year: "numeric", timeZone: "UTC" },
-              )}
-            </time>
-          </p>
           <p className="doc-teaches">
             <span className="doc-teaches-label">Teaches</span> {teaches}
           </p>
-          {stack.length > 0 && (
-            <p className="doc-meta doc-stack">{stack.join(" · ")}</p>
-          )}
+          <FrontMatter
+            entries={[
+              { label: "Role", value: ROLE_LABEL[myRole] ?? myRole },
+              { label: "Context", value: org },
+              { label: "Period", value: timeframe },
+              ...(stack.length > 0
+                ? [{ label: "Built with", value: stack.join(" · ") }]
+                : []),
+              ...(generalizesRealWork
+                ? [{ label: "Disclosure", value: <DisclosureBadge /> }]
+                : []),
+              {
+                label: "Updated",
+                value: (
+                  <time dateTime={doc.frontmatter.publishedAt}>
+                    {new Date(doc.frontmatter.publishedAt).toLocaleDateString(
+                      "en-US",
+                      { month: "long", year: "numeric", timeZone: "UTC" },
+                    )}
+                  </time>
+                ),
+              },
+            ]}
+          />
         </header>
-
-        {generalizesRealWork && <Disclosure />}
 
         {content}
       </article>

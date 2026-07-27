@@ -16,7 +16,6 @@
 export { Constraint } from "./Constraint";
 export { DecisionRecord } from "./DecisionRecord";
 export { Details } from "./Details";
-export { Disclosure } from "./Disclosure";
 export { Figure, SystemDiagram } from "./Figure";
 export { Metric, MetricRow } from "./Metric";
 export { Policy } from "./Policy";
@@ -27,7 +26,6 @@ export { WhatIdDoDifferently } from "./WhatIdDoDifferently";
 import { Constraint } from "./Constraint";
 import { DecisionRecord } from "./DecisionRecord";
 import { Details } from "./Details";
-import { Disclosure } from "./Disclosure";
 import { Figure, SystemDiagram } from "./Figure";
 import { Metric, MetricRow } from "./Metric";
 import { Policy } from "./Policy";
@@ -43,7 +41,6 @@ export const mdxComponents = {
   Constraint,
   DecisionRecord,
   Details,
-  Disclosure,
   Figure,
   Metric,
   MetricRow,

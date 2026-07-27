@@ -584,6 +584,55 @@
   }
 
   /* ---------------------------------------------------------------------
+     Disclosure badge — confidentiality as a front-matter field (D4, amended).
+     The chip carries the status; the help text carries the meaning.
+     --------------------------------------------------------------------- */
+  .disclosure-badge {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-12);
+  }
+
+  .disclosure-chip {
+    padding: 0.15em 0.5em;
+    border: 1px solid var(--signal-caveat);
+    border-radius: 4px;
+    font-family: var(--font-sans);
+    font-size: var(--text-kicker);
+    font-weight: 550;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--signal-caveat);
+    white-space: nowrap;
+  }
+
+  .disclosure-help > summary {
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    color: var(--text-muted);
+    cursor: pointer;
+    /* 44px target without a fixed height (§2.5, 1.4.12). */
+    padding-block: 0.65rem;
+    margin-block: -0.65rem;
+    transition: color 120ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .disclosure-help > summary:hover {
+    color: var(--text-secondary);
+  }
+
+  .disclosure-help-body {
+    display: block;
+    margin-top: var(--space-8);
+    max-width: 56ch;
+    font-family: var(--font-serif);
+    font-size: var(--text-caption);
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  /* ---------------------------------------------------------------------
      Section numbering. A counter on H2s gives the page landmarks and reads
      as a specification rather than an article. Purely presentational, so it
      is a ::before on the heading and never enters the accessible name.
@@ -938,6 +987,258 @@
   figure,
   table,
   pre {
+    break-inside: avoid;
+  }
+}
+
+/* =========================================================================
+   Résumé (§3.7). The one page where résumé language is correct.
+
+   Two columns on desktop: a mono date column forming a scannable spine down
+   the left edge, and the content. Single column on mobile and in print.
+   ========================================================================= */
+@layer components {
+  .resume {
+    margin-inline: auto;
+    max-width: 52rem;
+    color: var(--text-primary);
+  }
+
+  .resume-contact a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .resume-print-hint {
+    margin-top: var(--space-16);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    color: var(--text-muted);
+  }
+
+  .resume-section {
+    margin-top: var(--space-64);
+    padding-top: var(--space-32);
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .resume-section > h2 {
+    margin: 0 0 var(--space-24);
+    font-family: var(--font-sans);
+    font-size: var(--text-kicker);
+    font-weight: 550;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .resume-summary {
+    font-family: var(--font-serif);
+    font-size: var(--text-body);
+    line-height: 1.65;
+    max-width: 68ch;
+  }
+
+  .resume-entry {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    padding-block: var(--space-24);
+  }
+
+  .resume-entry + .resume-entry {
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  @media (min-width: 48rem) {
+    .resume-entry {
+      grid-template-columns: 10.5rem 1fr;
+      gap: var(--space-32);
+    }
+  }
+
+  .resume-spine {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: 1.45;
+    color: var(--text-muted);
+  }
+
+  .resume-org {
+    margin: 0 0 var(--space-4);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    color: var(--text-primary);
+  }
+
+  .resume-org-note {
+    font-weight: 400;
+    color: var(--text-muted);
+  }
+
+  .resume-role {
+    margin-top: var(--space-16);
+  }
+
+  .resume-role-title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .resume-role-dates {
+    font-weight: 400;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+  }
+
+  .resume-bullets {
+    margin: var(--space-8) 0 0;
+    padding-inline-start: 1.1em;
+    list-style: disc;
+    font-family: var(--font-serif);
+    font-size: var(--text-body-sm);
+    line-height: 1.55;
+    max-width: 68ch;
+  }
+
+  .resume-bullets > li + li {
+    margin-top: var(--space-8);
+  }
+
+  .resume-case-link {
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+    white-space: nowrap;
+  }
+
+  .resume-note {
+    margin: var(--space-8) 0 0;
+    font-family: var(--font-serif);
+    font-size: var(--text-body-sm);
+    line-height: 1.55;
+    max-width: 68ch;
+    color: var(--text-secondary);
+  }
+
+  /* ---- Depth legend + table (replaces the chip wall) -------------------- */
+  .depth-legend {
+    margin: var(--space-24) 0;
+  }
+
+  .depth-legend-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    padding-block: var(--space-8);
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  @media (min-width: 34rem) {
+    .depth-legend-row {
+      grid-template-columns: 7rem 1fr;
+      gap: var(--space-16);
+      align-items: baseline;
+    }
+  }
+
+  .depth-legend-row > dt {
+    font-family: var(--font-sans);
+    font-size: var(--text-kicker);
+    font-weight: 550;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  .depth-legend-row > dd {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: var(--text-caption);
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .depth-table {
+    width: 100%;
+    margin-top: var(--space-32);
+    border-collapse: collapse;
+    font-size: var(--text-caption);
+  }
+
+  .depth-table th,
+  .depth-table td {
+    padding: var(--space-12) var(--space-12) var(--space-12) 0;
+    text-align: start;
+    vertical-align: baseline;
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .depth-table thead th {
+    font-family: var(--font-sans);
+    font-size: var(--text-kicker);
+    font-weight: 550;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .depth-table tbody th {
+    font-family: var(--font-serif);
+    font-size: var(--text-body-sm);
+    font-weight: 400;
+    color: var(--text-primary);
+  }
+
+  .depth-table tbody td {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: var(--text-secondary);
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px
+    ;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* =========================================================================
+   Print. The page IS the PDF, so there is one artifact rather than two that
+   drift apart. Light, no chrome, links footnoted by the browser.
+   ========================================================================= */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .resume-section {
+    break-inside: avoid;
+  }
+
+  .resume-entry {
+    break-inside: avoid;
+    grid-template-columns: 9rem 1fr;
+  }
+
+  .depth-table {
     break-inside: avoid;
   }
 }
