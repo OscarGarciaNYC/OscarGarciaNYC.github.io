@@ -205,11 +205,14 @@
     "Segoe UI", Helvetica, sans-serif;
   --font-mono: var(--font-mono-src), ui-monospace, SFMono-Regular, "SF Mono",
     Menlo, Consolas, monospace;
-  --font-alt-sans: var(--font-alt-sans-src), ui-sans-serif, system-ui, sans-serif;
 
-  /* Display is what headings use. Splitting it from --font-sans means the
-     voice of the headlines can change without touching labels and nav. */
-  --font-display: var(--font-sans);
+  /* Headings are set in the serif, the same face as the body (D2 amended
+     2026-07-27). A sans headline over a serif body is the shape every AI
+     product uses, and it read as generated to a fresh pair of eyes. A serif
+     headline over mono metadata reads as a specification, which is the
+     register this site is arguing for. Nav, kickers and labels stay sans —
+     an all-serif interface tips from document into literary journal. */
+  --font-display: var(--font-serif);
 
   /* ---- Type scale (§2.1, root 16px) ---------------------------------
      DEVIATION (representation only): the blueprint states the fixed sizes in
@@ -499,8 +502,10 @@
     font-family: var(--font-display);
     font-size: var(--text-h1);
     font-weight: 600;
-    line-height: 1.1;
-    letter-spacing: -0.022em;
+    line-height: 1.12;
+    /* Source Serif has wider natural sidebearings than Inter, so it needs
+       roughly half the negative tracking at the same size. */
+    letter-spacing: -0.011em;
     text-wrap: balance;
     max-width: var(--container-h1-measure, 22ch);
     margin: 0;
@@ -776,9 +781,9 @@
 
   .prose h2 {
     font-size: var(--text-h2);
-    font-weight: 550;
-    line-height: 1.2;
-    letter-spacing: -0.018em;
+    font-weight: 600;
+    line-height: 1.22;
+    letter-spacing: -0.009em;
     /* Full reading measure, not 30ch: this element also carries the section
        rule, and a 30ch cap left every divider short of the column it divides.
        `text-wrap: balance` still handles the line breaking. */
@@ -1307,8 +1312,8 @@
     font-family: var(--font-display);
     font-size: 1.3125rem;
     font-weight: 600;
-    line-height: 1.3;
-    letter-spacing: -0.012em;
+    line-height: 1.32;
+    letter-spacing: -0.008em;
     max-width: 34ch;
     color: var(--text-primary);
     text-wrap: balance;
@@ -1498,23 +1503,4 @@
   .policy-summary {
     margin-top: var(--space-24);
   }
-}
-
-/* =========================================================================
-   TEMPORARY — type comparison harness. Delete once a direction is chosen.
-   ========================================================================= */
-:root[data-type="serif"] {
-  --font-display: var(--font-serif);
-}
-:root[data-type="serif"] .doc-header h1,
-:root[data-type="serif"] .prose h2,
-:root[data-type="serif"] .prose h3,
-:root[data-type="serif"] .cs-row-title {
-  font-weight: 600;
-  letter-spacing: -0.012em;
-}
-
-:root[data-type="alt"] {
-  --font-display: var(--font-alt-sans);
-  --font-sans: var(--font-alt-sans);
 }
