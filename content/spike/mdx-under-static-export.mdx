@@ -1,0 +1,29 @@
+---
+title: MDX compiles in a Server Component under static export
+summary: Step 0 spike. Proves the content pipeline before any page is designed against it.
+teaches: Verify the riskiest dependency on day one, when changing your mind is still free.
+myRole: owned
+publishedAt: "2026-07-27"
+status: published
+generalizesRealWork: false
+---
+
+This document exists to prove four things at once, and it will be deleted once
+they are proven.
+
+1. MDX compiles inside a React Server Component.
+2. It does so under `output: 'export'`, with no server at request time.
+3. Frontmatter is parsed and validated, and invalid frontmatter fails the build.
+4. Custom components resolve through the components map.
+
+<Details summary="Why this is the thing worth testing first">
+
+The content layer is the one genuinely unverified dependency in the plan.
+Everything else — routing, Tailwind, static export — is well-trodden. If
+`next-mdx-remote` does not work here, the fallback is `@content-collections/core`,
+and finding that out now costs half a day instead of three rewritten case studies.
+
+</Details>
+
+If the paragraph above renders inside a disclosure element, the components map
+works and the authoring contract in D5 is buildable as specified.
