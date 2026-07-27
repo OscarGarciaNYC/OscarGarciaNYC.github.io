@@ -54,6 +54,76 @@ about a real person, often an older relative, sometimes assembled after a
 diagnosis. A generic paragraph in a book like that reads as a small betrayal,
 and it is obvious to the recipient.
 
+### Working from first principles
+
+The available reference points are group-gift sites and photo-book builders,
+and copying either produces the wrong product. So I started from what a
+memory book is actually for: a person reads it and recognizes the people who
+wrote it.
+
+Everything follows from that sentence. If recognition is the goal, the unit of
+value is a voice: a book with six voices beats a book with sixty pages from
+two. It means the writing has to sound like the person who wrote it, so
+anything that averages the prose destroys the product while improving every
+individual sentence. And it means the recipient only ever reads. There is
+nothing to retain, notify, or re-engage, so the entire engagement surface
+faces the contributors, who each show up roughly once.
+
+That reasoning is what made the AI guardrail obvious.
+A ghostwriting feature would have improved the average sentence and destroyed
+the only thing the product sells.
+
+### The assumptions that could kill it
+
+I built this the way I would run any 0→1: rank the assumptions by what happens
+if they are wrong, test the fatal ones first, and keep each test small enough
+that being wrong stays cheap.
+
+<TradeoffTable
+  caption="Ordered by consequence. The first two would have ended the product."
+  columns={[
+    { key: "assumption", header: "Assumption" },
+    { key: "fatal", header: "If wrong" },
+    { key: "test", header: "Cheapest test" },
+    { key: "result", header: "What happened" },
+  ]}
+  rows={[
+    {
+      assumption: "People will write about someone else when the ask is bounded",
+      fatal: "No content, so no book, so no product",
+      test: "Ship the smallest invitation-to-prompt flow and watch completions",
+      result: "58 stories from 35 people — more than one each, so they came back",
+    },
+    {
+      assumption: "Friction is what blocks contribution",
+      fatal: "Removing signup does nothing and the real problem is untouched",
+      test: "Anonymous-first: write now, settle identity afterward if at all",
+      result: "Held. It is the identity model still in production",
+    },
+    {
+      assumption: "Contributors want their own voice preserved over better prose",
+      fatal: "Every book reads the same and the gift stops landing",
+      test: "Constrain AI to bounded proofreading and let contributors decline it",
+      result: "Held, and it has killed features I wanted to build",
+    },
+    {
+      assumption: "The physical artifact is what makes it a gift",
+      fatal: "The most expensive part of the pipeline earns nothing",
+      test: "Print on demand, so no inventory exists to be wrong about",
+      result: "4 books printed and delivered end to end",
+    },
+    {
+      assumption: "One capable agent with a good prompt can do the building",
+      fatal: "Unreviewed work accumulates and the codebase stops being trustworthy",
+      test: "Run it, and read what it produced",
+      result: "Rejected. It missed the category of error it had just made",
+    },
+  ]}
+/>
+
+The last row is the one that redirected the project. It was an assumption about
+delivery, and it turned out to have the shortest fuse of any of them.
+
 <Constraint>
 The product's core promise is that the recipient reads their people's actual
 voices. Any feature that improves prose quality by making the voices more
@@ -142,6 +212,37 @@ accept it.
     },
   ]}
 />
+
+### How I sequenced the bets
+
+Solo, the scarce resource is attention, so the order of the work is the whole
+strategy. I ran it as three rounds, each one gated on a question I could answer
+cheaply.
+
+<Details summary="The three rounds, and what each one had to prove">
+
+**Round one — will anyone write?** The smallest thing that could answer it was
+an invitation, a prompt, and somewhere to put the words. No accounts, no
+editor, no book. If people opened the invitation and closed it, nothing else
+mattered and the product was finished. Kill criterion: contributors who start
+and abandon.
+
+**Round two — does the artifact justify the pipeline?** Printing is the
+expensive, slow, physical part, and it is where a consumer product usually
+dies. Print on demand meant the bet could be tested at a quantity of one,
+with no inventory to be wrong about. Kill criterion: a book that arrives and
+disappoints.
+
+**Round three — can one person sustain this?** By this point the product
+questions were answered and the constraint moved to me. That is when the
+delivery system got built, and it is why it got built third. Before round two
+there was not enough product to be worth governing.
+
+</Details>
+
+The ordering principle is boring and it holds: spend on the question whose
+wrong answer ends the project. Twice that question was about contributors.
+Once it was about me.
 
 ### What this unlocked, and what it foreclosed
 
