@@ -196,6 +196,11 @@
      variables on <html>, including metric-matched size-adjust fallbacks. */
   --font-serif: var(--font-serif-src), Iowan Old Style, Georgia, Cambria,
     "Times New Roman", serif;
+  /* Real italic letterforms, loaded on first use rather than preloaded — see
+     the note in app/layout.tsx. Applied by the `em, i, cite` rule below; never
+     set it on a container, or roman text inside would inherit an italic face. */
+  --font-serif-italic: var(--font-serif-italic-src), Iowan Old Style, Georgia,
+    Cambria, "Times New Roman", serif;
   --font-sans: var(--font-sans-src), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Helvetica, sans-serif;
   --font-mono: var(--font-mono-src), ui-monospace, SFMono-Regular, "SF Mono",
@@ -491,6 +496,34 @@
     margin: 0;
   }
 
+  /* The transferable idea, stated before the reader commits to the page.
+     Lede size so it outranks the meta line but never the title. */
+  .doc-teaches {
+    margin-top: var(--space-24);
+    font-family: var(--font-serif);
+    font-size: var(--text-lede);
+    line-height: 1.5;
+    letter-spacing: -0.005em;
+    max-width: 60ch;
+    color: var(--text-secondary);
+    text-wrap: pretty;
+  }
+
+  .doc-teaches-label {
+    display: block;
+    margin-bottom: var(--space-4);
+    font-family: var(--font-sans);
+    font-size: var(--text-kicker);
+    font-weight: 550;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .doc-stack {
+    margin-top: var(--space-16);
+  }
+
   .doc-meta {
     margin-top: var(--space-12);
     font-family: var(--font-mono);
@@ -513,6 +546,14 @@
     text-align: start;
     hyphens: none;
     -webkit-hyphens: none;
+  }
+
+  /* Emphasis gets the real italic face rather than a synthesised oblique. */
+  .prose em,
+  .prose i,
+  .prose cite {
+    font-family: var(--font-serif-italic);
+    font-style: italic;
   }
 
   .prose p {

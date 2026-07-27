@@ -22,14 +22,28 @@ const sourceSerif = Source_Serif_4({
   variable: "--font-serif-src",
   subsets: ["latin"],
   display: "swap",
-  // OPEN QUESTION for Oscar. Roman only. These three faces preload at 136.6KB,
-  // which is what §2.1's "~140KB total" budget actually buys. Adding
-  // `style: ["normal", "italic"]` costs a measured +50.3KB (186.9KB total,
-  // 37% over) and buys true italic letterforms for <em> — a real serif italic
-  // has a single-storey 'a' and a cursive 'e', where the browser's synthesised
-  // oblique just slants the roman. On a reading-first site with a serif body
-  // that difference is visible. Held to the stated budget rather than
-  // overspending it unilaterally; it is a one-line change to opt in.
+});
+
+/**
+ * Real serif italic, deliberately NOT preloaded (Oscar, 2026-07-27).
+ *
+ * A synthesised oblique just slants the roman; a real serif italic has a
+ * single-storey 'a' and a cursive 'e'. On a reading-first site that difference
+ * is visible — and it lands on the most important sentence here, the
+ * disclosure statement, which is set in italic.
+ *
+ * The face costs ~50KB, which would put the preloaded set 37% over §2.1's
+ * ~140KB budget. So it is a separate instance with `preload: false`: the
+ * critical path still preloads roman only and stays inside budget, and the
+ * browser fetches the italic when it first encounters italic text. Emphasis
+ * is never above the fold on a doc-header page, so the swap is unnoticeable.
+ */
+const sourceSerifItalic = Source_Serif_4({
+  variable: "--font-serif-italic-src",
+  subsets: ["latin"],
+  style: ["italic"],
+  display: "swap",
+  preload: false,
 });
 
 const inter = Inter({
@@ -90,7 +104,7 @@ export default function RootLayout({
       // never renders that attribute, so this is required — and it is scoped
       // to <html>'s own attributes, not to the tree below it.
       suppressHydrationWarning
-      className={`${sourceSerif.variable} ${inter.variable} ${jetBrainsMono.variable} h-full`}
+      className={`${sourceSerif.variable} ${sourceSerifItalic.variable} ${inter.variable} ${jetBrainsMono.variable} h-full`}
     >
       <head>
         {/* Must run before first paint. Keep it first in <head>. */}
