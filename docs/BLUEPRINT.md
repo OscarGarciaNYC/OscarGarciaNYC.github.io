@@ -107,6 +107,23 @@ The case study's `timeframe` moved to 2025–present to match the document's
 TreeTales dates. Its ADR-004 date of 2026-02 stays, because that is when the
 record was actually accepted.
 
+**Precedence, established the same day.** Checking the docx against LinkedIn
+showed the two disagreeing about PandoLogic. The docx dates a product-management
+title to Jan 2020 and splits 2016–2019 into a separate "Earlier Roles" block;
+LinkedIn has one employer from Aug 2016 to Sept 2023 across three roles, with
+the platform PM title starting Sept 2021. **Where the two disagree on a date or
+a title, LinkedIn wins on this site.** Two reasons, and the first is sufficient:
+a résumé title that runs back over roles you did not hold is exactly the
+inflation the Part 0 guardrail exists to prevent, and HR verifies title plus
+dates. The second is that a recruiter reads the two documents side by side, so a
+conflict costs more than either version gains. The docx also drops "— AI, Data &
+Integrations" from the Boldyn title, which LinkedIn carries; the fuller title is
+restored here.
+
+The compressed version was also the weaker claim. Seven years at one employer
+across three roles shows two internal promotions; collapsing it to a single
+title hides them and shortens the tenure.
+
 ---
 
 ## Part 0 — Decisions

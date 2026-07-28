@@ -88,7 +88,7 @@ const positions: ResumePosition[] = [
     end: "Present",
     roles: [
       {
-        title: "Technical Product Manager",
+        title: "Technical Product Manager — AI, Data & Integrations",
         start: "Oct 2023",
         end: "Present",
         bullets: [
@@ -125,12 +125,18 @@ const positions: ResumePosition[] = [
     kind: "employment",
     orgNote: "a Veritone company, acquired 2021",
     location: "New York, NY",
-    start: "Jan 2020",
+    // Dates and titles here follow LinkedIn rather than the source docx. The
+    // docx dates the product-management title to Jan 2020, which runs it back
+    // over the GTM operations and technical operations roles; LinkedIn is the
+    // record a recruiter reads alongside this page, and it is the one HR can
+    // verify. Seven years at one employer across three roles is also the
+    // stronger claim — the compressed version hides two internal promotions.
+    start: "Aug 2016",
     end: "Sept 2023",
     roles: [
       {
-        title: "Product Manager, TheJobNetwork",
-        start: "Jan 2020",
+        title: "Platform Product Manager — TheJobNetwork",
+        start: "Sept 2021",
         end: "Sept 2023",
         bullets: [
           {
@@ -156,21 +162,26 @@ const positions: ResumePosition[] = [
           },
         ],
       },
-    ],
-  },
-  {
-    org: "Earlier roles",
-    kind: "employment",
-    start: "Aug 2016",
-    end: "Dec 2019",
-    roles: [
       {
-        title: "Project management, GTM operations & technical leadership",
-        start: "Aug 2016",
-        end: "Dec 2019",
+        title: "GTM Operations & Product Lead",
+        start: "Jan 2021",
+        end: "Sept 2021",
         bullets: [
           {
-            text: "Progressed through technical operations, implementation, and go-to-market leadership roles supporting enterprise software delivery, customer implementations, analytics, and cross-functional execution before transitioning into product management.",
+            text: "Owned the systems and workflows connecting sales, marketing, and product across the lead-to-cash lifecycle, redesigning Salesforce and internal handoffs and rolling the new processes out to more than 200 users.",
+          },
+          {
+            text: "Advised leadership on build-versus-buy platform decisions and introduced structured release coordination between the go-to-market and engineering teams.",
+          },
+        ],
+      },
+      {
+        title: "Manager, Technical Operations",
+        start: "Aug 2016",
+        end: "Jan 2021",
+        bullets: [
+          {
+            text: "Led onboarding and technical operations for a large B2B customer base, standardizing the onboarding process to improve time-to-value and coordinating integrations across internal teams and partners.",
           },
         ],
       },
