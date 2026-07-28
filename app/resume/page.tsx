@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { DEPTH_LABEL, DEPTH_MEANING, resume } from "@/content/resume";
+import {
+  DEPTH_LABEL,
+  DEPTH_MEANING,
+  KIND_HEADING,
+  KIND_ORDER,
+  resume,
+} from "@/content/resume";
 
 export const metadata: Metadata = {
   title: "Résumé",
@@ -13,6 +19,14 @@ export default function ResumePage() {
   const byDepth = DEPTH_ORDER.map((depth) => ({
     depth,
     items: resume.capabilities.filter((c) => c.depth === depth),
+  })).filter((group) => group.items.length > 0);
+
+  // Employment, the TreeTales build, and unpaid advisory work are three
+  // different kinds of claim, so they get three headed sections rather than one
+  // undifferentiated list where a side project sits level with a salaried role.
+  const byKind = KIND_ORDER.map((kind) => ({
+    kind,
+    items: resume.positions.filter((p) => p.kind === kind),
   })).filter((group) => group.items.length > 0);
 
   return (
@@ -43,9 +57,10 @@ export default function ResumePage() {
           <p className="resume-summary">{resume.summary}</p>
         </section>
 
-        <section className="resume-section">
-          <h2>Experience</h2>
-          {resume.positions.map((position) => (
+        {byKind.map((group) => (
+        <section className="resume-section" key={group.kind}>
+          <h2>{KIND_HEADING[group.kind]}</h2>
+          {group.items.map((position) => (
             <div key={position.org} className="resume-entry">
               <div className="resume-spine">
                 <span className="resume-dates">
@@ -98,6 +113,7 @@ export default function ResumePage() {
             </div>
           ))}
         </section>
+        ))}
 
         <section className="resume-section">
           <h2>Capabilities</h2>

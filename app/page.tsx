@@ -20,7 +20,8 @@ export default function Home() {
       <div className="home">
         <header className="doc-header" id="top">
           <h1 className="home-claim">
-            I own AI products end to end, and build the systems that ship them.
+            I get enterprise AI past the security review, and build the systems
+            that ship it.
           </h1>
           <p className="doc-lede">
             Most enterprise AI programs fail on readiness. I spend my time on
@@ -33,11 +34,11 @@ export default function Home() {
               {
                 label: "Focus",
                 value:
-                  "Enterprise AI · identity · integrations · data platforms",
+                  "Enterprise AI · AI governance · integrations · data platforms",
               },
               {
                 label: "Current",
-                value: "Technical PM — AI, data & integrations",
+                value: "Technical Product Manager, Boldyn Networks",
               },
               { label: "Building", value: "TreeTales (live in production)" },
               { label: "Open to", value: "AI product roles" },
@@ -100,8 +101,14 @@ export default function Home() {
           <p className="home-prose">
             At Boldyn Networks I work as the right hand to a Chief Digital &amp;
             Information Officer across data, AI, and enterprise technology. I
-            built the agentic AI roadmap from scratch and led integrations for
-            an ERP consolidation into a single financial system of record.
+            built the enterprise AI operating model there — how a use case gets
+            in, how it gets ranked, and what it has to clear in cyber, legal,
+            and privacy review before engineering commits anything — along with
+            the governance layer that lets the business run AI against
+            contractual data residency obligations in two countries. Earlier I
+            owned the integration work for a consolidation onto a single
+            financial system of record, then defined the integration strategy
+            the rest of the estate runs on.
           </p>
           <p className="home-prose">
             On my own time I build TreeTales, a collaborative Memory Book that

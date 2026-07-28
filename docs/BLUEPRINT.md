@@ -70,6 +70,43 @@ out` keeps serving a deleted inode after `next build` recreates the directory �
 bind it with `--directory`, and cache-bust the browser before trusting a
 screenshot.
 
+**A7 — §3.7 amended: the résumé has an external source of truth, and three
+sections.** `content/resume.ts` now tracks
+`~/Documents/Resumes/Oscar_Garcia_Resume_Product - Anthropic.docx` (synced
+2026-07-27) rather than being authored on the site. Bullet wording follows the
+document so a recruiter comparing the PDF against the page sees the same claims,
+and the file records that at the top. Positions carry a `kind` of `employment`,
+`project`, or `advisory`, rendering as three headed sections — Experience /
+Selected project / Advisory & community. That grouping is a claim, not a layout
+preference: the source document moved TreeTales out of employment, so listing it
+level with a salaried role would overstate it. Existing `.resume-section`
+styling covered all three, so no CSS was added.
+
+Oscar's instruction on this sync was that dates and scope follow the document,
+which reached six strings living outside `content/resume.ts`. Recorded because
+the next sync has to check the same six:
+
+| Where | Was | Now |
+|---|---|---|
+| `SiteHeader.tsx` tagline | Senior Technical PM · New York | Technical PM · Enterprise AI · New York |
+| `app/page.tsx` h1 | I own AI products end to end | I get enterprise AI past the security review |
+| `app/page.tsx` §Currently | agentic AI roadmap · ERP consolidation | enterprise AI operating model · a consolidation onto one financial system of record |
+| `app/page.tsx` front matter | Technical PM — AI, data & integrations | Technical Product Manager, Boldyn Networks |
+| `about.mdx` ¶2 | agentic AI roadmap from nothing | enterprise AI operating model from nothing |
+| `about.mdx` §Outside work | production lead for several years | production lead since 2013 |
+
+Two notes on the scope pass. The h1 previously claimed end-to-end ownership of
+AI products as a general fact, which the document supports for TreeTales and not
+for the employed work, where the role is advisor to the CDIO — so the claim was
+narrowed to what the document carries. And the integration count moved out of
+Home prose entirely rather than being updated from 26 to 28: the editorial
+mandate names "Delivered 26 integrations in 8 months" as its example of a résumé
+line banned in prose, so the figure belongs on `/resume` and nowhere else.
+
+The case study's `timeframe` moved to 2025–present to match the document's
+TreeTales dates. Its ADR-004 date of 2026-02 stays, because that is when the
+record was actually accepted.
+
 ---
 
 ## Part 0 — Decisions

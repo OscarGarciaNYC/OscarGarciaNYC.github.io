@@ -48,7 +48,7 @@ export function SiteHeader() {
             Oscar Garcia
           </Link>
           <span className="hidden truncate text-[13px] leading-5 text-secondary min-[480px]:inline">
-            Senior Technical PM · New York
+            Technical PM · Enterprise AI · New York
           </span>
         </div>
 
