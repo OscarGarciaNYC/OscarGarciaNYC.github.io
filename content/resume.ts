@@ -191,17 +191,24 @@ const positions: ResumePosition[] = [
     org: "TreeTales",
     kind: "project",
     location: "New York, NY",
-    start: "2025",
+    // Dated to the founding of the venture, not to the production build. The
+    // two years before the build were customer validation, and on a product
+    // résumé that period is evidence rather than a gap — dating the entry to
+    // 2025 deleted it and left only the engineering.
+    start: "Jul 2023",
     end: "Present",
     roles: [
       {
         title: "Founder — Product & Agentic Engineering",
-        start: "2025",
+        start: "Jul 2023",
         end: "Present",
         bullets: [
           {
-            text: "Built a production AI-assisted storytelling platform from 0→1 using Claude Code, Next.js, React, TypeScript, and Supabase, accelerating delivery through agentic development workflows while holding architectural quality and human oversight.",
+            text: "Spent the first two years validating the problem — customer conversations and successive prototypes iterating toward an MVP — which reshaped the core premise before any production commitment.",
             caseStudy: "review-gate-before-the-agent",
+          },
+          {
+            text: "Built and shipped the platform to production in 2025, taking it 0→1 with Claude Code, Next.js, React, TypeScript, and Supabase, accelerating delivery through agentic development workflows while holding architectural quality and human oversight.",
           },
           {
             // No case-study link here: the bullet above already points at the

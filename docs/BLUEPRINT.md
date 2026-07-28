@@ -103,9 +103,14 @@ Home prose entirely rather than being updated from 26 to 28: the editorial
 mandate names "Delivered 26 integrations in 8 months" as its example of a résumé
 line banned in prose, so the figure belongs on `/resume` and nowhere else.
 
-The case study's `timeframe` moved to 2025–present to match the document's
-TreeTales dates. Its ADR-004 date of 2026-02 stays, because that is when the
-record was actually accepted.
+**TreeTales is dated to the venture, not the build: Jul 2023.** The docx said
+2025 and the case study said 2026, both of which dated the entry to the
+production build and dropped the two years of customer validation that preceded
+it. On a product résumé that period is the most relevant evidence on the page,
+so the résumé entry and the case study `timeframe` both start at 2023, and the
+2025 ship date is stated in a bullet so the interval reads as discovery rather
+than silence. ADR-004's date of 2026-02 stays, because that is when the record
+was actually accepted.
 
 **Precedence, established the same day.** Checking the docx against LinkedIn
 showed the two disagreeing about PandoLogic. The docx dates a product-management
