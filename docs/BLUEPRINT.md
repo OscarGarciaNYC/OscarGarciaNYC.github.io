@@ -6,6 +6,72 @@
 
 ---
 
+## Amendments after first build (2026-07-27)
+
+Decisions taken once the site was rendered and reviewed. Where these conflict
+with anything below, these win.
+
+**A1 — D2 amended: headings are set in the serif.** `--font-display` is now
+`--font-serif` (Source Serif 4 at 600). Inter is retained for nav, kickers,
+table headers, and small uppercase labels only. Reason: a sans headline over a
+serif body is the shape every AI product uses, and a fresh reader identified
+the site as AI-generated on the strength of the type. A serif headline over a
+mono front-matter block reads as a specification. Costs nothing — the face was
+already loaded. An all-serif interface is explicitly rejected; it tips from
+document into literary journal.
+
+**A2 — D4 amended: disclosure is a field, not a statement.** The standing
+paragraph is replaced by a `DISCLOSURE` row in the doc-header front-matter,
+rendering a `GENERALIZED` chip plus a native `<details>` help text that links
+to `/about#disclosure`. Restating the same sentence on every case study trains
+readers to skip it, and a formal notice reads as legal boilerplate. Full
+wording exists once, on About. The `<Disclosure>` block component is deleted.
+
+**A3 — §2.4 amended: one canvas figure is permitted.** Canvas is allowed as a
+bounded, captioned, hairline-bounded figure at artifact width, once per site,
+never full-bleed and never behind text. The implementation is `AgentField` on
+`/about` §04: three fixed roles with a spine that only runs ARCHITECT →
+BUILDER → REVIEWER, so the decoration states the separation-of-duties rule
+rather than decorating around it. Colour is `--stroke-diagram`, never
+`--accent`. Reduced-motion renders one settled frame; the loop is gated on
+IntersectionObserver and `visibilitychange`.
+
+**A4 — prose patterns that are banned outright.** These were each caught in
+review after shipping, and each one recurs unless scanned for:
+
+1. **Negative parallelism.** "X, not Y" · "isn't X, it's Y" · "rather than".
+   State what the thing is.
+2. **Self-certifying tags.** "and it holds" · "and that's the point". A claim
+   may not vouch for itself; the evidence does that.
+3. **Aphoristic symmetry.** Balanced epigram-shaped closers — "what it
+   forecloses is worth naming, because it is permanent". The shape carries the
+   emphasis while the sentence says nothing. Replace with the specific
+   consequence.
+4. **Short sentences used for emphasis.** Impact comes from what a sentence
+   tells the reader, not from clipping it. Target: under 10% of sentences at
+   ≤9 words, mean 25–35 words, standard deviation near 15 so the prose stays
+   sustained without flattening into one length.
+5. **Vague section titles.** Titles state their contents.
+
+Run both passes before publishing: `humanizer` for words and punctuation, then
+`structural-humanizer` for discourse-level tells.
+
+**A5 — blueprint errors found by rendering.** §2.2 claimed every control
+boundary clears 3:1; dark `border-interactive` was 2.93:1 on the raised surface
+and has been corrected to `#63686F`. §2.1 had no weight column, which produced
+headings lighter than the bold lead-ins beneath them. §2.1's measure column
+must constrain the text box, not the element, because the h2 also carries the
+section rule. §3.8 specced About too thin for the page the design system is
+built on.
+
+**A6 — process.** Green build, typecheck and lint have twice hidden real
+defects that only rendering caught. Also: a preview server started with `cd
+out` keeps serving a deleted inode after `next build` recreates the directory —
+bind it with `--directory`, and cache-bust the browser before trusting a
+screenshot.
+
+---
+
 ## Part 0 — Decisions
 
 ### Locked (Oscar, 2026-07-27)
