@@ -125,17 +125,22 @@ const positions: ResumePosition[] = [
     kind: "employment",
     orgNote: "a Veritone company, acquired 2021",
     location: "New York, NY",
-    // Dates and titles here follow LinkedIn rather than the source docx. The
-    // docx dates the product-management title to Jan 2020, which runs it back
-    // over the GTM operations and technical operations roles; LinkedIn is the
-    // record a recruiter reads alongside this page, and it is the one HR can
-    // verify. Seven years at one employer across three roles is also the
-    // stronger claim — the compressed version hides two internal promotions.
+    // Dates here follow LinkedIn rather than the source docx. The docx dates the
+    // product-management title to Jan 2020, which runs it back over the GTM
+    // operations and technical operations roles; LinkedIn is the record a
+    // recruiter reads alongside this page, and it is the one HR can verify.
+    // Seven years at one employer across three roles is also the stronger claim
+    // — the compressed version hides two internal promotions.
+    //
+    // The first title is Oscar's choice (2026-07-27): the docx says Product
+    // Manager where LinkedIn says Platform Product Manager. Dates are what get
+    // verified, and dropping "Platform" claims less, so the résumé wording wins
+    // on this one.
     start: "Aug 2016",
     end: "Sept 2023",
     roles: [
       {
-        title: "Platform Product Manager — TheJobNetwork",
+        title: "Product Manager, TheJobNetwork",
         start: "Sept 2021",
         end: "Sept 2023",
         bullets: [

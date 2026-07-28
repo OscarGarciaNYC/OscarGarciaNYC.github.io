@@ -129,6 +129,13 @@ The compressed version was also the weaker claim. Seven years at one employer
 across three roles shows two internal promotions; collapsing it to a single
 title hides them and shortens the tenure.
 
+The rule is narrower than it first looks. It binds on **dates**, which are what
+HR verifies, and on a title whose *span* is wrong. It does not bind on title
+wording where the résumé claims less: Oscar chose "Product Manager,
+TheJobNetwork" over LinkedIn's "Platform Product Manager" (2026-07-27), and
+dropping "Platform" understates rather than inflates, so the résumé wording
+stands.
+
 ---
 
 ## Part 0 — Decisions
