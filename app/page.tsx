@@ -79,7 +79,8 @@ export default function Home() {
             <li>
               <strong>Name the constraint.</strong>{" "}
               Every system I&rsquo;ve shipped was shaped by something I
-              couldn&rsquo;t do. That part transfers; the win rarely does.
+              couldn&rsquo;t do, and naming it early sets the sequence for
+              everything after.
             </li>
             <li>
               <strong>Treat autonomy as a budget.</strong> Agents can produce

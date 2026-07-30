@@ -52,6 +52,15 @@ review after shipping, and each one recurs unless scanned for:
    ≤9 words, mean 25–35 words, standard deviation near 15 so the prose stays
    sustained without flattening into one length.
 5. **Vague section titles.** Titles state their contents.
+6. **Value-certifying closers.** A final sentence whose job is to tell the
+   reader that the preceding point was valuable, rare, or overlooked: "…and
+   they are usually the first thing a case study leaves out" · "That part
+   transfers; the win rarely does" · "which is what most teams miss". This is
+   pattern 2 at paragraph scale, and it survived the first A4 pass because that
+   pass only scanned for short tags (Oscar, 2026-07-29). The test: delete the
+   last sentence of the paragraph. If nothing factual is lost, it was
+   certifying rather than saying. Replace it with the consequence — what the
+   constraint decided, what the reader should do — or end on the specifics.
 
 Run both passes before publishing: `humanizer` for words and punctuation, then
 `structural-humanizer` for discourse-level tells.
@@ -138,6 +147,35 @@ stands.
 
 ---
 
+**A8 — a fabricated constraint reached the live site, and how.** The About page
+carried "a finance close that fell on the third business day and would not move"
+as one of Oscar's real constraints for two days. He confirmed on 2026-07-29 that
+it never happened. It originated as an *illustration* inside this document's own
+editorial mandate — invented to show the difference between résumé register and
+product thinking — and was then read back in a later session as a fact about his
+work, copied into About, and used to name a planned case study ("Sequencing a
+consolidation around a date you don't control"). Nothing flagged it, because it
+was plausible, specific, and already written down in a trusted file.
+
+Three rules follow, and they bind on this document as much as on the site:
+
+1. **Illustrative examples in the blueprint must use confirmed facts, or carry
+   the word `HYPOTHETICAL`.** An invented specific in a planning doc is
+   indistinguishable from a researched one a week later.
+2. **A constraint, figure, or date that appears in prose about employer work
+   must trace to something Oscar said or to the résumé.** If neither, it does
+   not ship — a `TODO(oscar):` marker is the correct output, never a plausible
+   sentence.
+3. **When a document is planned around a single constraint, confirm that
+   constraint before the outline.** The case study's whole premise was the
+   fabricated date, which means the title, spine, and teaching all had to be
+   rebuilt once it fell.
+
+The real sequencing driver is recorded in Oscar's own notes and deliberately not
+written down here.
+
+---
+
 ## Part 0 — Decisions
 
 ### Locked (Oscar, 2026-07-27)
@@ -153,7 +191,7 @@ stands.
 This is the bar the writing has to clear, and it outranks the layout when the two conflict.
 
 1. **Every page reads like something published by a senior product leader at Anthropic** — not like a portfolio entry.
-2. **No resume language.** Achievement bullets are banned in prose. "Delivered 26 integrations in 8 months" is a resume line. "Finance close ran on the third business day, which meant no cutover window could exceed four hours — that one fact determined the sequencing of every integration" is product thinking. The second one is the only acceptable register.
+2. **No resume language.** Achievement bullets are banned in prose. "Delivered 28 integrations in 8 months" is a resume line. "Review capacity was about an hour a day, and that ceiling is what sized the overnight dispatch budget" is product thinking. The second one is the only acceptable register. **Every example in this document must be a fact Oscar has confirmed, or be marked hypothetical** — see A8 for why that sentence is now in this rule.
 3. **Every article teaches something.** A reader who has never met you should finish with a transferable idea they can use on their own problem. Demonstrating expertise is the *byproduct* of teaching well, never the goal of the piece.
 4. **Prefer generalized enterprise examples.** Write the pattern, not the engagement. "A multi-entity portfolio consolidating multiple ERPs into a single financial system of record" teaches more, and risks less, than a named account with abstracted numbers.
 5. **Avoid confidential information** — full stop, not "abstract it."
@@ -863,7 +901,7 @@ Titles are written as **the idea taught**, not the engagement. That's the editor
 | Working title | Collection | Source material | Status |
 |---|---|---|---|
 | Building the review gate before building the agent | case-studies | Rich — current site + your own repo. Exact numbers, nothing to generalize. | **Rewrite to new anatomy** |
-| Sequencing a consolidation around a date you don't control | case-studies | The ERP work. Generalize the account; the finance-close constraint is the teaching. | Needs writing |
+| ~~Withdrawn~~ | case-studies | — | **Withdrawn — interview material only.** |
 | Single sign-on is a sales unblock disguised as an auth project | case-studies | The identity work. Teaches how to price a platform investment by what it unblocks. | Needs writing |
 | Killing AI use cases before engineering commits | case-studies | **Not currently a case study — it should be.** The ROI-ranked pipeline and readiness screen is your strongest Principal-level evidence and it's currently three résumé bullets. | **Net new — highest value** |
 | Separation of duties for agents | architecture | Strong, exists in ADRs | Needs writing |
