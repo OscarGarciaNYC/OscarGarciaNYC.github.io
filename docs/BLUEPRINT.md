@@ -171,8 +171,48 @@ Three rules follow, and they bind on this document as much as on the site:
    fabricated date, which means the title, spine, and teaching all had to be
    rebuilt once it fell.
 
-The real sequencing driver is recorded in Oscar's own notes and deliberately not
-written down here.
+The real sequencing driver, which Oscar supplied on 2026-07-29, is deliberately
+not written down here. See A10.
+
+**A9 — never verify a build through rtk.** The `rtk` CLI proxy filters command
+output to save tokens, and its `next build` filter printed `Next.js Build /
+Errors: 0 | Warnings: 0` for a build that exited 1 on a Zod frontmatter error.
+Three consecutive "green" builds were red, and `out/` was silently three days
+stale throughout — which `rtk ls` also hid, because it strips mtimes. A6 said a
+green build hides defects; this is worse, because the build was not green.
+
+The rule: **capture raw build output to a file and read the file.**
+
+```
+STATIC_EXPORT=true npx next build > <scratchpad>/build.log 2>&1; echo "exit=$?"
+```
+
+`rtk` stays useful for git, grep, and reading. It is not a verification tool for
+anything whose failure mode is a non-zero exit.
+
+**A10 — employer systems detail is confidential, and generalizing does not cure
+it.** A case study on the ERP consolidation was drafted on 2026-07-29 from
+Oscar's own discovery answers, with the employer generalized per mandate item 4.
+He read it and called it confidential (2026-07-30). That is the correct call, and
+it is what mandate item 5 already required: *avoid confidential information —
+full stop, not "abstract it."* Withdrawn, and the branch deleted from the public
+remote.
+
+The rule the mandate was missing: **generalizing the account is not anonymity
+when the résumé on the same site names the employer, the dates, and the
+platform.** A reader connects the two in one click, so the disclosure line
+manages the reader's expectations while leaving the underlying facts exposed. For
+employer work the test is the content itself. An entity's systems estate, which
+platform masters which record, how many instances of what were inherited, and the
+shape of its close process are that employer's internal information whatever name
+sits on top of them.
+
+What this forecloses is real. The site's data-platform evidence now has to come
+from doctrine written without the engagement behind it — a framework or
+architecture piece that teaches the pattern carrying no employer facts — or from
+Oscar's own products. That material stays as interview preparation,
+where a verbal account to one person is a different disclosure than a public web
+page.
 
 ---
 
@@ -191,9 +231,9 @@ written down here.
 This is the bar the writing has to clear, and it outranks the layout when the two conflict.
 
 1. **Every page reads like something published by a senior product leader at Anthropic** — not like a portfolio entry.
-2. **No resume language.** Achievement bullets are banned in prose. "Delivered 28 integrations in 8 months" is a resume line. "Review capacity was about an hour a day, and that ceiling is what sized the overnight dispatch budget" is product thinking. The second one is the only acceptable register. **Every example in this document must be a fact Oscar has confirmed, or be marked hypothetical** — see A8 for why that sentence is now in this rule.
+2. **No resume language.** Achievement bullets are banned in prose. "Delivered 28 integrations in 8 months" is a resume line. "Review capacity was about an hour a day, and that ceiling is what sized the overnight dispatch budget" is product thinking. The second one is the only acceptable register. Examples in this rule come from Oscar's own product, which is the only source that is both confirmed and publishable — see A8 and A10.
 3. **Every article teaches something.** A reader who has never met you should finish with a transferable idea they can use on their own problem. Demonstrating expertise is the *byproduct* of teaching well, never the goal of the piece.
-4. **Prefer generalized enterprise examples.** Write the pattern, not the engagement. "A multi-entity portfolio consolidating multiple ERPs into a single financial system of record" teaches more, and risks less, than a named account with abstracted numbers.
+4. **Prefer generalized enterprise examples.** Write the pattern, not the engagement. Teach "how a multi-entity portfolio decides which system masters which record" as doctrine, with no counts, platforms, or estate shape from a real engagement in it. **A10 limits this item:** generalizing the account is not anonymity when the résumé on the same site names the employer and the dates, so item 5 governs whenever the content itself is an employer's internal information.
 5. **Avoid confidential information** — full stop, not "abstract it."
 6. **Never exaggerate experience.** See the guardrail below; this is the one that has to be structurally enforced.
 
@@ -901,7 +941,7 @@ Titles are written as **the idea taught**, not the engagement. That's the editor
 | Working title | Collection | Source material | Status |
 |---|---|---|---|
 | Building the review gate before building the agent | case-studies | Rich — current site + your own repo. Exact numbers, nothing to generalize. | **Rewrite to new anatomy** |
-| ~~Withdrawn~~ | case-studies | — | **Withdrawn — interview material only.** |
+| ~~The ERP consolidation~~ | case-studies | — | **Withdrawn 2026-07-30 — see A10. Interview material only.** |
 | Single sign-on is a sales unblock disguised as an auth project | case-studies | The identity work. Teaches how to price a platform investment by what it unblocks. | Needs writing |
 | Killing AI use cases before engineering commits | case-studies | **Not currently a case study — it should be.** The ROI-ranked pipeline and readiness screen is your strongest Principal-level evidence and it's currently three résumé bullets. | **Net new — highest value** |
 | Separation of duties for agents | architecture | Strong, exists in ADRs | Needs writing |
